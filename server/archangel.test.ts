@@ -31,6 +31,15 @@ describe("ARCHANGEL fleet contract", () => {
     expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth", "exitus-lens"]);
   });
 
+  it("keeps unplaced applications out of the physical host inventory", () => {
+    const resonate = FLEET_NODES.find(node => node.id === "resonate-earth");
+    const exitus = FLEET_NODES.find(node => node.id === "exitus-lens");
+    expect(resonate).toMatchObject({ declaredState: "Planned deployment", region: "Physical host not declared · public front-door application" });
+    expect(exitus).toMatchObject({ declaredState: "Planned deployment", region: "Physical host not declared · planned application concept" });
+    expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "resonate-earth", placement: "unplaced-public-front-door" });
+    expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "exitus-lens", placement: "unplaced-evidence-layer" });
+  });
+
   it("preserves the explicit two-triangle vertex order and bridge clearance contract", () => {
     expect(TOPOLOGY_LAYOUT_CONTRACT.vertices).toEqual([
       { id: "xinus-clarity", tone: "alpha", position: "alpha-apex" },

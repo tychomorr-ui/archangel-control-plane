@@ -10,8 +10,8 @@ import {
   ClipboardList,
   Command,
   DatabaseZap,
-  LogOut,
   Orbit,
+  LogOut,
   ScanLine,
   Settings2,
   ShieldCheck,
@@ -22,9 +22,10 @@ import { useLocation } from "wouter";
 const navigation = [
   { label: "Fleet overview", path: "/", icon: Orbit },
   { label: "Mesh topology", path: "/topology", icon: Cable },
+  { label: "Ecosystem graph", path: "/ecosystem", icon: Orbit },
   { label: "Command Center", path: "/command-center", icon: Command },
   { label: "Intent workflow", path: "/intents", icon: ClipboardList },
-  { label: "Audit ledger", path: "/audit", icon: ScanLine },
+  { label: "Evidence Observatory", path: "/audit", icon: ScanLine },
   { label: "Alerts", path: "/alerts", icon: BellRing },
   { label: "Node registry", path: "/registry", icon: Settings2 },
 ];

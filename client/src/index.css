@@ -41,6 +41,25 @@ body {
 
 .font-display { font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif; }
 .glass-surface { border: 1px solid rgba(255,255,255,0.08); background: linear-gradient(135deg, rgba(14,20,32,0.9), rgba(8,11,18,0.72)); box-shadow: 0 18px 55px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.035); }
+.neural-grid { position: relative; overflow: hidden; background-image: linear-gradient(rgba(103,232,249,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(103,232,249,.045) 1px, transparent 1px), radial-gradient(circle at 50% 10%, rgba(34,211,238,.13), transparent 32%), linear-gradient(135deg, rgba(14,20,32,.94), rgba(6,8,14,.86)); background-size: 34px 34px, 34px 34px, auto, auto; }
+.neural-grid::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 30%, rgba(165,243,252,.055) 48%, transparent 65%); transform: translateX(-90%); }
+.ion-surface { border: 1px solid rgba(103,232,249,.14); background: linear-gradient(135deg, rgba(7,18,28,.88), rgba(9,11,22,.76)); box-shadow: 0 26px 74px rgba(0,0,0,.32), inset 0 1px 0 rgba(186,230,253,.08), 0 0 0 1px rgba(139,92,246,.025); }
+.signal-beacon { display: inline-flex; align-items: center; gap: .48rem; border: 1px solid rgba(103,232,249,.18); background: rgba(6,20,29,.7); border-radius: 999px; padding: .38rem .65rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: rgb(207 250 254); }
+.signal-beacon__dot { width: .42rem; height: .42rem; border-radius: 999px; background: rgb(103 232 249); box-shadow: 0 0 14px rgba(103,232,249,.88); }
+.truth-lens { border: 1px solid rgba(255,255,255,.08); border-radius: .75rem; padding: .68rem .82rem; text-align: left; background: rgba(255,255,255,.025); color: rgb(148 163 184); font-family: "DM Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; transition: transform 160ms cubic-bezier(.23,1,.32,1), border-color 160ms cubic-bezier(.23,1,.32,1), background 160ms cubic-bezier(.23,1,.32,1), color 160ms cubic-bezier(.23,1,.32,1); }
+.truth-lens:hover { border-color: rgba(103,232,249,.28); background: rgba(34,211,238,.07); color: rgb(207 250 254); }
+.truth-lens[data-active="true"] { border-color: rgba(103,232,249,.38); background: linear-gradient(135deg, rgba(34,211,238,.16), rgba(139,92,246,.08)); color: rgb(236 254 255); box-shadow: inset 0 0 0 1px rgba(165,243,252,.07), 0 0 30px rgba(34,211,238,.08); }
+.aether-aperture { position: relative; display: grid; place-items: center; min-height: 340px; isolation: isolate; }
+.aether-aperture--compact { min-height: 180px; transform: scale(.78); transform-origin: center; margin: -1.75rem 0; }
+.aether-aperture__halo, .aether-aperture__orbit { position: absolute; border-radius: 999px; pointer-events: none; }
+.aether-aperture__halo--outer { width: 290px; height: 290px; background: radial-gradient(circle, rgba(34,211,238,.10), transparent 68%); filter: blur(1px); }
+.aether-aperture__halo--inner { width: 170px; height: 170px; border: 1px solid rgba(103,232,249,.24); box-shadow: 0 0 36px rgba(34,211,238,.14), inset 0 0 30px rgba(34,211,238,.08); }
+.aether-aperture__orbit--one { width: 258px; height: 112px; border: 1px solid rgba(103,232,249,.28); transform: rotate(-24deg); }
+.aether-aperture__orbit--two { width: 252px; height: 106px; border: 1px dashed rgba(196,181,253,.28); transform: rotate(42deg); }
+.aether-aperture__core { position: relative; z-index: 1; display: flex; min-height: 126px; width: 126px; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(165,243,252,.55); border-radius: 999px; background: radial-gradient(circle at 35% 25%, rgba(34,211,238,.22), rgba(8,16,27,.96) 62%); box-shadow: 0 0 0 9px rgba(34,211,238,.035), 0 0 44px rgba(34,211,238,.18), inset 0 0 24px rgba(34,211,238,.12); }
+.aether-aperture__readout { position: absolute; bottom: .75rem; z-index: 2; display: flex; gap: .75rem; }
+.aether-aperture__readout div { display: flex; align-items: center; gap: .38rem; border: 1px solid rgba(255,255,255,.08); border-radius: .6rem; background: rgba(3,7,13,.72); padding: .45rem .55rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: rgb(148 163 184); }
+.aether-aperture__readout strong { color: rgb(226 232 240); font-size: 11px; }
 .star-field { background-image: radial-gradient(rgba(186, 230, 253, 0.44) 0.6px, transparent 0.8px), radial-gradient(rgba(196,181,253,0.22) 0.55px, transparent 0.8px); background-size: 37px 37px, 71px 71px; background-position: 0 0, 18px 26px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
 .auth-gate { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(34,211,238,0.10), transparent 28%), #05070d; }
 .field-label { display: grid; gap: 0.55rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgb(148 163 184); }
@@ -54,5 +73,13 @@ button:active { transform: scale(0.98); }
 
 @media (prefers-reduced-motion: no-preference) {
   .star-field { animation: drift 28s linear infinite alternate; }
+  .neural-grid::after { animation: ion-sweep 9s cubic-bezier(.23,1,.32,1) infinite; }
+  .aether-aperture__halo--outer { animation: aperture-breathe 4.8s ease-in-out infinite alternate; }
+  .aether-aperture__orbit--one { animation: aperture-orbit-one 14s linear infinite; }
+  .aether-aperture__orbit--two { animation: aperture-orbit-two 18s linear infinite; }
   @keyframes drift { from { background-position: 0 0, 18px 26px; } to { background-position: 50px 35px, -28px 62px; } }
+  @keyframes ion-sweep { 0%, 58% { transform: translateX(-110%); } 100% { transform: translateX(140%); } }
+  @keyframes aperture-breathe { from { transform: scale(.9); opacity: .52; } to { transform: scale(1.11); opacity: 1; } }
+  @keyframes aperture-orbit-one { to { transform: rotate(336deg); } }
+  @keyframes aperture-orbit-two { to { transform: rotate(402deg); } }
 }

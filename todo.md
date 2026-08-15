@@ -85,3 +85,14 @@
 - [x] Add explicit policy guardrails so the future control plane cannot become an unrestricted remote shell or silently execute an unsafe request.
 - [x] Update the protected console topology and registry to represent the completed IWA Sage, planned Resonate Earth, and planned Exitus Lens roles.
 - [x] Extend the reviewed terminal mesh admission package and runbook with the planned Exitus Lens node identity and private overlay address.
+- [x] Audit and correct the geographic node map using the actual current Lightsail inventory, explicitly separating current hosts, planned nodes, logical topology, and geographic projection.
+- [x] Conduct a control-plane competitor and benchmark analysis across infrastructure, GitOps, service-mesh, and operator-console patterns.
+- [x] Define ARCHANGEL’s differentiated product strategy, authority model, interaction principles, and multi-dimensional information architecture.
+- [x] Design and implement an immersive, futuristic, accessible ARCHANGEL visual and interaction system that feels alive without obscuring operational truth.
+- [x] Rebuild the primary control-room surfaces, topology, and geographic map around the validated design system and actual fleet state.
+- [x] Validate map accuracy, responsive usability, safety messaging, accessibility, and regression coverage for the upgraded control plane.
+- [x] Rebuild the remaining primary control-room surfaces—especially Command Center—so they use the living ARCHANGEL design system and match the upgraded overview, topology, graph, and evidence experience.
+- [x] Add targeted accessibility tests and a review note for the new Truth Lens controls, Ecosystem Graph surface, and living control-room interactions, then rerun the full regression suite.
+- [x] Rebuild the full Command Center surface with the living ARCHANGEL design system across its primary sections, not just the authority panel, and align it with the upgraded overview, topology, graph, and evidence visual language.
+- [x] Take and review updated desktop/mobile screenshots of the rebuilt Command Center and any other remaining primary control-room surfaces, then record the review evidence in a durable note.
+- [x] Confirm the saved Command Center visual review record exists and reflects the completed desktop/mobile evidence before checkpointing.

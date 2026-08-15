@@ -7,6 +7,7 @@ const serverDirectory = dirname(fileURLToPath(import.meta.url));
 const clientDirectory = join(serverDirectory, "..", "client", "src");
 const layoutSource = readFileSync(join(clientDirectory, "components", "ArchangelLayout.tsx"), "utf8");
 const pageSource = readFileSync(join(clientDirectory, "pages", "ArchangelPages.tsx"), "utf8");
+const graphSource = readFileSync(join(clientDirectory, "pages", "EcosystemGraphPage.tsx"), "utf8");
 const styles = readFileSync(join(clientDirectory, "index.css"), "utf8");
 
 describe("ARCHANGEL keyboard controls", () => {
@@ -46,5 +47,22 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(pageSource).toContain('points="50,8 12,66 88,66"');
     expect(pageSource).toContain('points="12,30 88,30 50,80"');
     expect(pageSource).toContain("Shared coordination crosshair");
+  });
+
+  it("keeps living control-room lenses and graph perspectives as named native buttons", () => {
+    expect(pageSource).toContain('className="truth-lens"');
+    expect(pageSource).toContain('type="button"');
+    expect(pageSource).toContain('data-active={activeLens === key}');
+    expect(graphSource).toContain('type="button"');
+    expect(graphSource).toContain('data-active={lens === item}');
+    expect(graphSource).toContain('aria-label={`${activeCopy.title} ecosystem graph`}');
+  });
+
+  it("gives the living aperture a readable named state and honors reduced-motion styling", () => {
+    const apertureSource = readFileSync(join(clientDirectory, "components", "AetherAperture.tsx"), "utf8");
+    expect(apertureSource).toContain("ARCHANGEL aperture:");
+    expect(apertureSource).toContain("Observe-only field");
+    expect(styles).toContain("prefers-reduced-motion: no-preference");
+    expect(styles).toContain(".aether-aperture__orbit--one");
   });
 });

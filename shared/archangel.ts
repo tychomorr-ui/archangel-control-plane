@@ -99,8 +99,8 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "resonate-earth",
     name: "Resonate Earth",
-    region: "Sydney · ap-southeast-2 · planned outer-circle node",
-    role: "Planetary witness · public explanation and optional evidence layer",
+    region: "Physical host not declared · public front-door application",
+    role: "Earth resonance public front door · placement pending verified host inventory",
     cluster: "Outer",
     declaredState: "Planned deployment",
     fingerprint: "Enrollment not initiated",
@@ -108,8 +108,8 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "exitus-lens",
     name: "Exitus Lens",
-    region: "Tokyo · ap-northeast-1 · planned outer-circle node",
-    role: "Read-only visual evidence and signed-summary inspection layer",
+    region: "Physical host not declared · planned application concept",
+    role: "Read-only visual evidence layer · placement pending host creation",
     cluster: "Outer",
     declaredState: "Planned deployment",
     fingerprint: "Enrollment not initiated",
@@ -132,8 +132,8 @@ export const TOPOLOGY_LAYOUT_CONTRACT = {
   ],
   outerCircle: [
     { id: "iwa-sage", placement: "north-american-community" },
-    { id: "resonate-earth", placement: "south-pacific-witness" },
-    { id: "exitus-lens", placement: "north-pacific-evidence" },
+    { id: "resonate-earth", placement: "unplaced-public-front-door" },
+    { id: "exitus-lens", placement: "unplaced-evidence-layer" },
   ],
   spacing: {
     mobileMinCanvasHeightPx: 900,
