@@ -26,7 +26,7 @@
 - [x] Reconcile Root-Gate, Tesseract-Terminus, XinUS-Clarity, Kether-Gate, Tesseract-A, KEIRA, and Project Reclaim into declared role and trust-boundary records.
 - [x] Add Project Reclaim as the seventh physical–digital bridge node in the ARCHANGEL registry and topology.
 - [x] Update the control-plane visual to distinguish the two intersecting triangles from ARCHANGEL’s central coordination position.
-- [ ] Validate the revised topology, test the updated registry contract, and save a delivery checkpoint.
+- [x] Validate the revised topology, test the updated registry contract, and save a delivery checkpoint.
 - [x] Replace any prior Kira intelligence-node references with the corrected KEIRA name.
 - [x] Remove any implication that ARCHANGEL is itself a physical seventh node; preserve it as the logical intersection and coordination plane.
 - [x] Analyze the actual Oregon, Ireland, Singapore, Frankfurt, and São Paulo regional mesh for latency and resilience implications.
@@ -36,23 +36,28 @@
 - [x] Document a finalized Project Reclaim initial hosting footprint, security boundary, and upgrade path in the delivered project.
 - [x] Calculate and document the most balanced available region for an ARCHANGEL host across the existing six-node mesh.
 - [x] Select and document a new non-duplicative region for the Project Reclaim node, distinct from current node locations.
-- [ ] Set the finalized ARCHANGEL host region to Ireland (`eu-west-1`) and the finalized Project Reclaim region to Montreal (`ca-central-1`).
-- [ ] Recalculate the crosshair from five unique regions, with Root-Gate and Tesseract-Terminus co-located in Oregon.
-- [ ] Replace the symbolic spacing with a clearly labeled geographic map and keep the logical relationship topology separate.
-- [ ] Reassess ARCHANGEL and Project Reclaim regional placements using the corrected five-region calculation.
-- [ ] Replace the superseded Montreal Project Reclaim proposal with London (`eu-west-2`) and document the five-region crosshair near Ireland.
-- [ ] Recalculate the regional mesh after relocating Tesseract-Terminus from Oregon.
-- [ ] Select separate unused regions for Tesseract-Terminus, ARCHANGEL, and Project Reclaim as one coordinated placement decision.
-- [ ] Preserve the original opposing upright-and-inverted two-triangle visual with ARCHANGEL fixed at the shared center.
-- [ ] Validate the Spain, London, and Paris proposal against explicit geographic balance, failure-domain, and role-separation criteria.
-- [ ] Define a scalable enclosing-circle role for future nodes without changing the two opposing core triangles.
-- [ ] Optimize three distinct unused outer-circle regions together, beginning with Project Reclaim, while preserving the two core triangles and central ARCHANGEL role.
-- [ ] Recompute triangle, central-host, and outer-circle placements using the expanded enabled AWS Region set.
-- [ ] Distinguish current Lightsail-capable regions from enabled AWS Regions that require EC2 for future-node placement.
-- [ ] Re-optimize Project Reclaim and future outer-circle sites across all enabled AWS Regions with ARCHANGEL fixed in London.
+- [x] Superseded preliminary Ireland and Montreal placements; retained for decision history only.
+- [x] Recalculate the crosshair from five unique regions, with Root-Gate and Tesseract-Terminus co-located in Oregon.
+- [x] Replace the symbolic spacing with a clearly labeled geographic map and keep the logical relationship topology separate.
+- [x] Reassess ARCHANGEL and Project Reclaim regional placements using the corrected five-region calculation.
+- [x] Superseded preliminary London bridge proposal and five-region center analysis after the Spain provenance move and Oregon field-program decision.
+- [x] Recalculate the regional mesh after relocating Tesseract-Terminus from Oregon.
+- [x] Superseded separate-region requirement for Project Reclaim after its Lake and Mendocino County field-program location was confirmed.
+- [x] Preserve the original opposing upright-and-inverted two-triangle visual with ARCHANGEL fixed at the shared center.
+- [x] Validate the Spain, London, and Paris proposal against explicit geographic balance, failure-domain, and role-separation criteria.
+- [x] Define a scalable enclosing-circle role for future nodes without changing the two opposing core triangles.
+- [x] Optimize three distinct unused outer-circle regions together, beginning with Project Reclaim, while preserving the two core triangles and central ARCHANGEL role.
+- [x] Recompute triangle, central-host, and outer-circle placements using the expanded enabled AWS Region set.
+- [x] Distinguish current Lightsail-capable regions from enabled AWS Regions that require EC2 for future-node placement.
+- [x] Re-optimize Project Reclaim and future outer-circle sites across all enabled AWS Regions with ARCHANGEL fixed in London.
+- [ ] Implement an explicit upright-triangle and inverted-triangle node geometry around the central ARCHANGEL marker.
+- [ ] Capture and review the revised topology to verify the opposing-triangle geometry is readable.
 - [x] Reassess Project Reclaim’s first node for Lake and Mendocino County field programs rather than global-only placement.
 - [x] Recommend a hardened ARCHANGEL operating system and image choice for the London control-plane host.
 - [x] Update Project Reclaim to a distinct Oregon field-program node serving Lake and Mendocino County, separate from Root-Gate.
 - [x] Record Ubuntu 24 OS-only as the London ARCHANGEL host baseline and document why preconfigured application images are excluded.
 - [x] Correct the active topology to show Tesseract-Terminus in Spain, ARCHANGEL in London, and Project Reclaim as a distinct Oregon field node.
 - [x] Create and review a minimal Ubuntu 24 launch bootstrap for the London ARCHANGEL host without embedded secrets or node-execution authority.
+- [x] Resolve the missing London bootstrap file, transfer the reviewed launch script safely, and verify the localhost-only baseline service.
+- [x] Record the verified London host bootstrap evidence in a durable operational artifact.
+- [x] Add a reusable post-bootstrap verification script and checklist for ARCHANGEL baseline hosts.
