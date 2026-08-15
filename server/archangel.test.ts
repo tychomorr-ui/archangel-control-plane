@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AUDIT_EVENT_TYPES, FLEET_NODES, OPERATION_TYPES, TOPOLOGY_LAYOUT_CONTRACT } from "../shared/archangel";
+import { APPLICATION_ATLAS, AUDIT_EVENT_TYPES, FLEET_NODES, OPERATION_TYPES, PLANNING_POLICIES, TOPOLOGY_LAYOUT_CONTRACT } from "../shared/archangel";
 import { archangelRouter, evidenceRecordSchema, intentProposalSchema, intentReviewSchema, parsePlainLanguageCommand } from "./archangel";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
@@ -38,6 +38,19 @@ describe("ARCHANGEL fleet contract", () => {
     expect(exitus).toMatchObject({ declaredState: "Planned deployment", region: "Physical host not declared · planned application concept" });
     expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "resonate-earth", placement: "unplaced-public-front-door" });
     expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "exitus-lens", placement: "unplaced-evidence-layer" });
+  });
+
+  it("keeps the Application Atlas truthful about declared roles, evidence, and unplaced applications", () => {
+    expect(APPLICATION_ATLAS).toHaveLength(10);
+    expect(APPLICATION_ATLAS.find(application => application.id === "monarch-os")).toMatchObject({ name: "Monarch-OS", nodeId: "kether-gate", hostPosture: "Declared Singapore Debian host" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "resonate-earth")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced", publicFrontDoor: "resonateearth.live" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "exitus-lens")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced" });
+    expect(APPLICATION_ATLAS.every(application => application.evidencePosture === "declared" || application.evidencePosture === "evidence-needed")).toBe(true);
+  });
+
+  it("keeps application planning policies explicit and non-executing", () => {
+    expect(PLANNING_POLICIES.map(policy => policy.id)).toEqual(["policy.host-evidence", "policy.no-execution", "policy.rollback", "policy.evidence"]);
+    expect(PLANNING_POLICIES.find(policy => policy.id === "policy.no-execution")?.description).toContain("cannot enroll nodes");
   });
 
   it("preserves the explicit two-triangle vertex order and bridge clearance contract", () => {

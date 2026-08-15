@@ -12,9 +12,12 @@ import {
   DatabaseZap,
   Orbit,
   LogOut,
+  MapPinned,
+  Radar,
   ScanLine,
   Settings2,
   ShieldCheck,
+  Waypoints,
 } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { useLocation } from "wouter";
@@ -23,6 +26,10 @@ const navigation = [
   { label: "Fleet overview", path: "/", icon: Orbit },
   { label: "Mesh topology", path: "/topology", icon: Cable },
   { label: "Ecosystem graph", path: "/ecosystem", icon: Orbit },
+  { label: "Application Atlas", path: "/atlas", icon: MapPinned },
+  { label: "Policy Constellation", path: "/policy", icon: ShieldCheck },
+  { label: "Scenario Studio", path: "/scenarios", icon: Waypoints },
+  { label: "Control Briefing", path: "/briefing", icon: Radar },
   { label: "Command Center", path: "/command-center", icon: Command },
   { label: "Intent workflow", path: "/intents", icon: ClipboardList },
   { label: "Evidence Observatory", path: "/audit", icon: ScanLine },

@@ -96,3 +96,18 @@
 - [x] Rebuild the full Command Center surface with the living ARCHANGEL design system across its primary sections, not just the authority panel, and align it with the upgraded overview, topology, graph, and evidence visual language.
 - [x] Take and review updated desktop/mobile screenshots of the rebuilt Command Center and any other remaining primary control-room surfaces, then record the review evidence in a durable note.
 - [x] Confirm the saved Command Center visual review record exists and reflects the completed desktop/mobile evidence before checkpointing.
+- [x] Keep all live node enrollment, firewall changes, private-mesh activation, and remote execution work paused while the ARCHANGEL application is built.
+- [x] Define and implement an Application Atlas that models every sovereign application, public front door, host posture, role, dependency, evidence source, and readiness state separately from node telemetry.
+- [x] Define and implement a Policy Constellation surface that evaluates bounded intents against explicit application-only policy checks without dispatching any node action.
+- [x] Define and implement a Scenario Studio that lets the operator model planned topology, application, and change-impact alternatives without representing them as live infrastructure.
+- [x] Extend the Command Center into an application-aware planning workspace with contextual app, dependency, policy, evidence, and rollback guidance.
+- [x] Add an application-only control-plane briefing surface that synthesizes declared ecosystem truth, unresolved evidence, policy blockers, and recommended next planning steps without fabricating live status.
+- [x] Validate the expanded application-only product flow, safety labels, accessibility, and regression contracts before revisiting any live integration.
+- [x] Confirm the durable application-only validation record covers Atlas, Policy Constellation, Scenario Studio, Control Briefing, and the application-aware Command Center.
+- [x] Perform and record mobile review for Application Atlas, Policy Constellation, and Control Briefing before closing the expanded product-flow validation evidence.
+- [x] Confirm the saved product-review record explicitly includes the Atlas, Policy Constellation, and Control Briefing mobile-review evidence.
+- [x] Define an explicit operations-field state model that differentiates declared, pending evidence, verified, stale, offline, policy-blocked, and unplaced without fabricating telemetry.
+- [x] Rebuild the geographic node map as an immersive operations field with layered geospatial context, evidence-driven beacons, and no false traffic or availability claims.
+- [x] Rebuild the logical topology as an interactive multi-layer command field with state-reactive nodes, relationship focus, and clear physical-versus-logical separation.
+- [x] Add reduced-motion-safe animated treatments for active evidence, unknown/pending, verified, stale, policy-blocked, and future offline states.
+- [x] Validate the immersive map and topology at desktop/mobile breakpoints with keyboard-accessible controls and durable review evidence.

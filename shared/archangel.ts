@@ -160,3 +160,53 @@ export const AUDIT_EVENT_TYPES = [
 ] as const;
 
 export type AuditEventType = (typeof AUDIT_EVENT_TYPES)[number];
+
+export const APPLICATION_IDS = [
+  "root-identity",
+  "sovereign-provenance-console",
+  "xinus-clarity-suite",
+  "monarch-os",
+  "tesseract-a",
+  "keira-intelligence",
+  "project-reclaim",
+  "iwa-sage",
+  "resonate-earth",
+  "exitus-lens",
+] as const;
+
+export type ApplicationId = (typeof APPLICATION_IDS)[number];
+
+export type ApplicationAtlasRecord = {
+  id: ApplicationId;
+  name: string;
+  shortName: string;
+  role: string;
+  category: "identity" | "provenance" | "application" | "operating-system" | "recovery" | "intelligence" | "field" | "community" | "public-front-door" | "evidence";
+  lifecycle: "declared" | "planned";
+  publicFrontDoor: string | null;
+  hostPosture: string;
+  evidencePosture: "evidence-needed" | "declared";
+  nodeId: NodeId | null;
+  dependencies: ApplicationId[];
+  planningNote: string;
+};
+
+export const APPLICATION_ATLAS: ApplicationAtlasRecord[] = [
+  { id: "root-identity", name: "Root-Gate", shortName: "Identity", role: "Sovereign identity and authority anchor", category: "identity", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared N. Virginia host", evidencePosture: "evidence-needed", nodeId: "root-gate", dependencies: [], planningNote: "Root authority remains a planning and authorization concept until signed enrollment is deliberately enabled later." },
+  { id: "sovereign-provenance-console", name: "Sovereign Provenance Console", shortName: "Provenance", role: "Provenance, anchoring, hashing, and sovereign attestation", category: "provenance", lifecycle: "declared", publicFrontDoor: "universaltruth.live", hostPosture: "Declared Spain host", evidencePosture: "evidence-needed", nodeId: "tesseract-terminus", dependencies: ["root-identity"], planningNote: "Public front door and provenance role are declared; runtime health remains unobserved." },
+  { id: "xinus-clarity-suite", name: "XinUS-Clarity", shortName: "Clarity", role: "Flagship reflective-intelligence application suite", category: "application", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Ireland host", evidencePosture: "evidence-needed", nodeId: "xinus-clarity", dependencies: ["root-identity"], planningNote: "Application portfolio remains cataloged as a declared role, not a live service graph." },
+  { id: "monarch-os", name: "Monarch-OS", shortName: "Monarch", role: "Debian-inspired sovereign operating-system program", category: "operating-system", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Singapore Debian host", evidencePosture: "evidence-needed", nodeId: "kether-gate", dependencies: ["root-identity"], planningNote: "Kether-Gate is the logical role; Monarch-OS is the public application and host-facing name." },
+  { id: "tesseract-a", name: "Tesseract-A", shortName: "Tesseract A", role: "Recovery portal and Tesseract mirror", category: "recovery", lifecycle: "declared", publicFrontDoor: "nexonis.net", hostPosture: "Declared Frankfurt host", evidencePosture: "evidence-needed", nodeId: "tesseract-a", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Recovery posture is declared; no backup or service verification has been received." },
+  { id: "keira-intelligence", name: "KEIRA", shortName: "KEIRA", role: "Intelligence application and truth-analysis layer", category: "intelligence", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared São Paulo host", evidencePosture: "evidence-needed", nodeId: "keira", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Intelligence role is modeled without an external model, service, or telemetry claim." },
+  { id: "project-reclaim", name: "Project Reclaim", shortName: "Reclaim", role: "Lake and Mendocino field-program bridge", category: "field", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Oregon host", evidencePosture: "evidence-needed", nodeId: "project-reclaim", dependencies: ["root-identity", "keira-intelligence"], planningNote: "Field-program role is distinct from any asserted real-world outcome or device telemetry." },
+  { id: "iwa-sage", name: "IWA Sage", shortName: "IWA Sage", role: "Indigenous Wellness Alliance community and wellness application", category: "community", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Montreal host", evidencePosture: "evidence-needed", nodeId: "iwa-sage", dependencies: ["root-identity", "xinus-clarity-suite"], planningNote: "Community-service role is cataloged independently from any user data or service utilization claim." },
+  { id: "resonate-earth", name: "Resonate Earth", shortName: "Resonate", role: "Earth resonance public-front-door application", category: "public-front-door", lifecycle: "planned", publicFrontDoor: "resonateearth.live", hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "resonate-earth", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The public front door is declared; any future physical placement remains an explicit scenario, not a map fact." },
+  { id: "exitus-lens", name: "Exitus Lens", shortName: "Exitus", role: "Read-only visual-evidence application concept", category: "evidence", lifecycle: "planned", publicFrontDoor: null, hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "exitus-lens", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The evidence lens remains a planned product concept and is intentionally kept off the physical map." },
+];
+
+export const PLANNING_POLICIES = [
+  { id: "policy.host-evidence", title: "Host truth before placement", severity: "blocking" as const, description: "A scenario cannot represent a planned application as a current physical host until an explicit host and region are declared." },
+  { id: "policy.no-execution", title: "Application-only boundary", severity: "blocking" as const, description: "Scenarios, policies, and briefs cannot enroll nodes, alter firewall state, start a mesh, or dispatch a command." },
+  { id: "policy.rollback", title: "Recovery hypothesis required", severity: "review" as const, description: "A scenario that changes a declared dependency or host posture requires a written rollback hypothesis before promotion to later review." },
+  { id: "policy.evidence", title: "Evidence gap remains visible", severity: "advisory" as const, description: "Declared and planned application records remain distinct from observed or verified service evidence." },
+] as const;

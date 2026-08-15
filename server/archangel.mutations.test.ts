@@ -4,16 +4,19 @@ import type { TrpcContext } from "./_core/context";
 vi.mock("./db", () => ({ getDb: vi.fn() }));
 
 import { archangelRouter } from "./archangel";
-import { auditEvents, intents } from "../drizzle/schema";
+import { auditEvents, intents, planningScenarios } from "../drizzle/schema";
 import { getDb } from "./db";
 
 type StoredIntent = Record<string, unknown> & { id: number; publicId: string; state: string };
 type StoredAudit = Record<string, unknown> & { eventType: string; outcome: string };
+type StoredScenario = Record<string, unknown> & { id: number; publicId: string; posture: string };
 
 function createDbDouble() {
   const storedIntents: StoredIntent[] = [];
   const storedAudit: StoredAudit[] = [];
+  const storedScenarios: StoredScenario[] = [];
   let nextIntentId = 1;
+  let nextScenarioId = 1;
 
   const db = {
     insert: (table: unknown) => ({
@@ -24,6 +27,9 @@ function createDbDouble() {
         if (table === auditEvents) {
           storedAudit.push(value as StoredAudit);
         }
+        if (table === planningScenarios) {
+          storedScenarios.push({ ...value, id: nextScenarioId++, publicId: value.publicId as string, posture: value.posture as string });
+        }
       },
     }),
     select: () => ({
@@ -31,6 +37,7 @@ function createDbDouble() {
         if (table === intents) {
           return { where: () => ({ limit: async () => storedIntents }) };
         }
+        if (table === planningScenarios) return { orderBy: () => ({ limit: async () => storedScenarios }) };
         return { orderBy: async () => storedAudit };
       },
     }),
@@ -43,7 +50,7 @@ function createDbDouble() {
     }),
   };
 
-  return { db, storedIntents, storedAudit };
+  return { db, storedIntents, storedAudit, storedScenarios };
 }
 
 describe("ARCHANGEL protected mutations", () => {
@@ -109,5 +116,26 @@ describe("ARCHANGEL protected mutations", () => {
       command: 'restart tesseract-a scope="Restart service; rm -rf /" risk=critical rollback="No rollback provided here." ttl=30m',
     })).rejects.toMatchObject({ code: "BAD_REQUEST" });
     expect(state.storedIntents).toHaveLength(1);
+  });
+
+  it("records an application-only scenario without reaching any node or creating executable work", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+
+    const scenario = await caller.createScenario({
+      title: "Resonate Earth placement alternatives",
+      objective: "Compare declared hosting postures for the Resonate Earth public front door.",
+      assumptions: "No host is created, contacted, or represented as physically deployed by this planning scenario.",
+      affectedApplicationIds: ["resonate-earth", "sovereign-provenance-console"],
+      risk: "moderate",
+      rollbackHypothesis: "Archive the scenario and retain the current unplaced application posture if the assumptions no longer hold.",
+    });
+
+    expect(scenario.posture).toBe("draft");
+    expect(state.storedScenarios[0]).toMatchObject({ posture: "draft", risk: "moderate" });
+    expect(state.storedScenarios[0]?.affectedApplicationIds).toBe(JSON.stringify(["resonate-earth", "sovereign-provenance-console"]));
+    expect(state.storedAudit[0]).toMatchObject({ eventType: "planning.scenario.created", outcome: "accepted" });
+    expect(JSON.stringify(state.storedAudit[0])).toContain("no infrastructure action");
   });
 });

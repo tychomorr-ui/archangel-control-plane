@@ -60,6 +60,23 @@ body {
 .aether-aperture__readout { position: absolute; bottom: .75rem; z-index: 2; display: flex; gap: .75rem; }
 .aether-aperture__readout div { display: flex; align-items: center; gap: .38rem; border: 1px solid rgba(255,255,255,.08); border-radius: .6rem; background: rgba(3,7,13,.72); padding: .45rem .55rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: rgb(148 163 184); }
 .aether-aperture__readout strong { color: rgb(226 232 240); font-size: 11px; }
+.operations-field { position: relative; overflow: hidden; background: radial-gradient(circle at 54% 20%, rgba(34,211,238,.14), transparent 23%), radial-gradient(circle at 20% 78%, rgba(139,92,246,.12), transparent 30%), linear-gradient(180deg, rgba(7,14,25,.98), rgba(3,7,14,.98)); }
+.operations-field::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .4; background-image: linear-gradient(rgba(103,232,249,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(103,232,249,.04) 1px, transparent 1px); background-size: 54px 54px; mask-image: linear-gradient(to bottom, black, rgba(0,0,0,.8), transparent); }
+.ops-beacon { cursor: pointer; transform-origin: center; transition: filter 180ms cubic-bezier(.23,1,.32,1), opacity 180ms cubic-bezier(.23,1,.32,1); }
+.ops-beacon:focus-visible { outline: none; filter: drop-shadow(0 0 12px rgba(165,243,252,.95)); }
+.ops-beacon[data-state="pending"] .ops-beacon__ring { stroke: #fbbf24; stroke-dasharray: 3 4; }
+.ops-beacon[data-state="verified"] .ops-beacon__ring { stroke: #6ee7b7; }
+.ops-beacon[data-state="stale"] .ops-beacon__ring { stroke: #fbbf24; stroke-dasharray: 2 5; opacity: .72; }
+.ops-beacon[data-state="offline"] .ops-beacon__ring { stroke: #fb7185; opacity: .86; }
+.ops-beacon[data-state="policy-blocked"] .ops-beacon__ring { stroke: #c4b5fd; stroke-dasharray: 2 3; }
+.ops-beacon[data-state="declared"] .ops-beacon__ring { stroke: #e2e8f0; opacity: .52; }
+.ops-beacon[data-state="unplaced"] { opacity: .72; }
+.ops-beacon[data-muted="true"] { opacity: .16; filter: grayscale(.55); }
+.ops-beacon__pulse { fill: none; stroke-width: 1.4; opacity: .4; }
+.ops-beacon__core { stroke: rgba(226,232,240,.9); stroke-width: 1.4; }
+.ops-field-tooltip { border: 1px solid rgba(165,243,252,.2); background: rgba(3,9,16,.94); box-shadow: 0 18px 45px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06); backdrop-filter: blur(14px); }
+.ops-state-control { border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.025); padding: .52rem .65rem; border-radius: .7rem; color: rgb(148 163 184); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .11em; transition: background 160ms cubic-bezier(.23,1,.32,1), border-color 160ms cubic-bezier(.23,1,.32,1), color 160ms cubic-bezier(.23,1,.32,1); }
+.ops-state-control[data-active="true"] { border-color: rgba(103,232,249,.35); background: rgba(34,211,238,.12); color: rgb(207 250 254); }
 .star-field { background-image: radial-gradient(rgba(186, 230, 253, 0.44) 0.6px, transparent 0.8px), radial-gradient(rgba(196,181,253,0.22) 0.55px, transparent 0.8px); background-size: 37px 37px, 71px 71px; background-position: 0 0, 18px 26px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
 .auth-gate { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(34,211,238,0.10), transparent 28%), #05070d; }
 .field-label { display: grid; gap: 0.55rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgb(148 163 184); }
@@ -77,9 +94,19 @@ button:active { transform: scale(0.98); }
   .aether-aperture__halo--outer { animation: aperture-breathe 4.8s ease-in-out infinite alternate; }
   .aether-aperture__orbit--one { animation: aperture-orbit-one 14s linear infinite; }
   .aether-aperture__orbit--two { animation: aperture-orbit-two 18s linear infinite; }
+  .ops-beacon[data-state="pending"] .ops-beacon__pulse { animation: ops-inquire 2.8s ease-out infinite; }
+  .ops-beacon[data-state="verified"] .ops-beacon__pulse { stroke: #6ee7b7; animation: ops-verified 2.1s ease-out infinite; }
+  .ops-beacon[data-state="stale"] .ops-beacon__pulse { stroke: #fbbf24; animation: ops-stale 3.4s linear infinite; }
+  .ops-beacon[data-state="offline"] .ops-beacon__pulse { stroke: #fb7185; animation: ops-offline 3.6s steps(2, end) infinite; }
+  .ops-beacon[data-state="policy-blocked"] .ops-beacon__pulse { stroke: #c4b5fd; animation: ops-contain 2.4s ease-in-out infinite alternate; }
   @keyframes drift { from { background-position: 0 0, 18px 26px; } to { background-position: 50px 35px, -28px 62px; } }
   @keyframes ion-sweep { 0%, 58% { transform: translateX(-110%); } 100% { transform: translateX(140%); } }
   @keyframes aperture-breathe { from { transform: scale(.9); opacity: .52; } to { transform: scale(1.11); opacity: 1; } }
   @keyframes aperture-orbit-one { to { transform: rotate(336deg); } }
   @keyframes aperture-orbit-two { to { transform: rotate(402deg); } }
+  @keyframes ops-inquire { 0% { transform: scale(.65); opacity: .82; } 100% { transform: scale(2.4); opacity: 0; } }
+  @keyframes ops-verified { 0% { transform: scale(.7); opacity: .75; } 100% { transform: scale(2.8); opacity: 0; } }
+  @keyframes ops-stale { 0%, 100% { opacity: .2; } 48% { opacity: .78; } }
+  @keyframes ops-offline { 0%, 44% { opacity: .12; } 45%, 100% { opacity: .72; } }
+  @keyframes ops-contain { from { transform: scale(.85); opacity: .3; } to { transform: scale(1.7); opacity: .75; } }
 }

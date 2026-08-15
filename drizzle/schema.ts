@@ -76,5 +76,20 @@ export const notifications = mysqlTable("notifications", {
   acknowledgedAt: timestamp("acknowledgedAt"),
 });
 
+export const planningScenarios = mysqlTable("planning_scenarios", {
+  id: int("id").autoincrement().primaryKey(),
+  publicId: varchar("publicId", { length: 64 }).notNull().unique(),
+  title: varchar("title", { length: 160 }).notNull(),
+  objective: text("objective").notNull(),
+  assumptions: text("assumptions").notNull(),
+  affectedApplicationIds: text("affectedApplicationIds").notNull(),
+  posture: mysqlEnum("posture", ["draft", "review-ready", "archived"]).default("draft").notNull(),
+  risk: mysqlEnum("risk", ["low", "moderate", "high", "critical"]).notNull(),
+  rollbackHypothesis: text("rollbackHypothesis").notNull(),
+  createdBy: varchar("createdBy", { length: 128 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;

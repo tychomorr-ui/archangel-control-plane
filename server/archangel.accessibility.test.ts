@@ -8,6 +8,8 @@ const clientDirectory = join(serverDirectory, "..", "client", "src");
 const layoutSource = readFileSync(join(clientDirectory, "components", "ArchangelLayout.tsx"), "utf8");
 const pageSource = readFileSync(join(clientDirectory, "pages", "ArchangelPages.tsx"), "utf8");
 const graphSource = readFileSync(join(clientDirectory, "pages", "EcosystemGraphPage.tsx"), "utf8");
+const operationsFieldSource = readFileSync(join(clientDirectory, "components", "OperationsField.tsx"), "utf8");
+const applicationPagesSource = readFileSync(join(clientDirectory, "pages", "ApplicationControlPages.tsx"), "utf8");
 const styles = readFileSync(join(clientDirectory, "index.css"), "utf8");
 
 describe("ARCHANGEL keyboard controls", () => {
@@ -64,5 +66,25 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(apertureSource).toContain("Observe-only field");
     expect(styles).toContain("prefers-reduced-motion: no-preference");
     expect(styles).toContain(".aether-aperture__orbit--one");
+  });
+
+  it("keeps the operations field and topology beacons keyboard-operable and truthful", () => {
+    expect(operationsFieldSource).toContain('aria-label="Operations-field state filter"');
+    expect(operationsFieldSource).toContain('type="button"');
+    expect(operationsFieldSource).toContain('role="button"');
+    expect(operationsFieldSource).toContain("tabIndex={0}");
+    expect(operationsFieldSource).toContain('event.key === "Enter" || event.key === " "');
+    expect(operationsFieldSource).toContain("never inferred from a missing receipt");
+    expect(pageSource).toContain('aria-pressed={selected}');
+    expect(pageSource).toContain('type="button"');
+    expect(pageSource).toContain("Evidence field");
+  });
+
+  it("keeps application-only planning surfaces in semantic native controls with explicit paused authority", () => {
+    expect(applicationPagesSource).toContain('aria-label="Application Atlas filter"');
+    expect(applicationPagesSource).toContain('type="checkbox"');
+    expect(applicationPagesSource).toContain('type="submit"');
+    expect(applicationPagesSource).toContain("Enrollment and execution paused");
+    expect(applicationPagesSource).toContain("cannot reserve infrastructure, connect a node, or alter the fleet");
   });
 });

@@ -1,8 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { auditEvents, intents, meshNodes, nodeStatusReports, notifications } from "../drizzle/schema";
-import { AUDIT_EVENT_TYPES, FLEET_NODES, NODE_IDS, OPERATION_TYPES } from "../shared/archangel";
+import { auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
+import { APPLICATION_ATLAS, APPLICATION_IDS, AUDIT_EVENT_TYPES, FLEET_NODES, NODE_IDS, OPERATION_TYPES, PLANNING_POLICIES } from "../shared/archangel";
 import { getDb } from "./db";
 import { protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
@@ -32,6 +32,15 @@ export const evidenceRecordSchema = z.object({
 
 export const plainLanguageCommandSchema = z.object({
   command: z.string().trim().min(24).max(900),
+});
+
+export const planningScenarioSchema = z.object({
+  title: z.string().trim().min(4).max(160),
+  objective: z.string().trim().min(12).max(1200),
+  assumptions: z.string().trim().min(12).max(1800),
+  affectedApplicationIds: z.array(z.enum(APPLICATION_IDS)).min(1).max(APPLICATION_IDS.length),
+  risk: z.enum(["low", "moderate", "high", "critical"]),
+  rollbackHypothesis: z.string().trim().min(12).max(1200),
 });
 
 const plainCommandPattern = /^(deploy|restart|configuration promote|backup verify)\s+([a-z-]+)\s+scope="([^"\n]{8,300})"\s+risk=(low|moderate|high|critical)\s+rollback="([^"\n]{8,300})"\s+ttl=(15|30|60|120|240)m$/;
@@ -195,6 +204,52 @@ export const archangelRouter = router({
     prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution"],
   })),
 
+  applications: protectedProcedure.query(() => APPLICATION_ATLAS.map(application => ({
+    ...application,
+    dependencies: application.dependencies.map(dependencyId => APPLICATION_ATLAS.find(item => item.id === dependencyId)).filter(Boolean),
+  }))),
+
+  policyConstellation: protectedProcedure.query(() => ({
+    version: "ARCHANGEL/application-policy-1",
+    executionState: "paused" as const,
+    policies: PLANNING_POLICIES,
+  })),
+
+  scenarios: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const records = await db.select().from(planningScenarios).orderBy(desc(planningScenarios.updatedAt)).limit(100);
+    return records.map(record => ({ ...record, affectedApplicationIds: JSON.parse(record.affectedApplicationIds) as (typeof APPLICATION_IDS)[number][] }));
+  }),
+
+  briefing: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const [scenarioRows, intentRows] = await Promise.all([
+      db.select().from(planningScenarios).orderBy(desc(planningScenarios.updatedAt)).limit(100),
+      db.select().from(intents).orderBy(desc(intents.createdAt)).limit(100),
+    ]);
+    const unplaced = APPLICATION_ATLAS.filter(application => application.hostPosture === "Physical host unplaced");
+    const reviewReady = scenarioRows.filter(scenario => scenario.posture === "review-ready");
+    const proposed = intentRows.filter(intent => intent.state === "proposed");
+    return {
+      executionState: "paused" as const,
+      summary: {
+        applications: APPLICATION_ATLAS.length,
+        declaredApplications: APPLICATION_ATLAS.filter(application => application.lifecycle === "declared").length,
+        plannedApplications: APPLICATION_ATLAS.filter(application => application.lifecycle === "planned").length,
+        unplacedApplications: unplaced.length,
+        scenarios: scenarioRows.length,
+        reviewReadyScenarios: reviewReady.length,
+        proposedIntents: proposed.length,
+      },
+      items: [
+        ...unplaced.map(application => ({ kind: "evidence-needed" as const, title: `${application.name} requires physical placement`, detail: `${application.hostPosture}. Keep its role in the Application Atlas and Scenario Studio until a host is explicitly declared.`, applicationId: application.id })),
+        ...APPLICATION_ATLAS.filter(application => application.evidencePosture === "evidence-needed").map(application => ({ kind: "evidence-needed" as const, title: `${application.name} has no signed evidence`, detail: "The role and host posture are declared application truth; no runtime or reachability claim is available.", applicationId: application.id })),
+        ...reviewReady.map(scenario => ({ kind: "review-ready" as const, title: scenario.title, detail: "This application-only scenario has a written objective, assumptions, risk class, and rollback hypothesis. It remains planning material.", scenarioId: scenario.publicId })),
+        ...proposed.map(intent => ({ kind: "policy-blocked" as const, title: `${intent.operationType} remains proposal-only`, detail: "The current application build keeps all node execution paths paused; this intent cannot dispatch.", intentId: intent.publicId })),
+      ],
+    };
+  }),
+
   proposeIntent: protectedProcedure.input(intentProposalSchema).mutation(async ({ ctx, input }) => {
     return createIntentProposal(ctx, input);
   }),
@@ -209,6 +264,32 @@ export const archangelRouter = router({
     }
     const { normalized: _normalized, ...proposal } = parsed;
     return createIntentProposal(ctx, proposal);
+  }),
+
+  createScenario: protectedProcedure.input(planningScenarioSchema).mutation(async ({ ctx, input }) => {
+    const db = await getRequiredDb();
+    const publicId = `scn_${nanoid(12)}`;
+    const actorPseudonym = `operator-${ctx.user.id}`;
+    await db.insert(planningScenarios).values({
+      publicId,
+      title: input.title,
+      objective: input.objective,
+      assumptions: input.assumptions,
+      affectedApplicationIds: JSON.stringify(input.affectedApplicationIds),
+      risk: input.risk,
+      rollbackHypothesis: input.rollbackHypothesis,
+      posture: "draft",
+      createdBy: actorPseudonym,
+    });
+    await db.insert(auditEvents).values({
+      publicId: `aud_${nanoid(12)}`,
+      eventType: "planning.scenario.created",
+      outcome: "accepted",
+      actorPseudonym,
+      summary: `Application-only scenario ${publicId} created. It contains no infrastructure action, enrollment request, or command dispatch.`,
+      occurredAt: new Date(),
+    });
+    return { publicId, posture: "draft" as const };
   }),
 
   reviewIntent: protectedProcedure.input(intentReviewSchema).mutation(async ({ ctx, input }) => {
