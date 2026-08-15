@@ -1,8 +1,7 @@
 import { writeFileSync } from 'node:fs';
 
 const existing = [
-  { name: 'Oregon / Root-Gate', lat: 45.5231, lon: -122.6765 },
-  { name: 'Oregon / Tesseract-Terminus', lat: 45.5231, lon: -122.6765 },
+  { name: 'Oregon / Root-Gate + Tesseract-Terminus', lat: 45.5231, lon: -122.6765 },
   { name: 'Ireland / XinUS-Clarity', lat: 53.3498, lon: -6.2603 },
   { name: 'Frankfurt / Tesseract-A', lat: 50.1109, lon: 8.6821 },
   { name: 'Singapore / Kether-Gate', lat: 1.3521, lon: 103.8198 },
@@ -76,11 +75,11 @@ const ranked = candidates.map(candidate => {
 const lines = [
   '# Regional Placement Analysis',
   '',
-  'This comparison uses approximate city-level great-circle distance as a transparent geographic proxy. It is not a latency measurement: routing, network congestion, and service architecture affect actual round-trip time.',
+  'This comparison uses the five unique current geographic regions as a transparent great-circle-distance proxy. Root-Gate and Tesseract-Terminus are co-located in Oregon and therefore count once for geographic placement. This is not a latency measurement: routing, network congestion, and service architecture affect actual round-trip time.',
   '',
-  `The equal-weight geographic centroid of the six declared nodes is approximately **${centroid.lat.toFixed(2)}°, ${centroid.lon.toFixed(2)}°**. It is a conceptual point, not an AWS deployment location.`,
+  `The equal-weight geographic centroid of the five unique deployed regions is approximately **${centroid.lat.toFixed(2)}°, ${centroid.lon.toFixed(2)}°**. It is a conceptual point, not an AWS deployment location.`,
   '',
-  '| Candidate | Region | Mean distance to six current nodes (km) | Distance to geographic centroid (km) | Furthest current node (km) | Existing-node region? |',
+  '| Candidate | Region | Mean distance to five current regions (km) | Distance to geographic centroid (km) | Furthest current region (km) | Existing-node region? |',
   '|---|---:|---:|---:|---:|---|',
   ...ranked.map(row => `| ${row.name} | ${row.code} | ${row.meanKm.toLocaleString()} | ${row.centroidKm.toLocaleString()} | ${row.maxKm.toLocaleString()} | ${row.existing ? 'Yes' : 'No'} |`),
   '',

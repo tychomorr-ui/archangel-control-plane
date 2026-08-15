@@ -1,32 +1,32 @@
 # Regional Placement Analysis
 
-This comparison uses approximate city-level great-circle distance as a transparent geographic proxy. It is not a latency measurement: routing, network congestion, and service architecture affect actual round-trip time.
+This comparison uses the five unique current geographic regions as a transparent great-circle-distance proxy. Root-Gate and Tesseract-Terminus are co-located in Oregon and therefore count once for geographic placement. This is not a latency measurement: routing, network congestion, and service architecture affect actual round-trip time.
 
-The equal-weight geographic centroid of the six declared nodes is approximately **65.30°, -44.39°**. It is a conceptual point, not an AWS deployment location.
+The equal-weight geographic centroid of the five unique deployed regions is approximately **56.44°, -11.56°**. It is a conceptual point, not an AWS deployment location.
 
-| Candidate | Region | Mean distance to six current nodes (km) | Distance to geographic centroid (km) | Furthest current node (km) | Existing-node region? |
+| Candidate | Region | Mean distance to five current regions (km) | Distance to geographic centroid (km) | Furthest current region (km) | Existing-node region? |
 |---|---:|---:|---:|---:|---|
-| Ireland | eu-west-1 | 6,107 | 2,481 | 11,199 | Yes |
-| London | eu-west-2 | 6,210 | 2,912 | 10,848 | No |
-| Paris | eu-west-3 | 6,314 | 3,251 | 10,729 | No |
-| Frankfurt | eu-central-1 | 6,327 | 3,436 | 10,258 | Yes |
-| Stockholm | eu-north-1 | 6,502 | 3,154 | 10,927 | No |
-| Oregon | us-west-2 | 6,634 | 4,999 | 13,091 | Yes |
-| Spain | eu-south-2 | 6,676 | 3,766 | 11,381 | No |
-| Montreal | ca-central-1 | 6,847 | 2,818 | 14,799 | No |
-| Ohio | us-east-2 | 7,080 | 3,726 | 15,369 | No |
-| Virginia | us-east-1 | 7,116 | 3,602 | 15,538 | No |
-| Mumbai | ap-south-1 | 9,528 | 9,267 | 13,774 | No |
-| Seoul | ap-northeast-2 | 9,569 | 8,553 | 18,342 | No |
-| Tokyo | ap-northeast-1 | 9,726 | 8,782 | 18,537 | No |
-| Hong Kong | ap-east-1 | 10,120 | 10,102 | 18,046 | No |
-| Malaysia | ap-southeast-5 | 10,535 | 11,926 | 15,924 | No |
-| Singapore | ap-southeast-1 | 10,604 | 12,175 | 15,987 | Yes |
-| Jakarta | ap-southeast-3 | 11,143 | 13,071 | 15,629 | No |
-| Sydney | ap-southeast-2 | 13,007 | 16,367 | 17,214 | No |
+| Ireland | eu-west-1 | 5,832 | 482 | 11,199 | Yes |
+| London | eu-west-2 | 5,871 | 925 | 10,848 | No |
+| Frankfurt | eu-central-1 | 5,914 | 1,511 | 10,258 | Yes |
+| Paris | eu-west-3 | 5,927 | 1,257 | 10,729 | No |
+| Stockholm | eu-north-1 | 6,239 | 1,766 | 10,927 | No |
+| Spain | eu-south-2 | 6,272 | 1,870 | 11,381 | No |
+| Montreal | ca-central-1 | 7,463 | 4,346 | 14,799 | No |
+| Virginia | us-east-1 | 7,784 | 5,050 | 15,538 | No |
+| Ohio | us-east-2 | 7,843 | 5,329 | 15,369 | No |
+| Oregon | us-west-2 | 7,961 | 6,998 | 13,091 | Yes |
+| Mumbai | ap-south-1 | 8,901 | 7,913 | 13,774 | No |
+| Seoul | ap-northeast-2 | 9,793 | 8,857 | 18,342 | No |
+| Malaysia | ap-southeast-5 | 10,030 | 11,111 | 15,924 | No |
+| Hong Kong | ap-east-1 | 10,036 | 9,894 | 18,046 | No |
+| Singapore | ap-southeast-1 | 10,107 | 11,403 | 15,987 | Yes |
+| Tokyo | ap-northeast-1 | 10,112 | 9,418 | 18,537 | No |
+| Jakarta | ap-southeast-3 | 10,659 | 12,297 | 15,629 | No |
+| Sydney | ap-southeast-2 | 13,140 | 17,183 | 17,214 | No |
 
 ## Selected interpretation
 
-The lowest mean-distance candidate is **Ireland (eu-west-1)** at approximately 6,107 km. The ranking is a control-message placement heuristic only; user-facing workloads should remain local to their users.
+The lowest mean-distance candidate is **Ireland (eu-west-1)** at approximately 5,832 km. The ranking is a control-message placement heuristic only; user-facing workloads should remain local to their users.
 
-For a new, non-duplicative Project Reclaim region, preference should go to a candidate that adds a failure domain and serves the planned physical work rather than merely minimizing the mean-distance score. The selected default is **Montreal (`ca-central-1`)**, while the finalized ARCHANGEL host is **Ireland (`eu-west-1`)**.
+For a new, non-duplicative Project Reclaim region, preference should go to a candidate that adds a failure domain and serves the planned physical work rather than merely minimizing the mean-distance score.

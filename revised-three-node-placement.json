@@ -1,0 +1,128 @@
+[
+  {
+    "terminus": "Paris (eu-west-3)",
+    "rootToTerminusKm": 8248,
+    "centroid": "54.31°, -6.81°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 546,
+    "projectReclaim": "Spain (eu-south-2)",
+    "reclaimCenterKm": 1562
+  },
+  {
+    "terminus": "Spain (eu-south-2)",
+    "rootToTerminusKm": 8697,
+    "centroid": "51.64°, -8.61°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 586,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 838
+  },
+  {
+    "terminus": "Mumbai (ap-south-1)",
+    "rootToTerminusKm": 12662,
+    "centroid": "53.53°, 23.17°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 716,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 1534
+  },
+  {
+    "terminus": "Stockholm (eu-north-1)",
+    "rootToTerminusKm": 7818,
+    "centroid": "58.03°, -3.17°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 751,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 1082
+  },
+  {
+    "terminus": "London (eu-west-2)",
+    "rootToTerminusKm": 7906,
+    "centroid": "55.06°, -7.80°",
+    "archangel": "Paris (eu-west-3)",
+    "archangelCenterKm": 977,
+    "projectReclaim": "Stockholm (eu-north-1)",
+    "reclaimCenterKm": 1617
+  },
+  {
+    "terminus": "Malaysia (ap-southeast-5)",
+    "rootToTerminusKm": 13060,
+    "centroid": "57.18°, 34.91°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1011,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2328
+  },
+  {
+    "terminus": "Sydney (ap-southeast-2)",
+    "rootToTerminusKm": 12342,
+    "centroid": "68.47°, 15.94°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1022,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2072
+  },
+  {
+    "terminus": "Hong Kong (ap-east-1)",
+    "rootToTerminusKm": 10540,
+    "centroid": "65.46°, 34.44°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1079,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2486
+  },
+  {
+    "terminus": "Jakarta (ap-southeast-3)",
+    "rootToTerminusKm": 13561,
+    "centroid": "56.74°, 36.25°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1105,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2410
+  },
+  {
+    "terminus": "Seoul (ap-northeast-2)",
+    "rootToTerminusKm": 8451,
+    "centroid": "71.30°, 26.45°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1383,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2568
+  },
+  {
+    "terminus": "Tokyo (ap-northeast-1)",
+    "rootToTerminusKm": 7796,
+    "centroid": "74.78°, 23.69°",
+    "archangel": "Stockholm (eu-north-1)",
+    "archangelCenterKm": 1733,
+    "projectReclaim": "London (eu-west-2)",
+    "reclaimCenterKm": 2803
+  },
+  {
+    "terminus": "Montreal (ca-central-1)",
+    "rootToTerminusKm": 3765,
+    "centroid": "56.87°, -32.78°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 2183,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 2488
+  },
+  {
+    "terminus": "Virginia (us-east-1)",
+    "rootToTerminusKm": 3777,
+    "centroid": "55.55°, -35.59°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 2359,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 2653
+  },
+  {
+    "terminus": "Ohio (us-east-2)",
+    "rootToTerminusKm": 3264,
+    "centroid": "56.69°, -37.27°",
+    "archangel": "London (eu-west-2)",
+    "archangelCenterKm": 2457,
+    "projectReclaim": "Paris (eu-west-3)",
+    "reclaimCenterKm": 2759
+  }
+]

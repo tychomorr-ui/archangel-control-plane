@@ -18,7 +18,7 @@ describe("ARCHANGEL fleet contract", () => {
     expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
       cluster: "Bridge",
       declaredState: "Planned deployment",
-      region: "Montreal · ca-central-1 · planned bridge host",
+      region: "Oregon · us-west-2 · Lake & Mendocino field node",
     });
   });
 

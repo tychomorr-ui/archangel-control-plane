@@ -33,7 +33,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "tesseract-terminus",
     name: "Tesseract-Terminus",
-    region: "Oregon · us-west-2",
+    region: "Spain · eu-south-2 · Sovereign Provenance Console",
     role: "Provenance, anchoring · sovereign attestation",
     cluster: "Alpha",
     declaredState: "Declared running",
@@ -78,7 +78,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "project-reclaim",
     name: "Project Reclaim",
-    region: "Montreal · ca-central-1 · planned bridge host",
+    region: "Oregon · us-west-2 · Lake & Mendocino field node",
     role: "Field activation · recovery and real-world impact layer",
     cluster: "Bridge",
     declaredState: "Planned deployment",

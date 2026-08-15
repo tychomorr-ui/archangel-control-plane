@@ -1,0 +1,122 @@
+[
+  {
+    "nodes": [
+      "us-east-1",
+      "ap-south-1",
+      "ap-southeast-2"
+    ],
+    "minPairKm": 10157,
+    "averageCoreGapKm": 4662,
+    "score": 8069
+  },
+  {
+    "nodes": [
+      "ca-central-1",
+      "ap-south-1",
+      "ap-southeast-2"
+    ],
+    "minPairKm": 10157,
+    "averageCoreGapKm": 4658,
+    "score": 8067
+  },
+  {
+    "nodes": [
+      "us-east-2",
+      "ap-south-1",
+      "ap-southeast-2"
+    ],
+    "minPairKm": 10157,
+    "averageCoreGapKm": 4491,
+    "score": 8004
+  },
+  {
+    "nodes": [
+      "us-east-1",
+      "ap-southeast-2",
+      "ap-northeast-2"
+    ],
+    "minPairKm": 8329,
+    "averageCoreGapKm": 4919,
+    "score": 7033
+  },
+  {
+    "nodes": [
+      "ca-central-1",
+      "ap-southeast-2",
+      "ap-northeast-2"
+    ],
+    "minPairKm": 8329,
+    "averageCoreGapKm": 4914,
+    "score": 7032
+  },
+  {
+    "nodes": [
+      "us-east-2",
+      "ap-southeast-2",
+      "ap-northeast-2"
+    ],
+    "minPairKm": 8329,
+    "averageCoreGapKm": 4747,
+    "score": 6968
+  },
+  {
+    "nodes": [
+      "us-east-1",
+      "ap-southeast-2",
+      "ap-northeast-1"
+    ],
+    "minPairKm": 7826,
+    "averageCoreGapKm": 5132,
+    "score": 6802
+  },
+  {
+    "nodes": [
+      "ca-central-1",
+      "ap-southeast-2",
+      "ap-northeast-1"
+    ],
+    "minPairKm": 7826,
+    "averageCoreGapKm": 5128,
+    "score": 6800
+  },
+  {
+    "nodes": [
+      "us-east-2",
+      "ap-southeast-2",
+      "ap-northeast-1"
+    ],
+    "minPairKm": 7826,
+    "averageCoreGapKm": 4961,
+    "score": 6737
+  },
+  {
+    "nodes": [
+      "eu-west-3",
+      "ap-southeast-2",
+      "ap-northeast-2"
+    ],
+    "minPairKm": 8329,
+    "averageCoreGapKm": 3819,
+    "score": 6615
+  },
+  {
+    "nodes": [
+      "eu-west-2",
+      "ap-southeast-2",
+      "ap-northeast-2"
+    ],
+    "minPairKm": 8329,
+    "averageCoreGapKm": 3814,
+    "score": 6613
+  },
+  {
+    "nodes": [
+      "eu-north-1",
+      "ap-southeast-2",
+      "ap-northeast-1"
+    ],
+    "minPairKm": 7826,
+    "averageCoreGapKm": 4268,
+    "score": 6474
+  }
+]

@@ -36,4 +36,23 @@
 - [x] Document a finalized Project Reclaim initial hosting footprint, security boundary, and upgrade path in the delivered project.
 - [x] Calculate and document the most balanced available region for an ARCHANGEL host across the existing six-node mesh.
 - [x] Select and document a new non-duplicative region for the Project Reclaim node, distinct from current node locations.
-- [x] Set the finalized ARCHANGEL host region to Ireland (`eu-west-1`) and the finalized Project Reclaim region to Montreal (`ca-central-1`).
+- [ ] Set the finalized ARCHANGEL host region to Ireland (`eu-west-1`) and the finalized Project Reclaim region to Montreal (`ca-central-1`).
+- [ ] Recalculate the crosshair from five unique regions, with Root-Gate and Tesseract-Terminus co-located in Oregon.
+- [ ] Replace the symbolic spacing with a clearly labeled geographic map and keep the logical relationship topology separate.
+- [ ] Reassess ARCHANGEL and Project Reclaim regional placements using the corrected five-region calculation.
+- [ ] Replace the superseded Montreal Project Reclaim proposal with London (`eu-west-2`) and document the five-region crosshair near Ireland.
+- [ ] Recalculate the regional mesh after relocating Tesseract-Terminus from Oregon.
+- [ ] Select separate unused regions for Tesseract-Terminus, ARCHANGEL, and Project Reclaim as one coordinated placement decision.
+- [ ] Preserve the original opposing upright-and-inverted two-triangle visual with ARCHANGEL fixed at the shared center.
+- [ ] Validate the Spain, London, and Paris proposal against explicit geographic balance, failure-domain, and role-separation criteria.
+- [ ] Define a scalable enclosing-circle role for future nodes without changing the two opposing core triangles.
+- [ ] Optimize three distinct unused outer-circle regions together, beginning with Project Reclaim, while preserving the two core triangles and central ARCHANGEL role.
+- [ ] Recompute triangle, central-host, and outer-circle placements using the expanded enabled AWS Region set.
+- [ ] Distinguish current Lightsail-capable regions from enabled AWS Regions that require EC2 for future-node placement.
+- [ ] Re-optimize Project Reclaim and future outer-circle sites across all enabled AWS Regions with ARCHANGEL fixed in London.
+- [x] Reassess Project Reclaim’s first node for Lake and Mendocino County field programs rather than global-only placement.
+- [x] Recommend a hardened ARCHANGEL operating system and image choice for the London control-plane host.
+- [x] Update Project Reclaim to a distinct Oregon field-program node serving Lake and Mendocino County, separate from Root-Gate.
+- [x] Record Ubuntu 24 OS-only as the London ARCHANGEL host baseline and document why preconfigured application images are excluded.
+- [x] Correct the active topology to show Tesseract-Terminus in Spain, ARCHANGEL in London, and Project Reclaim as a distinct Oregon field node.
+- [x] Create and review a minimal Ubuntu 24 launch bootstrap for the London ARCHANGEL host without embedded secrets or node-execution authority.

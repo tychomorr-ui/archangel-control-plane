@@ -1,0 +1,566 @@
+{
+  "ranked": [
+    {
+      "nodes": [
+        {
+          "name": "N. Virginia",
+          "code": "us-east-1",
+          "lat": 38.9072,
+          "lon": -77.0369,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Mumbai",
+          "code": "ap-south-1",
+          "lat": 19.076,
+          "lon": 72.8777,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12298,
+      "averageCoreGapKm": 5366,
+      "score": 9664
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "N. Virginia",
+          "code": "us-east-1",
+          "lat": 38.9072,
+          "lon": -77.0369,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6180,
+      "score": 9647
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Montreal",
+          "code": "ca-central-1",
+          "lat": 45.5017,
+          "lon": -73.5673,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6176,
+      "score": 9646
+    },
+    {
+      "nodes": [
+        {
+          "name": "Ohio",
+          "code": "us-east-2",
+          "lat": 39.9612,
+          "lon": -82.9988,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Mumbai",
+          "code": "ap-south-1",
+          "lat": 19.076,
+          "lon": 72.8777,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12298,
+      "averageCoreGapKm": 5195,
+      "score": 9599
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Ohio",
+          "code": "us-east-2",
+          "lat": 39.9612,
+          "lon": -82.9988,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6009,
+      "score": 9582
+    },
+    {
+      "nodes": [
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Bahrain",
+          "code": "me-south-1",
+          "lat": 26.2235,
+          "lon": 50.5876,
+          "class": "EC2"
+        },
+        {
+          "name": "Sydney",
+          "code": "ap-southeast-2",
+          "lat": -33.8688,
+          "lon": 151.2093,
+          "class": "Lightsail or EC2"
+        }
+      ],
+      "minPairKm": 12515,
+      "averageCoreGapKm": 4787,
+      "score": 9578
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "N. Virginia",
+          "code": "us-east-1",
+          "lat": 38.9072,
+          "lon": -77.0369,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Taipei",
+          "code": "ap-east-2",
+          "lat": 25.033,
+          "lon": 121.5654,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12647,
+      "averageCoreGapKm": 4457,
+      "score": 9535
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Taipei",
+          "code": "ap-east-2",
+          "lat": 25.033,
+          "lon": 121.5654,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12679,
+      "averageCoreGapKm": 4404,
+      "score": 9534
+    },
+    {
+      "nodes": [
+        {
+          "name": "Montreal",
+          "code": "ca-central-1",
+          "lat": 45.5017,
+          "lon": -73.5673,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Mumbai",
+          "code": "ap-south-1",
+          "lat": 19.076,
+          "lon": 72.8777,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12075,
+      "averageCoreGapKm": 5362,
+      "score": 9524
+    },
+    {
+      "nodes": [
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "UAE",
+          "code": "me-central-1",
+          "lat": 24.4539,
+          "lon": 54.3773,
+          "class": "EC2"
+        },
+        {
+          "name": "Sydney",
+          "code": "ap-southeast-2",
+          "lat": -33.8688,
+          "lon": 151.2093,
+          "class": "Lightsail or EC2"
+        }
+      ],
+      "minPairKm": 12087,
+      "averageCoreGapKm": 4920,
+      "score": 9364
+    },
+    {
+      "nodes": [
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Tel Aviv",
+          "code": "il-central-1",
+          "lat": 32.0853,
+          "lon": 34.7818,
+          "class": "EC2"
+        },
+        {
+          "name": "Sydney",
+          "code": "ap-southeast-2",
+          "lat": -33.8688,
+          "lon": 151.2093,
+          "class": "Lightsail or EC2"
+        }
+      ],
+      "minPairKm": 12473,
+      "averageCoreGapKm": 4287,
+      "score": 9363
+    },
+    {
+      "nodes": [
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Tel Aviv",
+          "code": "il-central-1",
+          "lat": 32.0853,
+          "lon": 34.7818,
+          "class": "EC2"
+        },
+        {
+          "name": "Melbourne",
+          "code": "ap-southeast-4",
+          "lat": -37.8136,
+          "lon": 144.9631,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12473,
+      "averageCoreGapKm": 4206,
+      "score": 9332
+    }
+  ],
+  "projectReclaimCapeTown": [
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "N. Virginia",
+          "code": "us-east-1",
+          "lat": 38.9072,
+          "lon": -77.0369,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6180,
+      "score": 9647
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Montreal",
+          "code": "ca-central-1",
+          "lat": 45.5017,
+          "lon": -73.5673,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6176,
+      "score": 9646
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Ohio",
+          "code": "us-east-2",
+          "lat": 39.9612,
+          "lon": -82.9988,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 6009,
+      "score": 9582
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "N. Virginia",
+          "code": "us-east-1",
+          "lat": 38.9072,
+          "lon": -77.0369,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Taipei",
+          "code": "ap-east-2",
+          "lat": 25.033,
+          "lon": 121.5654,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12647,
+      "averageCoreGapKm": 4457,
+      "score": 9535
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Taipei",
+          "code": "ap-east-2",
+          "lat": 25.033,
+          "lon": 121.5654,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12679,
+      "averageCoreGapKm": 4404,
+      "score": 9534
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Mexico Central",
+          "code": "mx-central-1",
+          "lat": 19.4326,
+          "lon": -99.1332,
+          "class": "EC2"
+        },
+        {
+          "name": "Seoul",
+          "code": "ap-northeast-2",
+          "lat": 37.5665,
+          "lon": 126.978,
+          "class": "Lightsail or EC2"
+        }
+      ],
+      "minPairKm": 12052,
+      "averageCoreGapKm": 4878,
+      "score": 9326
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Ohio",
+          "code": "us-east-2",
+          "lat": 39.9612,
+          "lon": -82.9988,
+          "class": "Lightsail or EC2"
+        },
+        {
+          "name": "Taipei",
+          "code": "ap-east-2",
+          "lat": 25.033,
+          "lon": 121.5654,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 12353,
+      "averageCoreGapKm": 4286,
+      "score": 9288
+    },
+    {
+      "nodes": [
+        {
+          "name": "Cape Town",
+          "code": "af-south-1",
+          "lat": -33.9249,
+          "lon": 18.4241,
+          "class": "EC2"
+        },
+        {
+          "name": "Calgary",
+          "code": "ca-west-1",
+          "lat": 51.0447,
+          "lon": -114.0719,
+          "class": "EC2"
+        },
+        {
+          "name": "Auckland",
+          "code": "ap-southeast-6",
+          "lat": -36.8485,
+          "lon": 174.7633,
+          "class": "EC2"
+        }
+      ],
+      "minPairKm": 11772,
+      "averageCoreGapKm": 5215,
+      "score": 9281
+    }
+  ]
+}
