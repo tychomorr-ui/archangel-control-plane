@@ -1,0 +1,1 @@
+ALTER TABLE `mesh_nodes` MODIFY COLUMN `cluster` enum('Alpha','Beta','Bridge') NOT NULL;

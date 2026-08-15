@@ -23,3 +23,17 @@
 - [x] Add behavior tests proving approval, receipt, and verification outcomes append audit events without allowing audit edits or deletes.
 - [x] Document a keyboard verification pass covering visible focus and Tab/Shift+Tab reachability for custom navigation and action controls.
 - [x] Add an explicit keyboard traversal record and control-level test evidence for ARCHANGEL custom controls.
+- [x] Reconcile Root-Gate, Tesseract-Terminus, XinUS-Clarity, Kether-Gate, Tesseract-A, KEIRA, and Project Reclaim into declared role and trust-boundary records.
+- [x] Add Project Reclaim as the seventh physical–digital bridge node in the ARCHANGEL registry and topology.
+- [x] Update the control-plane visual to distinguish the two intersecting triangles from ARCHANGEL’s central coordination position.
+- [ ] Validate the revised topology, test the updated registry contract, and save a delivery checkpoint.
+- [x] Replace any prior Kira intelligence-node references with the corrected KEIRA name.
+- [x] Remove any implication that ARCHANGEL is itself a physical seventh node; preserve it as the logical intersection and coordination plane.
+- [x] Analyze the actual Oregon, Ireland, Singapore, Frankfurt, and São Paulo regional mesh for latency and resilience implications.
+- [x] Recommend the physical region and cloud footprint for the planned Project Reclaim node, separate from ARCHANGEL’s logical center.
+- [x] Superseded preliminary placement: Project Reclaim in São Paulo and ARCHANGEL services in Oregon; retained for decision history only.
+- [x] Add a persisted five-region latency, traffic, and resilience analysis for the Oregon, Ireland, Singapore, Frankfurt, and São Paulo mesh.
+- [x] Document a finalized Project Reclaim initial hosting footprint, security boundary, and upgrade path in the delivered project.
+- [x] Calculate and document the most balanced available region for an ARCHANGEL host across the existing six-node mesh.
+- [x] Select and document a new non-duplicative region for the Project Reclaim node, distinct from current node locations.
+- [x] Set the finalized ARCHANGEL host region to Ireland (`eu-west-1`) and the finalized Project Reclaim region to Montreal (`ca-central-1`).

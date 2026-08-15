@@ -5,15 +5,21 @@ import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
 describe("ARCHANGEL fleet contract", () => {
-  it("keeps the declared six-node inventory intact", () => {
+  it("keeps the declared seven-node topology and its bridge layer intact", () => {
     expect(FLEET_NODES.map(node => node.name)).toEqual([
       "Root-Gate",
       "Tesseract-Terminus",
       "XinUS-Clarity",
       "Kether-Gate",
       "Tesseract-A",
-      "The_Portal",
+      "KEIRA",
+      "Project Reclaim",
     ]);
+    expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
+      cluster: "Bridge",
+      declaredState: "Planned deployment",
+      region: "Montreal · ca-central-1 · planned bridge host",
+    });
   });
 
   it("allows only the bounded operation vocabulary", () => {

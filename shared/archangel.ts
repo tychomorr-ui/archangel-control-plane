@@ -4,7 +4,8 @@ export const NODE_IDS = [
   "xinus-clarity",
   "kether-gate",
   "tesseract-a",
-  "the-portal",
+  "keira",
+  "project-reclaim",
 ] as const;
 
 export type NodeId = (typeof NODE_IDS)[number];
@@ -14,8 +15,8 @@ export type FleetNodeDefinition = {
   name: string;
   region: string;
   role: string;
-  cluster: "Alpha" | "Beta";
-  declaredState: "Declared running";
+  cluster: "Alpha" | "Beta" | "Bridge";
+  declaredState: "Declared running" | "Planned deployment";
   fingerprint: string;
 };
 
@@ -24,7 +25,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "root-gate",
     name: "Root-Gate",
     region: "Oregon · us-west-2",
-    role: "Alpha anchor · control plane",
+    role: "Sovereign identity · authority anchor",
     cluster: "Alpha",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -33,7 +34,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "tesseract-terminus",
     name: "Tesseract-Terminus",
     region: "Oregon · us-west-2",
-    role: "Alpha vertex · application terminus",
+    role: "Provenance, anchoring · sovereign attestation",
     cluster: "Alpha",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -42,7 +43,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "xinus-clarity",
     name: "XinUS-Clarity",
     region: "Ireland · eu-west-1",
-    role: "Alpha vertex · European compute",
+    role: "Flagship application layer · Clarity Suite",
     cluster: "Alpha",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -51,7 +52,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "kether-gate",
     name: "Kether-Gate",
     region: "Singapore · ap-southeast-1",
-    role: "Beta anchor · APAC gateway",
+    role: "Monarch OS · sovereign operating-system layer",
     cluster: "Beta",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -60,19 +61,28 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "tesseract-a",
     name: "Tesseract-A",
     region: "Frankfurt · eu-central-1",
-    role: "Beta vertex · signing surface",
+    role: "Tesseract mirror · recovery portal",
     cluster: "Beta",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
   },
   {
-    id: "the-portal",
-    name: "The_Portal",
+    id: "keira",
+    name: "KEIRA",
     region: "São Paulo · sa-east-1",
-    role: "Beta vertex · recovery witness",
+    role: "Intelligence application · truth analysis layer",
     cluster: "Beta",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
+  },
+  {
+    id: "project-reclaim",
+    name: "Project Reclaim",
+    region: "Montreal · ca-central-1 · planned bridge host",
+    role: "Field activation · recovery and real-world impact layer",
+    cluster: "Bridge",
+    declaredState: "Planned deployment",
+    fingerprint: "Enrollment not initiated",
   },
 ];
 
