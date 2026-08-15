@@ -1,17 +1,7 @@
 import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
-/**
- * Core user table backing auth flow.
- * Extend this file with additional tables as your product grows.
- * Columns use camelCase to match both database fields and generated types.
- */
 export const users = mysqlTable("users", {
-  /**
-   * Surrogate primary key. Auto-incremented numeric value managed by the database.
-   * Use this for relations between tables.
-   */
   id: int("id").autoincrement().primaryKey(),
-  /** Manus OAuth identifier (openId) returned from the OAuth callback. Unique per user. */
   openId: varchar("openId", { length: 64 }).notNull().unique(),
   name: text("name"),
   email: varchar("email", { length: 320 }),
@@ -22,7 +12,69 @@ export const users = mysqlTable("users", {
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
+export const meshNodes = mysqlTable("mesh_nodes", {
+  id: int("id").autoincrement().primaryKey(),
+  nodeId: varchar("nodeId", { length: 64 }).notNull().unique(),
+  displayName: varchar("displayName", { length: 128 }).notNull(),
+  region: varchar("region", { length: 128 }).notNull(),
+  role: varchar("role", { length: 256 }).notNull(),
+  cluster: mysqlEnum("cluster", ["Alpha", "Beta"]).notNull(),
+  publicKeyFingerprint: varchar("publicKeyFingerprint", { length: 256 }).notNull(),
+  enrollmentStatus: mysqlEnum("enrollmentStatus", ["pending", "enrolled", "revoked"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export const nodeStatusReports = mysqlTable("node_status_reports", {
+  id: int("id").autoincrement().primaryKey(),
+  nodeId: varchar("nodeId", { length: 64 }).notNull(),
+  observedAt: timestamp("observedAt").notNull(),
+  version: varchar("version", { length: 128 }).notNull(),
+  uptimeClass: varchar("uptimeClass", { length: 128 }).notNull(),
+  applicationReadiness: mysqlEnum("applicationReadiness", ["ready", "degraded", "not_ready", "unknown"]).notNull(),
+  reachability: mysqlEnum("reachability", ["reachable", "unreachable", "unknown"]).notNull(),
+  verificationState: mysqlEnum("verificationState", ["verified", "failed", "pending"]).notNull(),
+  narrative: text("narrative").notNull(),
+  signedReceiptHash: varchar("signedReceiptHash", { length: 256 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const intents = mysqlTable("intents", {
+  id: int("id").autoincrement().primaryKey(),
+  publicId: varchar("publicId", { length: 64 }).notNull().unique(),
+  nodeId: varchar("nodeId", { length: 64 }).notNull(),
+  operationType: mysqlEnum("operationType", ["deploy", "restart", "configuration promote", "backup verify"]).notNull(),
+  scope: text("scope").notNull(),
+  risk: mysqlEnum("risk", ["low", "moderate", "high", "critical"]).notNull(),
+  rollbackMethod: text("rollbackMethod").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  state: mysqlEnum("state", ["draft", "proposed", "approved", "rejected", "expired", "executed", "verified"]).default("proposed").notNull(),
+  createdBy: varchar("createdBy", { length: 128 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const auditEvents = mysqlTable("audit_events", {
+  id: int("id").autoincrement().primaryKey(),
+  publicId: varchar("publicId", { length: 64 }).notNull().unique(),
+  intentPublicId: varchar("intentPublicId", { length: 64 }),
+  nodeId: varchar("nodeId", { length: 64 }),
+  eventType: varchar("eventType", { length: 128 }).notNull(),
+  outcome: mysqlEnum("outcome", ["accepted", "rejected", "pending", "verified", "failed"]).notNull(),
+  actorPseudonym: varchar("actorPseudonym", { length: 128 }).notNull(),
+  summary: text("summary").notNull(),
+  occurredAt: timestamp("occurredAt").notNull(),
+});
+
+export const notifications = mysqlTable("notifications", {
+  id: int("id").autoincrement().primaryKey(),
+  publicId: varchar("publicId", { length: 64 }).notNull().unique(),
+  nodeId: varchar("nodeId", { length: 64 }),
+  kind: mysqlEnum("kind", ["node_unreachable", "verification_failed", "intent_expired", "health_beat_missed"]).notNull(),
+  severity: mysqlEnum("severity", ["info", "warning", "critical"]).notNull(),
+  message: text("message").notNull(),
+  detectedAt: timestamp("detectedAt").notNull(),
+  acknowledgedAt: timestamp("acknowledgedAt"),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
-
-// TODO: Add your tables here

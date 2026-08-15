@@ -1,0 +1,25 @@
+# Project TODO
+
+- [x] Protect every ARCHANGEL route and fleet data procedure behind Manus OAuth authentication.
+- [x] Define typed domain models and database schema for six nodes, signed status reports, intents, audit events, notifications, and registry records.
+- [x] Build the ARCHANGEL visual system with an elegant extraterrestrial-futurist console style distinct from the existing Nebulous Mesh mirror presentation.
+- [x] Implement the fleet overview with live status cards for Root-Gate, Tesseract-Terminus, XinUS-Clarity, Kether-Gate, Tesseract-A, and The_Portal.
+- [x] Implement a dedicated node-detail view with signed-status fields and plain-language health narratives.
+- [x] Implement a global mesh-topology visualization with Alpha and Beta cluster groupings and signed-status flow.
+- [x] Implement the structured intent workflow using the exact operation labels: deploy, restart, configuration promote, and backup verify.
+- [x] Make proposal review and approval/execution status visibly distinct and prevent direct execution controls.
+- [x] Implement the append-only, redacted audit-log view for intents, approvals, receipts, and verification outcomes.
+- [x] Implement a notification and alert feed for unreachable nodes, failed verifications, expired intents, and missed health beats.
+- [x] Implement the enrolled-node registry settings view with declared roles, public-key fingerprints, and enrollment state.
+- [x] Add accessible interaction states, responsive layouts, loading and empty states, and clear safety language.
+- [x] Write Vitest coverage for protected backend procedures, immutable audit behavior, and bounded intent validation.
+- [x] Visually verify desktop and mobile layouts, run the test suite, and resolve build or console errors.
+- [x] Add explicit error states and retry actions for fleet, node detail, topology, audit, alerts, and registry queries.
+- [x] Differentiate an empty protected data set from a failed protected-data query across every operator surface.
+- [x] Implement and test audit-event creation for approval, receipt, and verification outcomes before claiming those records are live.
+- [ ] Integrate the authenticated signed-status agent with the current Lightsail instances after node-access and key-enrollment details are supplied.
+- [x] Add keyboard and focus-visible verification for custom ARCHANGEL navigation and action controls.
+- [x] Add protected-mutation tests for intent proposal, separate review, and bounded evidence recording.
+- [x] Add behavior tests proving approval, receipt, and verification outcomes append audit events without allowing audit edits or deletes.
+- [x] Document a keyboard verification pass covering visible focus and Tab/Shift+Tab reachability for custom navigation and action controls.
+- [x] Add an explicit keyboard traversal record and control-level test evidence for ARCHANGEL custom controls.
