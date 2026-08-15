@@ -86,6 +86,28 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   },
 ];
 
+/**
+ * Rendered relationship topology. This is deliberately separate from the
+ * geographic map: its vertex order expresses trust roles, not distance.
+ */
+export const TOPOLOGY_LAYOUT_CONTRACT = {
+  vertices: [
+    { id: "xinus-clarity", tone: "alpha", position: "alpha-apex" },
+    { id: "root-gate", tone: "alpha", position: "alpha-root" },
+    { id: "tesseract-terminus", tone: "alpha", position: "alpha-terminus" },
+    { id: "kether-gate", tone: "beta", position: "beta-kether" },
+    { id: "tesseract-a", tone: "beta", position: "beta-tesseract-a" },
+    { id: "keira", tone: "beta", position: "beta-keira" },
+    { id: "project-reclaim", tone: "bridge", position: "bridge-reclaim" },
+  ],
+  spacing: {
+    mobileMinCanvasHeightPx: 900,
+    desktopMinCanvasHeightPx: 940,
+    betaKeiraTopPercent: 76,
+    bridgeBottomPercent: 1,
+  },
+} as const;
+
 export const OPERATION_TYPES = [
   "deploy",
   "restart",

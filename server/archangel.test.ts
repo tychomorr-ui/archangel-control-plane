@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AUDIT_EVENT_TYPES, FLEET_NODES, OPERATION_TYPES } from "../shared/archangel";
+import { AUDIT_EVENT_TYPES, FLEET_NODES, OPERATION_TYPES, TOPOLOGY_LAYOUT_CONTRACT } from "../shared/archangel";
 import { archangelRouter, evidenceRecordSchema, intentProposalSchema, intentReviewSchema } from "./archangel";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
@@ -19,6 +19,24 @@ describe("ARCHANGEL fleet contract", () => {
       cluster: "Bridge",
       declaredState: "Planned deployment",
       region: "Oregon · us-west-2 · Lake & Mendocino field node",
+    });
+  });
+
+  it("preserves the explicit two-triangle vertex order and bridge clearance contract", () => {
+    expect(TOPOLOGY_LAYOUT_CONTRACT.vertices).toEqual([
+      { id: "xinus-clarity", tone: "alpha", position: "alpha-apex" },
+      { id: "root-gate", tone: "alpha", position: "alpha-root" },
+      { id: "tesseract-terminus", tone: "alpha", position: "alpha-terminus" },
+      { id: "kether-gate", tone: "beta", position: "beta-kether" },
+      { id: "tesseract-a", tone: "beta", position: "beta-tesseract-a" },
+      { id: "keira", tone: "beta", position: "beta-keira" },
+      { id: "project-reclaim", tone: "bridge", position: "bridge-reclaim" },
+    ]);
+    expect(TOPOLOGY_LAYOUT_CONTRACT.spacing).toMatchObject({
+      mobileMinCanvasHeightPx: 900,
+      desktopMinCanvasHeightPx: 940,
+      betaKeiraTopPercent: 76,
+      bridgeBottomPercent: 1,
     });
   });
 

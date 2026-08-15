@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
-import { OPERATION_TYPES, type OperationType } from "@shared/archangel";
+import { OPERATION_TYPES, TOPOLOGY_LAYOUT_CONTRACT, type OperationType } from "@shared/archangel";
 import { toast } from "sonner";
 import {
   Activity,
@@ -196,9 +196,22 @@ export function NodeDetailPage() {
   );
 }
 
-function TopologyNode({ name, region, role, tone }: { name: string; region: string; role: string; tone: "alpha" | "beta" | "bridge" }) {
-  const toneClass = tone === "alpha" ? "border-cyan-300/25 bg-cyan-300/[0.08] text-cyan-200/65" : tone === "beta" ? "border-violet-300/25 bg-violet-300/[0.08] text-violet-200/65" : "border-amber-300/25 bg-amber-300/[0.08] text-amber-100/70";
-  return <div className={`relative z-10 rounded-xl border px-4 py-3 ${toneClass.split(" text-")[0]}`}><p className={`font-mono text-[9px] uppercase tracking-[0.14em] ${toneClass.includes("cyan") ? "text-cyan-200/65" : toneClass.includes("violet") ? "text-violet-200/65" : "text-amber-100/70"}`}>{region}</p><p className="mt-1 font-display text-base text-white">{name}</p><p className="mt-1 text-[11px] text-slate-400">{role}</p></div>;
+type TopologyPosition = (typeof TOPOLOGY_LAYOUT_CONTRACT.vertices)[number]["position"];
+
+const topologyPositions: Record<TopologyPosition, React.CSSProperties> = {
+  "alpha-apex": { left: "50%", top: "6%", transform: "translateX(-50%)" },
+  "alpha-root": { left: "5%", top: "61%" },
+  "alpha-terminus": { right: "5%", top: "61%" },
+  "beta-kether": { left: "5%", top: "27%" },
+  "beta-tesseract-a": { right: "5%", top: "27%" },
+  "beta-keira": { left: "50%", top: `${TOPOLOGY_LAYOUT_CONTRACT.spacing.betaKeiraTopPercent}%`, transform: "translateX(-50%)" },
+  "bridge-reclaim": { left: "50%", bottom: `${TOPOLOGY_LAYOUT_CONTRACT.spacing.bridgeBottomPercent}%`, transform: "translateX(-50%)" },
+};
+
+function TopologyNode({ name, region, role, tone, position }: { name: string; region: string; role: string; tone: "alpha" | "beta" | "bridge"; position: TopologyPosition }) {
+  const colorClass = tone === "alpha" ? "border-cyan-300/30 bg-cyan-300/[0.09] shadow-[0_0_35px_rgba(34,211,238,0.08)]" : tone === "beta" ? "border-violet-300/30 bg-violet-300/[0.09] shadow-[0_0_35px_rgba(167,139,250,0.08)]" : "border-amber-300/30 bg-amber-300/[0.09] shadow-[0_0_35px_rgba(251,191,36,0.08)]";
+  const labelClass = tone === "alpha" ? "text-cyan-100/70" : tone === "beta" ? "text-violet-100/70" : "text-amber-100/75";
+  return <div data-topology-vertex={position} style={topologyPositions[position]} className={`absolute z-10 w-[min(13rem,39vw)] rounded-xl border px-3 py-2.5 backdrop-blur-sm sm:px-4 sm:py-3 ${colorClass}`}><p className={`font-mono text-[8px] uppercase tracking-[0.13em] ${labelClass}`}>{region}</p><p className="mt-1 font-display text-sm leading-4 text-white sm:text-base">{name}</p><p className="mt-1 line-clamp-2 text-[10px] leading-4 text-slate-400 sm:text-[11px]">{role}</p></div>;
 }
 
 function GeographicMeshMap() {
@@ -236,20 +249,18 @@ function GeographicMeshMap() {
 export function TopologyPage() {
   const { data: fleet = [], error, refetch } = trpc.archangel.fleet.useQuery(undefined, { refetchInterval: 15_000 });
   if (error) return <><SectionHeading eyebrow="Protected data unavailable" title="Topology unavailable." detail="ARCHANGEL could not read the signed fleet registry, so it will not render a blank mesh in its place." /><Panel><QueryFailure title="Topology registry unavailable" retry={() => refetch()} /></Panel></>;
-  const alpha = fleet.filter(node => node.cluster === "Alpha");
-  const beta = fleet.filter(node => node.cluster === "Beta");
-  const bridge = fleet.filter(node => node.cluster === "Bridge");
+  const byId = new Map(fleet.map(node => [node.id, node]));
   return <>
     <SectionHeading eyebrow="Declared inter-node relationship" title="Two triangles · one sovereign center" detail="Alpha and Beta are logical trust triangles over your actual regional nodes, not a distance-accurate geographic map. ARCHANGEL occupies their shared coordination center; Project Reclaim extends beneath it as the physical–digital bridge." />
-    <Panel className="relative min-h-[660px] overflow-hidden p-5 sm:p-8">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.09),transparent_43%)]" />
-      <svg viewBox="0 0 1000 660" className="pointer-events-none absolute inset-0 h-full w-full opacity-75" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="mesh" x1="0" x2="1"><stop stopColor="#67e8f9" stopOpacity=".14"/><stop offset=".5" stopColor="#f8fafc" stopOpacity=".48"/><stop offset="1" stopColor="#c4b5fd" stopOpacity=".16"/></linearGradient></defs><path d="M180 150 C370 110 510 160 830 150 M180 280 C400 330 590 230 830 280 M180 410 C350 375 590 430 830 410" fill="none" stroke="url(#mesh)" strokeWidth="1.5" strokeDasharray="5 8"/><path d="M500 340 L500 510" fill="none" stroke="#fcd34d" strokeOpacity=".5" strokeWidth="1.5" strokeDasharray="5 8"/><circle cx="500" cy="280" r="72" fill="none" stroke="#67e8f9" strokeOpacity=".22"/><circle cx="500" cy="280" r="38" fill="#67e8f9" fillOpacity=".08"/></svg>
-      <div className="relative grid min-h-[490px] gap-8 lg:grid-cols-[1fr_120px_1fr] lg:items-center">
-        <div><div className="mb-4 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-cyan-200"/><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-cyan-100">Cluster Alpha</span></div><div className="space-y-4">{alpha.map(node => <TopologyNode key={node.id} name={node.name} region={node.region} role={node.role} tone="alpha" />)}</div></div>
-        <div className="flex flex-col items-center justify-center"><div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/[0.14] bg-[#0b101a]/90 text-cyan-100 shadow-[0_0_55px_rgba(34,211,238,0.15)]"><Network className="h-8 w-8" /></div><span className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.14em] text-cyan-100">ARCHANGEL · logical center</span><span className="mt-1 text-center font-mono text-[8px] uppercase tracking-[0.12em] text-slate-500">London host · signed flow</span></div>
-        <div><div className="mb-4 flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-violet-200"/><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-violet-100">Cluster Beta</span></div><div className="space-y-4">{beta.map(node => <TopologyNode key={node.id} name={node.name} region={node.region} role={node.role} tone="beta" />)}</div></div>
+    <Panel className="relative overflow-hidden p-4 sm:p-6">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.1),transparent_36%),radial-gradient(circle_at_50%_78%,rgba(167,139,250,0.08),transparent_28%)]" />
+      <div className="relative mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.07] pb-4"><div className="flex flex-wrap gap-x-5 gap-y-2"><span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.16em] text-cyan-100"><span className="h-2 w-2 rounded-full bg-cyan-200"/>Alpha · upright triangle</span><span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.16em] text-violet-100"><span className="h-2 w-2 rounded-full bg-violet-200"/>Beta · inverted triangle</span><span className="inline-flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.16em] text-amber-100"><span className="h-2 w-2 rounded-full bg-amber-100"/>Bridge layer</span></div><span className="font-mono text-[8px] uppercase tracking-[0.13em] text-slate-500">Logical geometry · not a geographic projection</span></div>
+      <div className="relative min-h-[900px] sm:min-h-[940px]" role="img" aria-label="Logical topology of Alpha upright triangle and Beta inverted triangle around ARCHANGEL">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true"><defs><linearGradient id="alpha-triangle" x1="0" x2="1"><stop stopColor="#67e8f9" stopOpacity=".48"/><stop offset="1" stopColor="#a5f3fc" stopOpacity=".2"/></linearGradient><linearGradient id="beta-triangle" x1="0" x2="1"><stop stopColor="#c4b5fd" stopOpacity=".22"/><stop offset="1" stopColor="#ddd6fe" stopOpacity=".5"/></linearGradient></defs><circle cx="50" cy="50" r="42" fill="none" stroke="#67e8f9" strokeOpacity=".13" strokeDasharray="1 2.5"/><polygon points="50,8 12,66 88,66" fill="rgba(34,211,238,0.025)" stroke="url(#alpha-triangle)" strokeWidth="0.28"/><polygon points="12,30 88,30 50,80" fill="rgba(167,139,250,0.025)" stroke="url(#beta-triangle)" strokeWidth="0.28"/><path d="M50 55 L50 97" fill="none" stroke="#fde68a" strokeOpacity=".5" strokeWidth="0.3" strokeDasharray="1.1 1.8"/><circle cx="50" cy="50" r="9" fill="#08131e" fillOpacity=".94" stroke="#67e8f9" strokeOpacity=".8" strokeWidth="0.38"/><circle cx="50" cy="50" r="4.7" fill="none" stroke="#a5f3fc" strokeOpacity=".35" strokeWidth="0.28"/><path d="M46.5 50h7M50 46.5v7" stroke="#cffafe" strokeOpacity=".9" strokeWidth="0.45"/></svg>
+        {TOPOLOGY_LAYOUT_CONTRACT.vertices.map(vertex => { const node = byId.get(vertex.id); return node ? <TopologyNode key={node.id} name={node.name} region={node.region} role={node.role} tone={vertex.tone} position={vertex.position} /> : null; })}
+        <div className="absolute left-1/2 top-1/2 z-20 flex w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-full border border-cyan-200/20 bg-[#08131e]/90 px-3 py-4 text-center shadow-[0_0_55px_rgba(34,211,238,0.16)]"><Network className="h-6 w-6 text-cyan-100"/><span className="mt-2 font-mono text-[9px] uppercase tracking-[0.14em] text-cyan-100">ARCHANGEL</span><span className="mt-1 font-mono text-[8px] uppercase tracking-[0.1em] text-slate-500">Logical center · London</span></div>
+        <p className="absolute left-1/2 top-[54.5%] z-10 -translate-x-1/2 whitespace-nowrap font-mono text-[8px] uppercase tracking-[0.12em] text-slate-500">Shared coordination crosshair</p>
       </div>
-      <div className="relative mx-auto mt-2 max-w-md"><div className="mb-3 flex items-center justify-center gap-2"><span className="h-2 w-2 rounded-full bg-amber-100"/><span className="font-mono text-[10px] uppercase tracking-[0.18em] text-amber-100">Grounded bridge layer</span></div><div className="space-y-3">{bridge.map(node => <TopologyNode key={node.id} name={node.name} region={node.region} role={node.role} tone="bridge" />)}</div></div>
     </Panel>
     <GeographicMeshMap />
     <div className="mt-6 grid gap-4 md:grid-cols-3"><Panel className="p-5"><Globe2 className="h-5 w-5 text-cyan-200"/><p className="mt-4 font-display text-lg text-white">Six regions · real map</p><p className="mt-2 text-xs leading-5 text-slate-500">The core vertices are Oregon, Spain, Ireland, Frankfurt, Singapore, and São Paulo. Project Reclaim is a separate Oregon field host.</p></Panel><Panel className="p-5"><KeyRound className="h-5 w-5 text-violet-200"/><p className="mt-4 font-display text-lg text-white">ARCHANGEL at center</p><p className="mt-2 text-xs leading-5 text-slate-500">The crosshair remains logical. ARCHANGEL’s dedicated London host is separate from every core vertex and coordinates signed control traffic only.</p></Panel><Panel className="p-5"><ShieldCheck className="h-5 w-5 text-amber-100"/><p className="mt-4 font-display text-lg text-white">Project Reclaim · Oregon</p><p className="mt-2 text-xs leading-5 text-slate-500">The field node is a separate Oregon host for Lake and Mendocino County programs. It shares a Region with Root-Gate but never its authority or credentials.</p></Panel></div>

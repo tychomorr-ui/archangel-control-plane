@@ -31,4 +31,20 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(pageSource).not.toContain("tabIndex={-1}");
     expect(pageSource).toContain("type=\"submit\"");
   });
+
+  it("renders a named upright Alpha triangle and inverted Beta triangle around ARCHANGEL", () => {
+    expect(pageSource).toContain("Alpha · upright triangle");
+    expect(pageSource).toContain("Beta · inverted triangle");
+    expect(pageSource).toContain('data-topology-vertex={position}');
+    expect(pageSource).toContain('"alpha-apex"');
+    expect(pageSource).toContain('"alpha-root"');
+    expect(pageSource).toContain('"alpha-terminus"');
+    expect(pageSource).toContain('"beta-kether"');
+    expect(pageSource).toContain('"beta-tesseract-a"');
+    expect(pageSource).toContain('"beta-keira"');
+    expect(pageSource).toContain('"bridge-reclaim"');
+    expect(pageSource).toContain('points="50,8 12,66 88,66"');
+    expect(pageSource).toContain('points="12,30 88,30 50,80"');
+    expect(pageSource).toContain("Shared coordination crosshair");
+  });
 });

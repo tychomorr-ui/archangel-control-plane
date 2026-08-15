@@ -50,8 +50,10 @@
 - [x] Recompute triangle, central-host, and outer-circle placements using the expanded enabled AWS Region set.
 - [x] Distinguish current Lightsail-capable regions from enabled AWS Regions that require EC2 for future-node placement.
 - [x] Re-optimize Project Reclaim and future outer-circle sites across all enabled AWS Regions with ARCHANGEL fixed in London.
-- [ ] Implement an explicit upright-triangle and inverted-triangle node geometry around the central ARCHANGEL marker.
-- [ ] Capture and review the revised topology to verify the opposing-triangle geometry is readable.
+- [x] Implement an explicit upright-triangle and inverted-triangle node geometry around the central ARCHANGEL marker.
+- [x] Capture and review the revised topology to verify the opposing-triangle geometry is readable.
+- [x] Record a durable topology-readability review note covering desktop and mobile checks, vertex order, crosshair visibility, and bridge separation.
+- [x] Add a testable layout contract for the explicit opposing-triangle vertex order and separated bridge layer.
 - [x] Reassess Project Reclaim’s first node for Lake and Mendocino County field programs rather than global-only placement.
 - [x] Recommend a hardened ARCHANGEL operating system and image choice for the London control-plane host.
 - [x] Update Project Reclaim to a distinct Oregon field-program node serving Lake and Mendocino County, separate from Root-Gate.
