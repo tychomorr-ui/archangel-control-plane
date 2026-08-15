@@ -63,3 +63,6 @@
 - [x] Resolve the missing London bootstrap file, transfer the reviewed launch script safely, and verify the localhost-only baseline service.
 - [x] Record the verified London host bootstrap evidence in a durable operational artifact.
 - [x] Add a reusable post-bootstrap verification script and checklist for ARCHANGEL baseline hosts.
+- [x] Assess the Universal Truth ARCHANGEL/v0 handshake contract against the deployed observe-only baseline.
+- [x] Define a sovereign capability-claim profile that distinguishes proven functions, planned functions, and unavailable functions.
+- [x] Design a phased, least-privilege integration path for public-key enrollment and signed-status receipts without storing operator private keys.
