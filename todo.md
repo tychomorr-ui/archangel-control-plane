@@ -66,3 +66,7 @@
 - [x] Assess the Universal Truth ARCHANGEL/v0 handshake contract against the deployed observe-only baseline.
 - [x] Define a sovereign capability-claim profile that distinguishes proven functions, planned functions, and unavailable functions.
 - [x] Design a phased, least-privilege integration path for public-key enrollment and signed-status receipts without storing operator private keys.
+- [x] Define the authoritative terminal-only private mesh architecture for all declared Lightsail nodes around ARCHANGEL.
+- [x] Define the shared signed-status and enrollment protocol for all declared nodes without remote execution authority.
+- [x] Prepare audited terminal bootstrap and enrollment materials for full-fleet rollout after node-console access is available.
+- [x] Add terminal-only signed admission, hub peer-rendering, and explicit node-activation materials for the private mesh.
