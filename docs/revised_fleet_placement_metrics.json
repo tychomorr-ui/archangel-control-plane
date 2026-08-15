@@ -1,0 +1,77 @@
+{
+  "method": "Haversine distance between representative city-centre coordinates; not an RTT or legal-residency estimate.",
+  "current_fleet": {
+    "Sovereign Provenance Console": [
+      40.4168,
+      -3.7038
+    ],
+    "ARCHANGEL": [
+      51.5072,
+      -0.1276
+    ],
+    "XinUS-Clarity": [
+      53.3498,
+      -6.2603
+    ],
+    "Tesseract-A": [
+      50.1109,
+      8.6821
+    ],
+    "KEIRA": [
+      -23.5505,
+      -46.6333
+    ],
+    "Monarch-OS": [
+      1.3521,
+      103.8198
+    ],
+    "Project Reclaim": [
+      45.5152,
+      -122.6784
+    ]
+  },
+  "candidate_summary": [
+    {
+      "candidate": "Root-Gate \u00b7 N. Virginia",
+      "mean_distance_km": 7272,
+      "minimum_separation_km": 3778,
+      "closest_current_site": "Project Reclaim",
+      "maximum_separation_km": 15538
+    },
+    {
+      "candidate": "IWA Sage \u00b7 Canada Central",
+      "mean_distance_km": 6867,
+      "minimum_separation_km": 3766,
+      "closest_current_site": "Project Reclaim",
+      "maximum_separation_km": 14799
+    },
+    {
+      "candidate": "Resonate Earth \u00b7 Sydney",
+      "mean_distance_km": 14340,
+      "minimum_separation_km": 6306,
+      "closest_current_site": "Monarch-OS",
+      "maximum_separation_km": 17685
+    },
+    {
+      "candidate": "Future \u00b7 Tokyo",
+      "mean_distance_km": 10126,
+      "minimum_separation_km": 5311,
+      "closest_current_site": "Monarch-OS",
+      "maximum_separation_km": 18537
+    },
+    {
+      "candidate": "Future \u00b7 Mumbai",
+      "mean_distance_km": 8462,
+      "minimum_separation_km": 3904,
+      "closest_current_site": "Monarch-OS",
+      "maximum_separation_km": 13774
+    },
+    {
+      "candidate": "Future \u00b7 Stockholm",
+      "mean_distance_km": 5032,
+      "minimum_separation_km": 1187,
+      "closest_current_site": "Tesseract-A",
+      "maximum_separation_km": 10927
+    }
+  ]
+}

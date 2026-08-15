@@ -28,6 +28,8 @@ DECLARED_NODES = {
     "tesseract-a": {"address": "10.42.0.15/32", "role": "recovery-and-mirror"},
     "keira": {"address": "10.42.0.16/32", "role": "intelligence-analysis"},
     "project-reclaim": {"address": "10.42.0.17/32", "role": "field-activation"},
+    "iwa-sage": {"address": "10.42.0.18/32", "role": "indigenous-wellness-alliance"},
+    "resonate-earth": {"address": "10.42.0.19/32", "role": "planetary-witness"},
 }
 
 

@@ -70,3 +70,12 @@
 - [x] Define the shared signed-status and enrollment protocol for all declared nodes without remote execution authority.
 - [x] Prepare audited terminal bootstrap and enrollment materials for full-fleet rollout after node-console access is available.
 - [x] Add terminal-only signed admission, hub peer-rendering, and explicit node-activation materials for the private mesh.
+- [x] Reconcile the active fleet registry with the Spain, London, Ireland, Frankfurt, São Paulo, Singapore, and Oregon instances now in service.
+- [x] Recalculate and recommend the strategic Root-Gate placement after the Oregon host deletion.
+- [x] Define initial outer-circle placement and role boundaries for IWA Sage and Resonate Earth.
+- [x] Revise the topology and terminal mesh package to reflect the updated fleet before live enrollment.
+- [x] Support the active Debian-based Monarch-OS node in the terminal-only private-mesh preparation path.
+- [x] Reconcile all terminal mesh scripts and admission allow-lists with the revised fleet naming and role contract, then rerun full static validation and regression tests.
+- [x] Run and document an isolated end-to-end admission-flow test using revised fleet identities, including the planned N. Virginia Root-Gate and Debian Monarch-OS assumptions.
+- [x] Add and document a dedicated scripted validation of the Debian-compatible Monarch-OS preparation path.
+- [x] Confirm the durable Debian validation record includes the exact fixture command and current regression evidence.

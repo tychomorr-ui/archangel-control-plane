@@ -6,6 +6,8 @@ export const NODE_IDS = [
   "tesseract-a",
   "keira",
   "project-reclaim",
+  "iwa-sage",
+  "resonate-earth",
 ] as const;
 
 export type NodeId = (typeof NODE_IDS)[number];
@@ -15,7 +17,7 @@ export type FleetNodeDefinition = {
   name: string;
   region: string;
   role: string;
-  cluster: "Alpha" | "Beta" | "Bridge";
+  cluster: "Alpha" | "Beta" | "Bridge" | "Outer";
   declaredState: "Declared running" | "Planned deployment";
   fingerprint: string;
 };
@@ -24,17 +26,17 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "root-gate",
     name: "Root-Gate",
-    region: "Oregon · us-west-2",
+    region: "N. Virginia · us-east-1 · planned rebuild",
     role: "Sovereign identity · authority anchor",
     cluster: "Alpha",
-    declaredState: "Declared running",
+    declaredState: "Planned deployment",
     fingerprint: "Pending secure enrollment",
   },
   {
     id: "tesseract-terminus",
     name: "Tesseract-Terminus",
     region: "Spain · eu-south-2 · Sovereign Provenance Console",
-    role: "Provenance, anchoring · sovereign attestation",
+    role: "Sovereign Provenance Console · provenance, anchoring · sovereign attestation",
     cluster: "Alpha",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -52,7 +54,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     id: "kether-gate",
     name: "Kether-Gate",
     region: "Singapore · ap-southeast-1",
-    role: "Monarch OS · sovereign operating-system layer",
+    role: "Monarch-OS · sovereign operating-system layer",
     cluster: "Beta",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -81,6 +83,24 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     region: "Oregon · us-west-2 · Lake & Mendocino field node",
     role: "Field activation · recovery and real-world impact layer",
     cluster: "Bridge",
+    declaredState: "Declared running",
+    fingerprint: "Pending secure enrollment",
+  },
+  {
+    id: "iwa-sage",
+    name: "IWA Sage",
+    region: "Canada Central · ca-central-1 · planned outer-circle node",
+    role: "Indigenous Wellness Alliance · community wellness and service layer",
+    cluster: "Outer",
+    declaredState: "Planned deployment",
+    fingerprint: "Enrollment not initiated",
+  },
+  {
+    id: "resonate-earth",
+    name: "Resonate Earth",
+    region: "Sydney · ap-southeast-2 · planned outer-circle node",
+    role: "Planetary witness · public explanation and optional evidence layer",
+    cluster: "Outer",
     declaredState: "Planned deployment",
     fingerprint: "Enrollment not initiated",
   },
@@ -99,6 +119,10 @@ export const TOPOLOGY_LAYOUT_CONTRACT = {
     { id: "tesseract-a", tone: "beta", position: "beta-tesseract-a" },
     { id: "keira", tone: "beta", position: "beta-keira" },
     { id: "project-reclaim", tone: "bridge", position: "bridge-reclaim" },
+  ],
+  outerCircle: [
+    { id: "iwa-sage", placement: "north-american-community" },
+    { id: "resonate-earth", placement: "south-pacific-witness" },
   ],
   spacing: {
     mobileMinCanvasHeightPx: 900,

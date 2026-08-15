@@ -14,12 +14,19 @@ describe("ARCHANGEL fleet contract", () => {
       "Tesseract-A",
       "KEIRA",
       "Project Reclaim",
+      "IWA Sage",
+      "Resonate Earth",
     ]);
     expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
       cluster: "Bridge",
-      declaredState: "Planned deployment",
+      declaredState: "Declared running",
       region: "Oregon · us-west-2 · Lake & Mendocino field node",
     });
+    expect(FLEET_NODES.find(node => node.id === "root-gate")).toMatchObject({
+      region: "N. Virginia · us-east-1 · planned rebuild",
+      declaredState: "Planned deployment",
+    });
+    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth"]);
   });
 
   it("preserves the explicit two-triangle vertex order and bridge clearance contract", () => {

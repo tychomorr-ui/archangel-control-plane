@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ARCHANGEL private-mesh node preparation.
-# Run once on an authorized Ubuntu 24 Lightsail node. It creates node-owned keys
+# Run once on an authorized Ubuntu 24 or Debian 12+ Lightsail node. It creates node-owned keys
 # and a disabled private-only signed-status service. It does not create a public
 # listener, join a mesh, grant remote shell access, or execute remote commands.
 
@@ -18,6 +18,7 @@ readonly STATUS_PORT="8787"
 node_id=""
 node_role=""
 overlay_address=""
+os_release_file="/etc/os-release"
 
 usage() {
   cat <<'EOF'
@@ -38,6 +39,7 @@ while [[ $# -gt 0 ]]; do
     --node-id) node_id="${2:-}"; shift 2 ;;
     --node-role) node_role="${2:-}"; shift 2 ;;
     --overlay-address) overlay_address="${2:-}"; shift 2 ;;
+    --validate-os-file) os_release_file="${2:-}"; shift 2 ;;
     --help|-h) usage; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; usage >&2; exit 2 ;;
   esac
@@ -47,17 +49,22 @@ require_root() {
   [[ "$(id -u)" -eq 0 ]] || { echo "Run with sudo or as root." >&2; exit 1; }
 }
 
-require_ubuntu_24() {
+require_supported_os() {
   # shellcheck disable=SC1091
-  source /etc/os-release
-  [[ "${ID:-}" == "ubuntu" && "${VERSION_ID:-}" == "24.04" ]] || {
-    echo "Expected Ubuntu 24.04; found ${PRETTY_NAME:-unknown}." >&2
-    exit 1
-  }
+  [[ -r "${os_release_file}" ]] || { echo "Unable to read operating-system release data." >&2; exit 1; }
+  source "${os_release_file}"
+  if [[ "${ID:-}" == "ubuntu" && "${VERSION_ID:-}" == "24.04" ]]; then
+    return
+  fi
+  if [[ "${ID:-}" == "debian" && "${VERSION_ID:-}" =~ ^(12|13)(\.|$) ]]; then
+    return
+  fi
+  echo "Expected Ubuntu 24.04 or Debian 12+; found ${PRETTY_NAME:-unknown}." >&2
+  exit 1
 }
 
 validate_inputs() {
-  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|keira|project-reclaim)$ ]] || {
+  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|keira|project-reclaim|iwa-sage|resonate-earth)$ ]] || {
     echo "Node ID is not in the declared ARCHANGEL registry." >&2
     exit 2
   }
@@ -307,8 +314,13 @@ EOF
 }
 
 main() {
+  if [[ "${os_release_file}" != "/etc/os-release" ]]; then
+    require_supported_os
+    echo "Supported ARCHANGEL node operating system: ${PRETTY_NAME:-unknown}."
+    return
+  fi
   require_root
-  require_ubuntu_24
+  require_supported_os
   validate_inputs
   install_dependencies
   create_service_identity

@@ -2,7 +2,7 @@
 
 ## Purpose and Boundary
 
-This runbook activates the private control mesh described in `ARCHANGEL_PRIVATE_MESH_AUTHORITATIVE_DESIGN.md`. It is designed for the existing Ubuntu 24 Lightsail fleet and is entirely terminal-driven. It establishes encrypted transport and read-only signed status; it does **not** enable remote execution, a public API, browser-held administrator keys, or automatic cross-node application access.
+This runbook activates the private control mesh described in `ARCHANGEL_PRIVATE_MESH_AUTHORITATIVE_DESIGN.md`. It is designed for the existing mixed Ubuntu 24 and Debian 12+ Lightsail fleet and is entirely terminal-driven. It establishes encrypted transport and read-only signed status; it does **not** enable remote execution, a public API, browser-held administrator keys, or automatic cross-node application access.
 
 The private mesh is a hub-and-spoke control overlay. London hosts the hub at `10.42.0.1`; every declared node receives its own `/32` address and can initially reach only the hub through the tunnel.
 
@@ -19,6 +19,8 @@ The following conditions are mandatory. The public IP addresses used in Lightsai
 | Tesseract-A | `10.42.0.15/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id tesseract-a --node-role "recovery-and-mirror" --overlay-address 10.42.0.15/32` |
 | KEIRA | `10.42.0.16/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id keira --node-role "intelligence-analysis" --overlay-address 10.42.0.16/32` |
 | Project Reclaim | `10.42.0.17/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id project-reclaim --node-role "field-activation" --overlay-address 10.42.0.17/32` |
+| IWA Sage | `10.42.0.18/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id iwa-sage --node-role "indigenous-wellness-alliance" --overlay-address 10.42.0.18/32` |
+| Resonate Earth | `10.42.0.19/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id resonate-earth --node-role "planetary-witness" --overlay-address 10.42.0.19/32` |
 
 ## Stage 1: Prepare London
 
@@ -28,7 +30,7 @@ The Lightsail console firewall change is manual and deliberate: add **one IPv4 c
 
 ## Stage 2: Prepare Every Node
 
-Run the row-specific node-bootstrap command in the table on each node. Each invocation creates two node-owned private keys: a WireGuard key for encrypted transport and an Ed25519 key for receipt signing. It prints the location of a public enrollment manifest. Copy **only** that manifest from each node back through the administrative terminal channel.
+Run the row-specific node-bootstrap command in the table on each node. Root-Gate is first rebuilt in N. Virginia before its row is run. Monarch-OS is the active Debian host and follows the same node bootstrap; all other current nodes are Ubuntu. Each invocation creates two node-owned private keys: a WireGuard key for encrypted transport and an Ed25519 key for receipt signing. It prints the location of a public enrollment manifest. Copy **only** that manifest from each node back through the administrative terminal channel.
 
 The node bootstrap intentionally leaves both `wg-archangel` and `archangel-status-agent` disabled. This permits the full identity review before any node joins the transport mesh.
 

@@ -4,7 +4,7 @@
 
 ARCHANGEL will be built as a **private, terminal-managed control mesh**, not as a public fleet API and not as a browser-held key registry. The correct first topology is a **hub-and-spoke WireGuard overlay**: the London ARCHANGEL host is the private coordination hub, while every declared Lightsail node is a peer with one encrypted, authenticated path to that hub.
 
-This is deliberately *not* a flat any-to-any network. A secure mesh is an identity-and-policy system, not a rule that every machine may freely reach every other machine. Hub-and-spoke gives every node a direct private relationship with ARCHANGEL while avoiding the unnecessary peer explosion, broad routing, and lateral-movement risk of a seven-node full mesh. Direct node-to-node application paths can be introduced later only where a named role requires them.
+This is deliberately *not* a flat any-to-any network. A secure mesh is an identity-and-policy system, not a rule that every machine may freely reach every other machine. Hub-and-spoke gives every node a direct private relationship with ARCHANGEL while avoiding the unnecessary peer explosion, broad routing, and lateral-movement risk of a 10-node full mesh. Direct node-to-node application paths can be introduced later only where a named role requires them.
 
 > **The sovereign rule:** every node owns its private keys; ARCHANGEL stores public identities, public WireGuard keys, receipt hashes, and audit evidence only. No remote shell, command queue, credential vault, or public enrollment endpoint is part of this design.
 
@@ -14,7 +14,7 @@ WireGuard gives each peer a distinct private/public keypair, a private interface
 
 | Design choice | Why it is selected | What it excludes |
 |---|---|---|
-| **London as hub** | One coordination endpoint, one audit point, one status collector, and seven simple peer relationships. | Pairwise peer configuration among every node. |
+| **London as hub** | One coordination endpoint, one audit point, one status collector, and one simple peer relationship per node. | Pairwise peer configuration among every node. |
 | **WireGuard `wg-archangel` overlay** | Encrypted and authenticated private transport, configured entirely from terminal-managed files. | Public status and enrollment APIs. |
 | **Central status pull over the overlay** | ARCHANGEL polls a read-only node agent at a private tunnel address. This is the least complex full-fleet operation model. | Inbound public listeners on spokes, browser polling, or node execution. |
 | **Ed25519 signed status receipts** | The receipt remains independently attributable to the node even inside the encrypted overlay. | “HTTP 200 means healthy” claims. |
@@ -28,19 +28,21 @@ The private overlay uses a dedicated control-plane range. These addresses are no
 | Private address | Peer | Region | Role in the mesh |
 |---|---|---|---|
 | `10.42.0.1/32` | ARCHANGEL | London · `eu-west-2` | Private hub, receipt collector, audit writer, policy verifier |
-| `10.42.0.11/32` | Root-Gate | Oregon · `us-west-2` | Sovereign identity and enrollment authorization root |
-| `10.42.0.12/32` | Tesseract-Terminus | Spain · `eu-south-2` | Provenance, anchoring, and attestation receipt role |
+| `10.42.0.11/32` | Root-Gate | N. Virginia · `us-east-1` · planned rebuild | Sovereign identity and enrollment authorization root |
+| `10.42.0.12/32` | Sovereign Provenance Console | Spain · `eu-south-2` | Tesseract-Terminus provenance, anchoring, and attestation receipt role |
 | `10.42.0.13/32` | XinUS-Clarity | Ireland · `eu-west-1` | Flagship application-layer status role |
-| `10.42.0.14/32` | Kether-Gate | Singapore · `ap-southeast-1` | Monarch OS and operating-system-layer status role |
+| `10.42.0.14/32` | Monarch-OS | Singapore · `ap-southeast-1` | Kether-Gate / Monarch OS operating-system-layer status role |
 | `10.42.0.15/32` | Tesseract-A | Frankfurt · `eu-central-1` | Recovery and mirror status role |
 | `10.42.0.16/32` | KEIRA | São Paulo · `sa-east-1` | Intelligence-node status role |
 | `10.42.0.17/32` | Project Reclaim | Oregon · `us-west-2` | Field-program status role, separate from Root-Gate |
+| `10.42.0.18/32` | IWA Sage | Canada Central · `ca-central-1` · planned | Indigenous Wellness Alliance community wellness and service role |
+| `10.42.0.19/32` | Resonate Earth | Sydney · `ap-southeast-2` · planned | Planetary witness and public-explanation evidence role |
 
 Each spoke receives only `10.42.0.1/32` as a permitted initial destination. The hub maintains a distinct peer entry for each spoke, mapped to only that spoke’s `/32`. This enforces a private **control star**: every node can communicate with ARCHANGEL, but no node can route to another node merely because it joined the overlay.
 
 ## Terminal-Only Deployment Boundary
 
-The deployment uses standard Ubuntu packages, root-owned configuration files, systemd, and command-line verification. WireGuard keys are created in the terminal on the peer that owns them; the private key remains in a root-readable file on that peer. Ubuntu documents `/etc/wireguard/<interface>.conf` as the normal configuration location and `wg-quick` as the lifecycle tool for the interface.[4]
+The deployment uses standard Ubuntu 24 and Debian 12+ packages, root-owned configuration files, systemd, and command-line verification. WireGuard keys are created in the terminal on the peer that owns them; the private key remains in a root-readable file on that peer. Ubuntu documents `/etc/wireguard/<interface>.conf` as the normal configuration location and `wg-quick` as the lifecycle tool for the interface.[4]
 
 | Component | Runs where | Listens where | Authority |
 |---|---|---|---|
@@ -98,17 +100,18 @@ All declared nodes are part of the architecture. The order below is an operation
 
 | Stage | Nodes | Objective | Must be true before continuing |
 |---|---|---|---|
-| 1 | ARCHANGEL, Root-Gate | Establish hub and identity authority | London baseline remains observe-only except the newly reviewed private collector; Root-Gate authorization key is present and public fingerprint is registered. |
-| 2 | Tesseract-Terminus, XinUS-Clarity | Validate Alpha’s provenance and application receipts | Two independently signed and fresh receipts verify over the private overlay. |
-| 3 | Kether-Gate, Tesseract-A, KEIRA | Complete Beta’s operating-system, recovery, and intelligence receipt paths | Each node joins with a distinct keypair and correct declared role. |
+| 1 | ARCHANGEL, rebuilt Root-Gate | Establish hub and identity authority | London baseline remains observe-only except the newly reviewed private collector; the N. Virginia Root-Gate authorization key is present and its public fingerprint is registered. |
+| 2 | Sovereign Provenance Console, XinUS-Clarity | Validate Alpha’s provenance and application receipts | Two independently signed and fresh receipts verify over the private overlay. |
+| 3 | Monarch-OS, Tesseract-A, KEIRA | Complete Beta’s operating-system, recovery, and intelligence receipt paths | Each node joins with a distinct keypair and correct declared role; Monarch-OS follows the Debian-compatible node path. |
 | 4 | Project Reclaim | Join the field-program bridge as its own Oregon host | It has a distinct `10.42.0.17` peer, keypair, receipt stream, and no inherited Root-Gate authority. |
-| 5 | All seven nodes | Enforce steady-state collection and rotation | Every console state is tied to a current verified receipt or explicitly shown as stale/pending. |
+| 5 | IWA Sage, Resonate Earth | Join the role-specific outer circle after their distinct applications are deployed | Each peer remains optional to core health and receives only its named registry and evidence contracts. |
+| 6 | All 10 nodes | Enforce steady-state collection and rotation | Every console state is tied to a current verified receipt or explicitly shown as stale/pending. |
 
 ## What “Connected Apps and Roles” Means
 
 The first live layer is **identity, transport, registry, and evidence**. It makes the ecosystem real in the way that matters first: ARCHANGEL knows which node is speaking, whether it is currently reporting, what role it declares, and whether the declaration verifies. It does not silently become a universal command center.
 
-Once all seven receipt paths verify, individual applications may be connected through a registry of explicit contracts: an application name, owning node, private address, protocol, audience, data classification, and a narrow allow-list. The first permitted cross-node link should be a read-only, role-specific data contract—for example, a signed provenance receipt from Tesseract-Terminus to ARCHANGEL—not blanket app-to-app reachability.
+Once the seven current receipt paths verify, and later as the three planned nodes join, individual applications may be connected through a registry of explicit contracts: an application name, owning node, private address, protocol, audience, data classification, and a narrow allow-list. The first permitted cross-node link should be a read-only, role-specific data contract—for example, a signed provenance receipt from Tesseract-Terminus to ARCHANGEL—not blanket app-to-app reachability.
 
 ## Non-Negotiable Safety Boundary
 

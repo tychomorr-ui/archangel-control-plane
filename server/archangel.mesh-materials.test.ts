@@ -13,6 +13,8 @@ const nodeAdmission = readFileSync(join(launchDirectory, "create-archangel-node-
 const hubAdmissionInstaller = readFileSync(join(launchDirectory, "install-archangel-node-admission.py"), "utf8");
 const hubActivation = readFileSync(join(launchDirectory, "activate-archangel-mesh-hub.sh"), "utf8");
 const nodeActivation = readFileSync(join(launchDirectory, "activate-archangel-node-peer.sh"), "utf8");
+const revisedAdmissionTest = readFileSync(join(projectDirectory, "scripts", "verify_revised_mesh_admission.py"), "utf8");
+const debianPreparationTest = readFileSync(join(projectDirectory, "scripts", "verify_debian_monarch_preparation.sh"), "utf8");
 
 describe("ARCHANGEL terminal mesh materials", () => {
   it("prepares the London hub without activating the overlay or changing observe-only authority", () => {
@@ -26,6 +28,8 @@ describe("ARCHANGEL terminal mesh materials", () => {
   it("makes every node identity local, status-only, and explicitly disabled before enrollment", () => {
     expect(nodeBootstrap).toContain('status-ed25519.key.pem');
     expect(nodeBootstrap).toContain('wg-archangel.key');
+    expect(nodeBootstrap).toContain('"${ID:-}" == "debian"');
+    expect(nodeBootstrap).toContain("Expected Ubuntu 24.04 or Debian 12+");
     expect(nodeBootstrap).toContain('ThreadingHTTPServer((BIND_ADDRESS, PORT), Handler)');
     expect(nodeBootstrap).toContain('if self.path != "/v1/status"');
     expect(nodeBootstrap).toContain('"openssl", "pkeyutl", "-sign", "-rawin", "-inkey", PRIVATE_KEY, "-in", message.name');
@@ -46,6 +50,10 @@ describe("ARCHANGEL terminal mesh materials", () => {
     expect(rootAuthorityBootstrap).toContain("admission-ed25519.key.pem");
     expect(rootAuthorityBootstrap).not.toContain("listen-port");
     expect(nodeAdmission).toContain('"type": "node.admission"');
+    expect(nodeAdmission).toContain('"root-gate": {"address": "10.42.0.11/32", "role": "sovereign-identity"}');
+    expect(nodeAdmission).toContain('"kether-gate": {"address": "10.42.0.14/32", "role": "monarch-os"}');
+    expect(nodeAdmission).toContain('"iwa-sage": {"address": "10.42.0.18/32", "role": "indigenous-wellness-alliance"}');
+    expect(nodeAdmission).toContain('"resonate-earth": {"address": "10.42.0.19/32", "role": "planetary-witness"}');
     expect(nodeAdmission).toContain("valid-for-minutes must be between 1 and 60");
     expect(nodeAdmission).toContain('"openssl", "pkeyutl", "-sign", "-rawin", "-inkey", str(private_key), "-in", message.name');
     expect(hubAdmissionInstaller).toContain('"type") != "node.admission.ack"');
@@ -61,5 +69,20 @@ describe("ARCHANGEL terminal mesh materials", () => {
     expect(nodeActivation).toContain("AllowedIPs = 10.42.0.1/32");
     expect(nodeActivation).toContain("systemctl enable --now archangel-status-agent.service");
     expect(nodeActivation).not.toContain("AllowedIPs = 0.0.0.0/0");
+  });
+
+  it("exercises the revised Root-Gate, Monarch-OS, and outer-circle admission identities without a live host", () => {
+    expect(revisedAdmissionTest).toContain('exercise("root-gate", "sovereign-identity", "10.42.0.11/32"');
+    expect(revisedAdmissionTest).toContain('exercise("kether-gate", "monarch-os", "10.42.0.14/32"');
+    expect(revisedAdmissionTest).toContain('exercise("iwa-sage", "indigenous-wellness-alliance", "10.42.0.18/32"');
+    expect(revisedAdmissionTest).toContain('exercise("resonate-earth", "planetary-witness", "10.42.0.19/32"');
+    expect(revisedAdmissionTest).toContain("shutil.rmtree(workdir, ignore_errors=True)");
+  });
+
+  it("has an isolated Debian 12 preparation-path fixture for the active Monarch-OS host", () => {
+    expect(nodeBootstrap).toContain("--validate-os-file");
+    expect(nodeBootstrap).toContain("Supported ARCHANGEL node operating system");
+    expect(debianPreparationTest).toContain('VERSION_ID="12"');
+    expect(debianPreparationTest).toContain("Debian Monarch-OS preparation-path validation passed.");
   });
 });
