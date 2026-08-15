@@ -18,7 +18,7 @@ export const meshNodes = mysqlTable("mesh_nodes", {
   displayName: varchar("displayName", { length: 128 }).notNull(),
   region: varchar("region", { length: 128 }).notNull(),
   role: varchar("role", { length: 256 }).notNull(),
-  cluster: mysqlEnum("cluster", ["Alpha", "Beta", "Bridge"]).notNull(),
+  cluster: mysqlEnum("cluster", ["Alpha", "Beta", "Bridge", "Outer"]).notNull(),
   publicKeyFingerprint: varchar("publicKeyFingerprint", { length: 256 }).notNull(),
   enrollmentStatus: mysqlEnum("enrollmentStatus", ["pending", "enrolled", "revoked"]).default("pending").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

@@ -4,7 +4,7 @@ import { Route, Switch } from "wouter";
 import ArchangelLayout from "./components/ArchangelLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { AlertsPage, AuditPage, IntentWorkflowPage, NodeDetailPage, RegistryPage, TopologyPage } from "./pages/ArchangelPages";
+import { AlertsPage, AuditPage, CommandCenterPage, IntentWorkflowPage, NodeDetailPage, RegistryPage, TopologyPage } from "./pages/ArchangelPages";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 
@@ -18,6 +18,7 @@ function Router() {
       <Route path="/">{() => <ConsoleRoute><Home /></ConsoleRoute>}</Route>
       <Route path="/nodes/:nodeId">{() => <ConsoleRoute><NodeDetailPage /></ConsoleRoute>}</Route>
       <Route path="/topology">{() => <ConsoleRoute><TopologyPage /></ConsoleRoute>}</Route>
+      <Route path="/command-center">{() => <ConsoleRoute><CommandCenterPage /></ConsoleRoute>}</Route>
       <Route path="/intents">{() => <ConsoleRoute><IntentWorkflowPage /></ConsoleRoute>}</Route>
       <Route path="/audit">{() => <ConsoleRoute><AuditPage /></ConsoleRoute>}</Route>
       <Route path="/alerts">{() => <ConsoleRoute><AlertsPage /></ConsoleRoute>}</Route>

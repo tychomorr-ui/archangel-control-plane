@@ -89,6 +89,7 @@ def main() -> None:
             exercise("kether-gate", "monarch-os", "10.42.0.14/32", workdir, root_private, root_public),
             exercise("iwa-sage", "indigenous-wellness-alliance", "10.42.0.18/32", workdir, root_private, root_public),
             exercise("resonate-earth", "planetary-witness", "10.42.0.19/32", workdir, root_private, root_public),
+            exercise("exitus-lens", "read-only-evidence-inspection", "10.42.0.20/32", workdir, root_private, root_public),
         ]
         print(json.dumps({"verified": True, "identities": results}, separators=(",", ":")))
     finally:

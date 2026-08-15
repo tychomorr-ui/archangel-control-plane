@@ -8,6 +8,7 @@ import {
   ChevronRight,
   CircleUserRound,
   ClipboardList,
+  Command,
   DatabaseZap,
   LogOut,
   Orbit,
@@ -21,6 +22,7 @@ import { useLocation } from "wouter";
 const navigation = [
   { label: "Fleet overview", path: "/", icon: Orbit },
   { label: "Mesh topology", path: "/topology", icon: Cable },
+  { label: "Command Center", path: "/command-center", icon: Command },
   { label: "Intent workflow", path: "/intents", icon: ClipboardList },
   { label: "Audit ledger", path: "/audit", icon: ScanLine },
   { label: "Alerts", path: "/alerts", icon: BellRing },
@@ -48,7 +50,7 @@ function SignInGate() {
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-cyan-200/60">Protected operator console</p>
           <h2 className="mt-4 font-display text-4xl font-medium leading-tight text-white sm:text-5xl">Enter the control plane.</h2>
           <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
-            Fleet state, receipts, registry detail, and intent proposals are visible only to authenticated operators. Sign in to open the six-node mesh.
+            Fleet state, signed receipts, protected command drafts, registry detail, and audit records are visible only to authenticated operators.
           </p>
           <Button onClick={startLogin} className="mt-9 h-12 w-full rounded-xl bg-cyan-200 font-display tracking-[0.1em] text-slate-950 hover:bg-cyan-100">
             Continue with Manus

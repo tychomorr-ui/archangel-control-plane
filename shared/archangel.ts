@@ -8,6 +8,7 @@ export const NODE_IDS = [
   "project-reclaim",
   "iwa-sage",
   "resonate-earth",
+  "exitus-lens",
 ] as const;
 
 export type NodeId = (typeof NODE_IDS)[number];
@@ -26,10 +27,10 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "root-gate",
     name: "Root-Gate",
-    region: "N. Virginia · us-east-1 · planned rebuild",
+    region: "N. Virginia · us-east-1 · ROOT_SOVEREIGN-IDENTITY",
     role: "Sovereign identity · authority anchor",
     cluster: "Alpha",
-    declaredState: "Planned deployment",
+    declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
   },
   {
@@ -52,9 +53,9 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   },
   {
     id: "kether-gate",
-    name: "Kether-Gate",
-    region: "Singapore · ap-southeast-1",
-    role: "Monarch-OS · sovereign operating-system layer",
+    name: "Monarch-OS",
+    region: "Singapore · ap-southeast-1 · Debian",
+    role: "Kether-Gate logical role · sovereign operating-system layer",
     cluster: "Beta",
     declaredState: "Declared running",
     fingerprint: "Pending secure enrollment",
@@ -89,17 +90,26 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "iwa-sage",
     name: "IWA Sage",
-    region: "Canada Central · ca-central-1 · planned outer-circle node",
+    region: "Canada Central · ca-central-1 · Montreal · IWA-SAGE-APP",
     role: "Indigenous Wellness Alliance · community wellness and service layer",
     cluster: "Outer",
-    declaredState: "Planned deployment",
-    fingerprint: "Enrollment not initiated",
+    declaredState: "Declared running",
+    fingerprint: "Pending secure enrollment",
   },
   {
     id: "resonate-earth",
     name: "Resonate Earth",
     region: "Sydney · ap-southeast-2 · planned outer-circle node",
     role: "Planetary witness · public explanation and optional evidence layer",
+    cluster: "Outer",
+    declaredState: "Planned deployment",
+    fingerprint: "Enrollment not initiated",
+  },
+  {
+    id: "exitus-lens",
+    name: "Exitus Lens",
+    region: "Tokyo · ap-northeast-1 · planned outer-circle node",
+    role: "Read-only visual evidence and signed-summary inspection layer",
     cluster: "Outer",
     declaredState: "Planned deployment",
     fingerprint: "Enrollment not initiated",
@@ -123,6 +133,7 @@ export const TOPOLOGY_LAYOUT_CONTRACT = {
   outerCircle: [
     { id: "iwa-sage", placement: "north-american-community" },
     { id: "resonate-earth", placement: "south-pacific-witness" },
+    { id: "exitus-lens", placement: "north-pacific-evidence" },
   ],
   spacing: {
     mobileMinCanvasHeightPx: 900,

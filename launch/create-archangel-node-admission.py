@@ -30,6 +30,7 @@ DECLARED_NODES = {
     "project-reclaim": {"address": "10.42.0.17/32", "role": "field-activation"},
     "iwa-sage": {"address": "10.42.0.18/32", "role": "indigenous-wellness-alliance"},
     "resonate-earth": {"address": "10.42.0.19/32", "role": "planetary-witness"},
+    "exitus-lens": {"address": "10.42.0.20/32", "role": "read-only-evidence-inspection"},
 }
 
 

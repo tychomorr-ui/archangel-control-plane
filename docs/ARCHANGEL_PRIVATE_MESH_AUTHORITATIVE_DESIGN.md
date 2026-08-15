@@ -37,6 +37,7 @@ The private overlay uses a dedicated control-plane range. These addresses are no
 | `10.42.0.17/32` | Project Reclaim | Oregon · `us-west-2` | Field-program status role, separate from Root-Gate |
 | `10.42.0.18/32` | IWA Sage | Canada Central · `ca-central-1` · planned | Indigenous Wellness Alliance community wellness and service role |
 | `10.42.0.19/32` | Resonate Earth | Sydney · `ap-southeast-2` · planned | Planetary witness and public-explanation evidence role |
+| `10.42.0.20/32` | Exitus Lens | Tokyo · `ap-northeast-1` · planned | Read-only visual evidence and signed-summary inspection role |
 
 Each spoke receives only `10.42.0.1/32` as a permitted initial destination. The hub maintains a distinct peer entry for each spoke, mapped to only that spoke’s `/32`. This enforces a private **control star**: every node can communicate with ARCHANGEL, but no node can route to another node merely because it joined the overlay.
 

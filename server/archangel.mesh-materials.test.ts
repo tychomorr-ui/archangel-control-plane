@@ -54,6 +54,7 @@ describe("ARCHANGEL terminal mesh materials", () => {
     expect(nodeAdmission).toContain('"kether-gate": {"address": "10.42.0.14/32", "role": "monarch-os"}');
     expect(nodeAdmission).toContain('"iwa-sage": {"address": "10.42.0.18/32", "role": "indigenous-wellness-alliance"}');
     expect(nodeAdmission).toContain('"resonate-earth": {"address": "10.42.0.19/32", "role": "planetary-witness"}');
+    expect(nodeAdmission).toContain('"exitus-lens": {"address": "10.42.0.20/32", "role": "read-only-evidence-inspection"}');
     expect(nodeAdmission).toContain("valid-for-minutes must be between 1 and 60");
     expect(nodeAdmission).toContain('"openssl", "pkeyutl", "-sign", "-rawin", "-inkey", str(private_key), "-in", message.name');
     expect(hubAdmissionInstaller).toContain('"type") != "node.admission.ack"');
@@ -76,6 +77,7 @@ describe("ARCHANGEL terminal mesh materials", () => {
     expect(revisedAdmissionTest).toContain('exercise("kether-gate", "monarch-os", "10.42.0.14/32"');
     expect(revisedAdmissionTest).toContain('exercise("iwa-sage", "indigenous-wellness-alliance", "10.42.0.18/32"');
     expect(revisedAdmissionTest).toContain('exercise("resonate-earth", "planetary-witness", "10.42.0.19/32"');
+    expect(revisedAdmissionTest).toContain('exercise("exitus-lens", "read-only-evidence-inspection", "10.42.0.20/32"');
     expect(revisedAdmissionTest).toContain("shutil.rmtree(workdir, ignore_errors=True)");
   });
 

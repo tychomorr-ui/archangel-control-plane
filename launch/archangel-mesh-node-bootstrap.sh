@@ -64,7 +64,7 @@ require_supported_os() {
 }
 
 validate_inputs() {
-  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|keira|project-reclaim|iwa-sage|resonate-earth)$ ]] || {
+  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|keira|project-reclaim|iwa-sage|resonate-earth|exitus-lens)$ ]] || {
     echo "Node ID is not in the declared ARCHANGEL registry." >&2
     exit 2
   }

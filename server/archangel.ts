@@ -30,6 +30,39 @@ export const evidenceRecordSchema = z.object({
   summary: z.string().trim().min(8).max(500),
 });
 
+export const plainLanguageCommandSchema = z.object({
+  command: z.string().trim().min(24).max(900),
+});
+
+const plainCommandPattern = /^(deploy|restart|configuration promote|backup verify)\s+([a-z-]+)\s+scope="([^"\n]{8,300})"\s+risk=(low|moderate|high|critical)\s+rollback="([^"\n]{8,300})"\s+ttl=(15|30|60|120|240)m$/;
+const commandNodeAliases: Record<string, (typeof NODE_IDS)[number]> = {
+  "monarch-os": "kether-gate",
+  "sovereign-provenance-console": "tesseract-terminus",
+  "the-portal": "keira",
+  "root-sovereign-identity": "root-gate",
+  "iwa-sage-app": "iwa-sage",
+};
+
+export function parsePlainLanguageCommand(command: string) {
+  const normalized = command.trim().replace(/\s+/g, " ");
+  const match = normalized.match(plainCommandPattern);
+  if (!match) return null;
+  const [, operationType, suppliedNodeId, scope, risk, rollbackMethod, ttlMinutes] = match;
+  const forbiddenShellSyntax = /(;|&&|\|\||\||`|\$\(|\$\{|\n|\r|\b(?:sudo|curl|wget|bash|sh|rm|chmod|chown)\b)/i;
+  if (forbiddenShellSyntax.test(scope) || forbiddenShellSyntax.test(rollbackMethod)) return null;
+  const nodeId = commandNodeAliases[suppliedNodeId] ?? suppliedNodeId;
+  if (!NODE_IDS.includes(nodeId as (typeof NODE_IDS)[number])) return null;
+  return {
+    nodeId: nodeId as (typeof NODE_IDS)[number],
+    operationType: operationType as (typeof OPERATION_TYPES)[number],
+    scope,
+    risk: risk as "low" | "moderate" | "high" | "critical",
+    rollbackMethod,
+    expiresAt: new Date(Date.now() + Number(ttlMinutes) * 60_000),
+    normalized,
+  };
+}
+
 const pendingStatus = (nodeId: string) => ({
   nodeId,
   observedAt: null,
@@ -64,6 +97,40 @@ async function registryByNode() {
   const db = await getRequiredDb();
   const records = await db.select().from(meshNodes);
   return new Map(records.map(record => [record.nodeId, record]));
+}
+
+async function createIntentProposal(ctx: { user: { id: number } }, input: z.infer<typeof intentProposalSchema>) {
+  if (input.expiresAt.getTime() <= Date.now()) {
+    throw new TRPCError({ code: "BAD_REQUEST", message: "The proposal expiry must be in the future." });
+  }
+  const db = await getRequiredDb();
+  const node = FLEET_NODES.find(item => item.id === input.nodeId);
+  if (!node) throw new TRPCError({ code: "NOT_FOUND" });
+  const publicId = `int_${nanoid(12)}`;
+  const occurredAt = new Date();
+  const actorPseudonym = `operator-${ctx.user.id}`;
+  await db.insert(intents).values({
+    publicId,
+    nodeId: input.nodeId,
+    operationType: input.operationType,
+    scope: input.scope,
+    risk: input.risk,
+    rollbackMethod: input.rollbackMethod,
+    expiresAt: input.expiresAt,
+    state: "proposed",
+    createdBy: actorPseudonym,
+  });
+  await db.insert(auditEvents).values({
+    publicId: `aud_${nanoid(12)}`,
+    intentPublicId: publicId,
+    nodeId: input.nodeId,
+    eventType: "intent.proposed",
+    outcome: "pending",
+    actorPseudonym,
+    summary: `${input.operationType} proposed for ${node.name}; execution remains unavailable until an approval and a node-side policy gate both succeed.`,
+    occurredAt,
+  });
+  return { publicId, state: "proposed" as const };
 }
 
 export const archangelRouter = router({
@@ -121,38 +188,27 @@ export const archangelRouter = router({
     return db.select().from(intents).orderBy(desc(intents.createdAt)).limit(100);
   }),
 
+  commandPolicy: protectedProcedure.query(() => ({
+    version: "ARCHANGEL/1",
+    executionMode: "envelope-design-only" as const,
+    allowedOperations: OPERATION_TYPES,
+    prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution"],
+  })),
+
   proposeIntent: protectedProcedure.input(intentProposalSchema).mutation(async ({ ctx, input }) => {
-    if (input.expiresAt.getTime() <= Date.now()) {
-      throw new TRPCError({ code: "BAD_REQUEST", message: "The proposal expiry must be in the future." });
+    return createIntentProposal(ctx, input);
+  }),
+
+  draftPlainLanguageIntent: protectedProcedure.input(plainLanguageCommandSchema).mutation(async ({ ctx, input }) => {
+    const parsed = parsePlainLanguageCommand(input.command);
+    if (!parsed) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Command is not approved ARCHANGEL grammar. Use a named operation, declared node, quoted scope and rollback, risk, and an allowed TTL; arbitrary shell text is never accepted.",
+      });
     }
-    const db = await getRequiredDb();
-    const node = FLEET_NODES.find(item => item.id === input.nodeId);
-    if (!node) throw new TRPCError({ code: "NOT_FOUND" });
-    const publicId = `int_${nanoid(12)}`;
-    const occurredAt = new Date();
-    const actorPseudonym = `operator-${ctx.user.id}`;
-    await db.insert(intents).values({
-      publicId,
-      nodeId: input.nodeId,
-      operationType: input.operationType,
-      scope: input.scope,
-      risk: input.risk,
-      rollbackMethod: input.rollbackMethod,
-      expiresAt: input.expiresAt,
-      state: "proposed",
-      createdBy: actorPseudonym,
-    });
-    await db.insert(auditEvents).values({
-      publicId: `aud_${nanoid(12)}`,
-      intentPublicId: publicId,
-      nodeId: input.nodeId,
-      eventType: "intent.proposed",
-      outcome: "pending",
-      actorPseudonym,
-      summary: `${input.operationType} proposed for ${node.name}; execution remains unavailable until an approval and a node-side policy gate both succeed.`,
-      occurredAt,
-    });
-    return { publicId, state: "proposed" as const };
+    const { normalized: _normalized, ...proposal } = parsed;
+    return createIntentProposal(ctx, proposal);
   }),
 
   reviewIntent: protectedProcedure.input(intentReviewSchema).mutation(async ({ ctx, input }) => {

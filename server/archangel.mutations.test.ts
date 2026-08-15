@@ -92,4 +92,22 @@ describe("ARCHANGEL protected mutations", () => {
     ]);
     expect(state.storedAudit.every(event => ["pending", "accepted", "verified"].includes(event.outcome))).toBe(true);
   });
+
+  it("normalizes an approved plain-language command into the same protected proposal and audit path", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+
+    const proposal = await caller.draftPlainLanguageIntent({
+      command: 'backup verify tesseract-a scope="Verify the current mirror backup evidence." risk=low rollback="No mutation is made during verification." ttl=30m',
+    });
+
+    expect(proposal.state).toBe("proposed");
+    expect(state.storedIntents[0]).toMatchObject({ nodeId: "tesseract-a", operationType: "backup verify", risk: "low", state: "proposed" });
+    expect(state.storedAudit[0]).toMatchObject({ eventType: "intent.proposed", outcome: "pending" });
+    await expect(caller.draftPlainLanguageIntent({
+      command: 'restart tesseract-a scope="Restart service; rm -rf /" risk=critical rollback="No rollback provided here." ttl=30m',
+    })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    expect(state.storedIntents).toHaveLength(1);
+  });
 });

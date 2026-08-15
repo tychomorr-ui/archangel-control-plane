@@ -21,6 +21,7 @@ The following conditions are mandatory. The public IP addresses used in Lightsai
 | Project Reclaim | `10.42.0.17/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id project-reclaim --node-role "field-activation" --overlay-address 10.42.0.17/32` |
 | IWA Sage | `10.42.0.18/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id iwa-sage --node-role "indigenous-wellness-alliance" --overlay-address 10.42.0.18/32` |
 | Resonate Earth | `10.42.0.19/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id resonate-earth --node-role "planetary-witness" --overlay-address 10.42.0.19/32` |
+| Exitus Lens | `10.42.0.20/32` | `sudo bash archangel-mesh-node-bootstrap.sh --node-id exitus-lens --node-role "read-only-evidence-inspection" --overlay-address 10.42.0.20/32` |
 
 ## Stage 1: Prepare London
 

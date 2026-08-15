@@ -1,21 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { AUDIT_EVENT_TYPES, FLEET_NODES, OPERATION_TYPES, TOPOLOGY_LAYOUT_CONTRACT } from "../shared/archangel";
-import { archangelRouter, evidenceRecordSchema, intentProposalSchema, intentReviewSchema } from "./archangel";
+import { archangelRouter, evidenceRecordSchema, intentProposalSchema, intentReviewSchema, parsePlainLanguageCommand } from "./archangel";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
 describe("ARCHANGEL fleet contract", () => {
-  it("keeps the declared seven-node topology and its bridge layer intact", () => {
+  it("keeps the declared core, bridge, and outer-circle topology intact", () => {
     expect(FLEET_NODES.map(node => node.name)).toEqual([
       "Root-Gate",
       "Tesseract-Terminus",
       "XinUS-Clarity",
-      "Kether-Gate",
+      "Monarch-OS",
       "Tesseract-A",
       "KEIRA",
       "Project Reclaim",
       "IWA Sage",
       "Resonate Earth",
+      "Exitus Lens",
     ]);
     expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
       cluster: "Bridge",
@@ -23,10 +24,11 @@ describe("ARCHANGEL fleet contract", () => {
       region: "Oregon · us-west-2 · Lake & Mendocino field node",
     });
     expect(FLEET_NODES.find(node => node.id === "root-gate")).toMatchObject({
-      region: "N. Virginia · us-east-1 · planned rebuild",
-      declaredState: "Planned deployment",
+      region: "N. Virginia · us-east-1 · ROOT_SOVEREIGN-IDENTITY",
+      declaredState: "Declared running",
     });
-    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth"]);
+    expect(FLEET_NODES.find(node => node.id === "iwa-sage")).toMatchObject({ declaredState: "Declared running" });
+    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth", "exitus-lens"]);
   });
 
   it("preserves the explicit two-triangle vertex order and bridge clearance contract", () => {
@@ -62,6 +64,20 @@ describe("ARCHANGEL fleet contract", () => {
       expiresAt: new Date(Date.now() + 60_000),
       rollbackMethod: "No safe rollback is declared",
     })).toThrow();
+  });
+
+  it("normalizes only the approved plain-language control grammar and rejects shell-shaped input", () => {
+    expect(parsePlainLanguageCommand('backup verify tesseract-a scope="Verify the current mirror backup evidence." risk=low rollback="No mutation is made during verification." ttl=30m')).toMatchObject({
+      nodeId: "tesseract-a",
+      operationType: "backup verify",
+      risk: "low",
+    });
+    expect(parsePlainLanguageCommand('restart monarch-os scope="Restart the declared operating-system service after maintenance." risk=moderate rollback="Restore the prior validated service unit state." ttl=30m')).toMatchObject({
+      nodeId: "kether-gate",
+      operationType: "restart",
+    });
+    expect(parsePlainLanguageCommand('restart monarch-os scope="Restart service; rm -rf /" risk=high rollback="Restore the previous unit state." ttl=30m')).toBeNull();
+    expect(parsePlainLanguageCommand('shell exec root-gate scope="Run whatever is supplied." risk=critical rollback="No rollback." ttl=30m')).toBeNull();
   });
 
   it("reserves a structured audit vocabulary for every control-plane stage", () => {

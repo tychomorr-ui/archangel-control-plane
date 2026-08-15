@@ -79,3 +79,9 @@
 - [x] Run and document an isolated end-to-end admission-flow test using revised fleet identities, including the planned N. Virginia Root-Gate and Debian Monarch-OS assumptions.
 - [x] Add and document a dedicated scripted validation of the Debian-compatible Monarch-OS preparation path.
 - [x] Confirm the durable Debian validation record includes the exact fixture command and current regression evidence.
+- [x] Reconcile the current physical-host inventory with logical names, correcting the remaining Monarch-OS/Kether-Gate presentation mismatch.
+- [x] Select and document the optimal outer-circle placements and role boundaries for Resonate Earth and Exitus Lens.
+- [x] Define ARCHANGEL’s plain-language operational command lifecycle, from safe observation through approval, bounded execution, and verification.
+- [x] Add explicit policy guardrails so the future control plane cannot become an unrestricted remote shell or silently execute an unsafe request.
+- [x] Update the protected console topology and registry to represent the completed IWA Sage, planned Resonate Earth, and planned Exitus Lens roles.
+- [x] Extend the reviewed terminal mesh admission package and runbook with the planned Exitus Lens node identity and private overlay address.
