@@ -82,8 +82,15 @@ describe("ARCHANGEL keyboard controls", () => {
 
   it("keeps application-only planning surfaces in semantic native controls with explicit paused authority", () => {
     expect(applicationPagesSource).toContain('aria-label="Application Atlas filter"');
+    expect(applicationPagesSource).toContain('aria-expanded={selectedId === application.id}');
     expect(applicationPagesSource).toContain('type="checkbox"');
     expect(applicationPagesSource).toContain('type="submit"');
+    expect(applicationPagesSource).toContain("Preview policy");
+    expect(applicationPagesSource).toContain("Mark review-ready");
+    expect(applicationPagesSource).toContain("View audit record");
+    expect(applicationPagesSource).toContain("Sovereign API");
+    expect(applicationPagesSource).toContain("No applications connected");
+    expect(applicationPagesSource).toContain("No direct control channel exists");
     expect(applicationPagesSource).toContain("Enrollment and execution paused");
     expect(applicationPagesSource).toContain("cannot reserve infrastructure, connect a node, or alter the fleet");
   });

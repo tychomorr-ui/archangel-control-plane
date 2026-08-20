@@ -37,14 +37,15 @@ function createDbDouble() {
         if (table === intents) {
           return { where: () => ({ limit: async () => storedIntents }) };
         }
-        if (table === planningScenarios) return { orderBy: () => ({ limit: async () => storedScenarios }) };
+        if (table === planningScenarios) return { orderBy: () => ({ limit: async () => storedScenarios }), where: () => ({ limit: async () => storedScenarios }) };
         return { orderBy: async () => storedAudit };
       },
     }),
-    update: () => ({
+    update: (table: unknown) => ({
       set: (patch: Record<string, unknown>) => ({
         where: async () => {
-          Object.assign(storedIntents[0] ?? {}, patch);
+          if (table === intents) Object.assign(storedIntents[0] ?? {}, patch);
+          if (table === planningScenarios) Object.assign(storedScenarios[0] ?? {}, patch);
         },
       }),
     }),
@@ -137,5 +138,50 @@ describe("ARCHANGEL protected mutations", () => {
     expect(state.storedScenarios[0]?.affectedApplicationIds).toBe(JSON.stringify(["resonate-earth", "sovereign-provenance-console"]));
     expect(state.storedAudit[0]).toMatchObject({ eventType: "planning.scenario.created", outcome: "accepted" });
     expect(JSON.stringify(state.storedAudit[0])).toContain("no infrastructure action");
+  });
+
+  it("previews deterministic policy and marks a declared-host scenario review-ready with an audit record only", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+    const scenario = await caller.createScenario({
+      title: "KEIRA evidence review",
+      objective: "Review the declared KEIRA evidence boundary before any future operating decision is considered.",
+      assumptions: "No host connection, account access, or runtime evidence will be created by this planning record.",
+      affectedApplicationIds: ["keira-intelligence"],
+      risk: "low",
+      rollbackHypothesis: "Keep the current declared posture and archive the planning record if it no longer supports review.",
+    });
+
+    const preview = await caller.scenarioPolicyPreview({ publicId: scenario.publicId });
+    expect(preview.blocking).toHaveLength(0);
+    expect(preview.advisory[0]?.policyId).toBe("policy.evidence");
+    expect(preview.boundary.policyId).toBe("policy.no-execution");
+
+    const transitioned = await caller.markScenarioReviewReady({ publicId: scenario.publicId });
+    expect(transitioned.posture).toBe("review-ready");
+    expect(state.storedScenarios[0]?.posture).toBe("review-ready");
+    expect(state.storedAudit.at(-1)).toMatchObject({ eventType: "planning.scenario.review-ready", outcome: "accepted" });
+    expect(JSON.stringify(state.storedAudit.at(-1))).toContain("No host, node, or command was contacted");
+  });
+
+  it("blocks review-ready transition when a scenario treats an unplaced application as a physical host candidate", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+    const scenario = await caller.createScenario({
+      title: "Exitus Lens placement question",
+      objective: "Keep Exitus Lens placement as an explicit planning question until a physical host is declared.",
+      assumptions: "The application remains unplaced, with no node connection and no change to current physical map truth.",
+      affectedApplicationIds: ["exitus-lens"],
+      risk: "moderate",
+      rollbackHypothesis: "Retain the present unplaced posture and archive this planning scenario if its assumptions fail.",
+    });
+
+    const preview = await caller.scenarioPolicyPreview({ publicId: scenario.publicId });
+    expect(preview.blocking).toHaveLength(1);
+    await expect(caller.markScenarioReviewReady({ publicId: scenario.publicId })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    expect(state.storedScenarios[0]?.posture).toBe("draft");
+    expect(state.storedAudit.map(event => event.eventType)).toEqual(["planning.scenario.created"]);
   });
 });

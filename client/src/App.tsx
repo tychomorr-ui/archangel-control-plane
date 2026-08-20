@@ -5,7 +5,7 @@ import ArchangelLayout from "./components/ArchangelLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { EcosystemGraphPage } from "./pages/EcosystemGraphPage";
-import { ApplicationAtlasPage, ControlBriefingPage, PolicyConstellationPage, ScenarioStudioPage } from "./pages/ApplicationControlPages";
+import { ApplicationAtlasPage, ControlBriefingPage, PolicyConstellationPage, ScenarioStudioPage, SovereignApiPage } from "./pages/ApplicationControlPages";
 import { AlertsPage, AuditPage, CommandCenterPage, IntentWorkflowPage, NodeDetailPage, RegistryPage, TopologyPage } from "./pages/ArchangelPages";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -25,6 +25,7 @@ function Router() {
       <Route path="/policy">{() => <ConsoleRoute><PolicyConstellationPage /></ConsoleRoute>}</Route>
       <Route path="/scenarios">{() => <ConsoleRoute><ScenarioStudioPage /></ConsoleRoute>}</Route>
       <Route path="/briefing">{() => <ConsoleRoute><ControlBriefingPage /></ConsoleRoute>}</Route>
+      <Route path="/sovereign-api">{() => <ConsoleRoute><SovereignApiPage /></ConsoleRoute>}</Route>
       <Route path="/command-center">{() => <ConsoleRoute><CommandCenterPage /></ConsoleRoute>}</Route>
       <Route path="/intents">{() => <ConsoleRoute><IntentWorkflowPage /></ConsoleRoute>}</Route>
       <Route path="/audit">{() => <ConsoleRoute><AuditPage /></ConsoleRoute>}</Route>

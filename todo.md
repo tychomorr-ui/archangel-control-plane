@@ -111,3 +111,16 @@
 - [x] Rebuild the logical topology as an interactive multi-layer command field with state-reactive nodes, relationship focus, and clear physical-versus-logical separation.
 - [x] Add reduced-motion-safe animated treatments for active evidence, unknown/pending, verified, stale, policy-blocked, and future offline states.
 - [x] Validate the immersive map and topology at desktop/mobile breakpoints with keyboard-accessible controls and durable review evidence.
+- [x] Add application detail records with role, front-door, host posture, dependencies, evidence posture, planning notes, and linked scenario context.
+- [x] Add deterministic policy previews for scenario drafts that show blocking, review, and advisory results without dispatching an action.
+- [x] Add a protected scenario transition from draft to review-ready that requires an explicit policy evaluation and appends an audit record without changing infrastructure.
+- [x] Link Atlas applications, Scenario Studio records, Control Briefing items, and planning audit events through protected application-only navigation.
+- [ ] Validate application-detail navigation, policy previews, review-ready transitions, accessibility, and mobile flow while retaining the live-integration pause.
+- [ ] Create or select a legitimate protected planning scenario during an operator validation session, then capture desktop/mobile evidence of the rendered blocking, review, advisory, and boundary-pass policy preview.
+- [ ] Exercise the protected review-ready action from Scenario Studio through its visible UI, then verify updated posture, briefing context, and filtered audit trace without enabling execution.
+- [x] Diagnose and repair the authenticated ARCHANGEL preview rendering failure, then verify the active preview loads the current planning console reliably.
+- [x] Define the ARCHANGEL Sovereign API contract, trust boundary, activation gates, and application-scope matrix without connecting any external app.
+- [x] Build the isolated Sovereign API service with guarded registration, Argon2id API-key storage, optional Ed25519 request verification, scoped status/apps/audit responses, and non-executing command receipts.
+- [x] Add persistence migrations, Redis-compatible rate-limit design, key rotation/revocation, metadata-only audit logging, OpenAPI/Postman artifacts, and production configuration templates without real credentials.
+- [x] Add protected API-management visibility to ARCHANGEL and test the integration service’s authentication, scopes, signatures, rate limits, audit records, rotation, revocation, and disabled-by-default registration gate.
+- [x] Validate the complete build-only integration layer and document the controlled activation prerequisites while preserving the no-connection and no-execution posture.

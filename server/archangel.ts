@@ -43,6 +43,10 @@ export const planningScenarioSchema = z.object({
   rollbackHypothesis: z.string().trim().min(12).max(1200),
 });
 
+export const scenarioPublicIdSchema = z.object({
+  publicId: z.string().regex(/^scn_[A-Za-z0-9_-]{12}$/),
+});
+
 const plainCommandPattern = /^(deploy|restart|configuration promote|backup verify)\s+([a-z-]+)\s+scope="([^"\n]{8,300})"\s+risk=(low|moderate|high|critical)\s+rollback="([^"\n]{8,300})"\s+ttl=(15|30|60|120|240)m$/;
 const commandNodeAliases: Record<string, (typeof NODE_IDS)[number]> = {
   "monarch-os": "kether-gate",
@@ -142,6 +146,20 @@ async function createIntentProposal(ctx: { user: { id: number } }, input: z.infe
   return { publicId, state: "proposed" as const };
 }
 
+function evaluateScenarioPolicy(scenario: { rollbackHypothesis: string; affectedApplicationIds: string }) {
+  const affectedIds = JSON.parse(scenario.affectedApplicationIds) as string[];
+  const affectedApplications = APPLICATION_ATLAS.filter(application => affectedIds.includes(application.id));
+  const unplaced = affectedApplications.filter(application => application.hostPosture === "Physical host unplaced");
+  const evidenceNeeded = affectedApplications.filter(application => application.evidencePosture === "evidence-needed");
+  return {
+    affectedApplications,
+    blocking: unplaced.map(application => ({ policyId: "policy.host-evidence", severity: "blocking" as const, title: `${application.name} remains physically unplaced`, detail: "A review-ready scenario may model the role, but cannot treat an unplaced application as a deployed physical host. Declare a host separately before changing that posture." })),
+    review: [{ policyId: "policy.rollback", severity: "review" as const, title: "Recovery hypothesis present", detail: scenario.rollbackHypothesis.trim().length >= 12 ? "A written return-to-present hypothesis is available for human review." : "A written rollback hypothesis is required." }],
+    advisory: evidenceNeeded.map(application => ({ policyId: "policy.evidence", severity: "advisory" as const, title: `${application.name} needs evidence`, detail: "The application role is declared, but no signed runtime evidence exists. This remains visible in planning review." })),
+    boundary: { policyId: "policy.no-execution", severity: "pass" as const, title: "Application-only boundary retained", detail: "This evaluation has no host connection, enrollment, firewall, mesh, or command-dispatch path." },
+  };
+}
+
 export const archangelRouter = router({
   fleet: protectedProcedure.query(async () => {
     const [statuses, registry] = await Promise.all([latestStatusByNode(), registryByNode()]);
@@ -221,6 +239,13 @@ export const archangelRouter = router({
     return records.map(record => ({ ...record, affectedApplicationIds: JSON.parse(record.affectedApplicationIds) as (typeof APPLICATION_IDS)[number][] }));
   }),
 
+  scenarioPolicyPreview: protectedProcedure.input(scenarioPublicIdSchema).query(async ({ input }) => {
+    const db = await getRequiredDb();
+    const [scenario] = await db.select().from(planningScenarios).where(eq(planningScenarios.publicId, input.publicId)).limit(1);
+    if (!scenario) throw new TRPCError({ code: "NOT_FOUND", message: "The planning scenario was not found." });
+    return { publicId: scenario.publicId, posture: scenario.posture, ...evaluateScenarioPolicy(scenario) };
+  }),
+
   briefing: protectedProcedure.query(async () => {
     const db = await getRequiredDb();
     const [scenarioRows, intentRows] = await Promise.all([
@@ -290,6 +315,25 @@ export const archangelRouter = router({
       occurredAt: new Date(),
     });
     return { publicId, posture: "draft" as const };
+  }),
+
+  markScenarioReviewReady: protectedProcedure.input(scenarioPublicIdSchema).mutation(async ({ ctx, input }) => {
+    const db = await getRequiredDb();
+    const [scenario] = await db.select().from(planningScenarios).where(eq(planningScenarios.publicId, input.publicId)).limit(1);
+    if (!scenario) throw new TRPCError({ code: "NOT_FOUND", message: "The planning scenario was not found." });
+    if (scenario.posture !== "draft") throw new TRPCError({ code: "BAD_REQUEST", message: "Only a draft scenario can move into planning review." });
+    const evaluation = evaluateScenarioPolicy(scenario);
+    if (evaluation.blocking.length) throw new TRPCError({ code: "BAD_REQUEST", message: "This scenario remains blocked by declared host-truth policy and cannot be marked review-ready." });
+    await db.update(planningScenarios).set({ posture: "review-ready" }).where(eq(planningScenarios.id, scenario.id));
+    await db.insert(auditEvents).values({
+      publicId: `aud_${nanoid(12)}`,
+      eventType: "planning.scenario.review-ready",
+      outcome: "accepted",
+      actorPseudonym: `operator-${ctx.user.id}`,
+      summary: `Application-only scenario ${scenario.publicId} moved to planning review after deterministic policy evaluation. No host, node, or command was contacted.`,
+      occurredAt: new Date(),
+    });
+    return { publicId: scenario.publicId, posture: "review-ready" as const, evaluation };
   }),
 
   reviewIntent: protectedProcedure.input(intentReviewSchema).mutation(async ({ ctx, input }) => {

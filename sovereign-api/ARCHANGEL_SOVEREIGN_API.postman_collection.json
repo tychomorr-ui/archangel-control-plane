@@ -1,0 +1,53 @@
+{
+  "info": {
+    "name": "ARCHANGEL Sovereign API — Build-Only Contract",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "No live credential is included. Populate the empty variables only after reviewed activation."
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://control-plane.archangel.local/v1" },
+    { "key": "apiKey", "value": "" },
+    { "key": "keyId", "value": "" },
+    { "key": "timestamp", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{apiKey}}" },
+          { "key": "X-Archangel-Key-Id", "value": "{{keyId}}" },
+          { "key": "X-Archangel-Timestamp", "value": "{{timestamp}}" }
+        ],
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Scoped status",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{apiKey}}" },
+          { "key": "X-Archangel-Key-Id", "value": "{{keyId}}" },
+          { "key": "X-Archangel-Timestamp", "value": "{{timestamp}}" }
+        ],
+        "url": "{{baseUrl}}/status"
+      }
+    },
+    {
+      "name": "Non-executing command receipt",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{apiKey}}" },
+          { "key": "X-Archangel-Key-Id", "value": "{{keyId}}" },
+          { "key": "X-Archangel-Timestamp", "value": "{{timestamp}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\n  \"command\": \"ping\",\n  \"target\": \"declared-target-only\",\n  \"params\": {}\n}" },
+        "url": "{{baseUrl}}/commands"
+      }
+    }
+  ]
+}
