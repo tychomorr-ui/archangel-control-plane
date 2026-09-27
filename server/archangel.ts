@@ -1,12 +1,12 @@
 import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
+import { applicationIntegrations, auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
 import { APPLICATION_ATLAS, APPLICATION_IDS, AUDIT_EVENT_TYPES, FLEET_NODES, NODE_IDS, OPERATION_TYPES, PLANNING_POLICIES } from "../shared/archangel";
 import { getDb } from "./db";
-import { protectedProcedure, router } from "./_core/trpc";
+import { adminProcedure, protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
-import { ACTION_SCOPES, BOUNDED_APPLICATION_ACTIONS, actionPolicy } from "./conductor";
+import { ACTION_SCOPES, BOUNDED_APPLICATION_ACTIONS, actionPolicy, verifySignedHealthReceipt } from "./conductor";
 
 const nodeIdSchema = z.enum(NODE_IDS);
 
@@ -46,6 +46,33 @@ export const planningScenarioSchema = z.object({
 
 export const scenarioPublicIdSchema = z.object({
   publicId: z.string().regex(/^scn_[A-Za-z0-9_-]{12}$/),
+});
+
+export const signedHealthReceiptSchema = z.object({
+  applicationId: z.enum(APPLICATION_IDS),
+  nodeId: nodeIdSchema,
+  receipt: z.object({
+    applicationId: z.string().trim().min(1).max(128),
+    nodeId: z.string().trim().min(1).max(128),
+    status: z.enum(["ok", "degraded", "not_ready"]),
+    version: z.string().trim().min(1).max(128),
+    issuedAt: z.string().datetime({ offset: true }),
+    expiresAt: z.string().datetime({ offset: true }),
+    nonce: z.string().trim().min(16).max(256),
+    capabilities: z.array(z.string().trim().min(1).max(128)).max(32),
+    signature: z.string().trim().min(16).max(512),
+  }),
+});
+
+export const applicationIntegrationSchema = z.object({
+  applicationId: z.enum(APPLICATION_IDS),
+  nodeId: nodeIdSchema,
+  endpointUrl: z.string().url().refine(value => {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname.endsWith(".manus.space");
+  }, "The integration endpoint must be an HTTPS *.manus.space hostname."),
+  publicKeyPem: z.string().trim().min(80).max(1000),
+  scopes: z.array(z.enum(["read:health", "read:deployment", "write:cache"])).min(1).max(3),
 });
 
 const plainCommandPattern = /^(deploy|restart|configuration promote|backup verify)\s+([a-z-]+)\s+scope="([^"\n]{8,300})"\s+risk=(low|moderate|high|critical)\s+rollback="([^"\n]{8,300})"\s+ttl=(15|30|60|120|240)m$/;
@@ -227,6 +254,52 @@ export const archangelRouter = router({
     prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution", "infrastructure mutation"],
   })),
 
+  integrations: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const records = await db.select().from(applicationIntegrations).orderBy(desc(applicationIntegrations.updatedAt));
+    return records.map(record => ({
+      applicationId: record.applicationId,
+      nodeId: record.nodeId,
+      endpointUrl: record.endpointUrl,
+      scopes: JSON.parse(record.scopes) as string[],
+      status: record.status,
+      publicKeyRegistered: Boolean(record.publicKeyPem),
+      updatedAt: record.updatedAt,
+    }));
+  }),
+
+  registerIntegration: adminProcedure.input(applicationIntegrationSchema).mutation(async ({ ctx, input }) => {
+    const application = APPLICATION_ATLAS.find(item => item.id === input.applicationId);
+    if (!application || application.nodeId !== input.nodeId) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "The application and node identity do not match the declared registry." });
+    }
+    const db = await getRequiredDb();
+    const existing = await db.select().from(applicationIntegrations).where(eq(applicationIntegrations.applicationId, input.applicationId)).limit(1);
+    const values = {
+      applicationId: input.applicationId,
+      nodeId: input.nodeId,
+      endpointUrl: input.endpointUrl,
+      publicKeyPem: input.publicKeyPem,
+      scopes: JSON.stringify(input.scopes),
+      status: "active" as const,
+    };
+    if (existing[0]) {
+      await db.update(applicationIntegrations).set(values).where(eq(applicationIntegrations.id, existing[0].id));
+    } else {
+      await db.insert(applicationIntegrations).values(values);
+    }
+    await db.insert(auditEvents).values({
+      publicId: `aud_${nanoid(12)}`,
+      nodeId: input.nodeId,
+      eventType: "integration.registered",
+      outcome: "accepted",
+      actorPseudonym: `operator-${ctx.user.id}`,
+      summary: `${application.name} registered at ${input.endpointUrl} with ${input.scopes.length} bounded application scope(s). Private key remains outside ARCHANGEL.`,
+      occurredAt: new Date(),
+    });
+    return { accepted: true as const, applicationId: input.applicationId, nodeId: input.nodeId, status: "active" as const };
+  }),
+
   applications: protectedProcedure.query(() => APPLICATION_ATLAS.map(application => ({
     ...application,
     dependencies: application.dependencies.map(dependencyId => APPLICATION_ATLAS.find(item => item.id === dependencyId)).filter(Boolean),
@@ -379,5 +452,57 @@ export const archangelRouter = router({
       occurredAt: new Date(),
     });
     return { accepted: true as const };
+  }),
+
+  recordSignedHealthReceipt: protectedProcedure.input(signedHealthReceiptSchema).mutation(async ({ ctx, input }) => {
+    const application = APPLICATION_ATLAS.find(item => item.id === input.applicationId);
+    if (!application || application.nodeId !== input.nodeId) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "The application and node identity do not match the declared registry." });
+    }
+    if (input.receipt.applicationId !== input.applicationId || input.receipt.nodeId !== input.nodeId) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "The signed receipt identity does not match the declared application and node." });
+    }
+    const db = await getRequiredDb();
+    const [integration] = await db.select().from(applicationIntegrations).where(eq(applicationIntegrations.applicationId, input.applicationId)).limit(1);
+    if (!integration || integration.nodeId !== input.nodeId || integration.status !== "active") {
+      throw new TRPCError({ code: "PRECONDITION_FAILED", message: "This application has no active registered public key. Register the real Manus endpoint and Ed25519 public key before accepting receipts." });
+    }
+    const verification = verifySignedHealthReceipt(input.receipt, integration.publicKeyPem);
+    if (!verification.valid) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: `Signed receipt rejected: ${verification.reason}` });
+    }
+    const observedAt = new Date(input.receipt.issuedAt);
+    const readiness = input.receipt.status === "ok" ? "ready" : input.receipt.status === "degraded" ? "degraded" : "not_ready";
+    await db.insert(nodeStatusReports).values({
+      nodeId: input.nodeId,
+      observedAt,
+      version: input.receipt.version,
+      uptimeClass: "Signed application receipt",
+      applicationReadiness: readiness,
+      reachability: "reachable",
+      verificationState: "verified",
+      narrative: `${application.name} presented a fresh Ed25519-signed health receipt. ARCHANGEL verified identity, freshness, canonical payload, and signature; this does not prove undeclared dependencies.`,
+      signedReceiptHash: verification.receiptHash,
+    });
+    const actorPseudonym = `operator-${ctx.user.id}`;
+    await db.insert(auditEvents).values({
+      publicId: `aud_${nanoid(12)}`,
+      nodeId: input.nodeId,
+      eventType: "receipt.recorded",
+      outcome: "verified",
+      actorPseudonym,
+      summary: `${application.name} signed health receipt accepted as ${verification.receiptHash}.`,
+      occurredAt: new Date(),
+    });
+    await db.insert(auditEvents).values({
+      publicId: `aud_${nanoid(12)}`,
+      nodeId: input.nodeId,
+      eventType: "verification.outcome",
+      outcome: "verified",
+      actorPseudonym,
+      summary: `${application.name}: signature, freshness, nonce, and identity checks passed.`,
+      occurredAt: new Date(),
+    });
+    return { accepted: true as const, nodeId: input.nodeId, applicationId: input.applicationId, receiptHash: verification.receiptHash, observedAt };
   }),
 });

@@ -1,11 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { generateKeyPairSync, sign } from "node:crypto";
 import type { TrpcContext } from "./_core/context";
 
 vi.mock("./db", () => ({ getDb: vi.fn() }));
 
 import { archangelRouter } from "./archangel";
-import { auditEvents, intents, planningScenarios } from "../drizzle/schema";
+import { auditEvents, applicationIntegrations, intents, nodeStatusReports, planningScenarios } from "../drizzle/schema";
 import { getDb } from "./db";
+import { canonicalHealthReceipt } from "./conductor";
 
 type StoredIntent = Record<string, unknown> & { id: number; publicId: string; state: string };
 type StoredAudit = Record<string, unknown> & { eventType: string; outcome: string };
@@ -15,6 +17,8 @@ function createDbDouble() {
   const storedIntents: StoredIntent[] = [];
   const storedAudit: StoredAudit[] = [];
   const storedScenarios: StoredScenario[] = [];
+  const storedIntegrations: Record<string, unknown>[] = [];
+  const storedReports: Record<string, unknown>[] = [];
   let nextIntentId = 1;
   let nextScenarioId = 1;
 
@@ -30,6 +34,8 @@ function createDbDouble() {
         if (table === planningScenarios) {
           storedScenarios.push({ ...value, id: nextScenarioId++, publicId: value.publicId as string, posture: value.posture as string });
         }
+        if (table === applicationIntegrations) storedIntegrations.push({ ...value, id: storedIntegrations.length + 1 });
+        if (table === nodeStatusReports) storedReports.push({ ...value, id: storedReports.length + 1 });
       },
     }),
     select: () => ({
@@ -37,6 +43,7 @@ function createDbDouble() {
         if (table === intents) {
           return { where: () => ({ limit: async () => storedIntents }) };
         }
+        if (table === applicationIntegrations) return { where: () => ({ limit: async () => storedIntegrations }) };
         if (table === planningScenarios) return { orderBy: () => ({ limit: async () => storedScenarios }), where: () => ({ limit: async () => storedScenarios }) };
         return { orderBy: async () => storedAudit };
       },
@@ -46,12 +53,13 @@ function createDbDouble() {
         where: async () => {
           if (table === intents) Object.assign(storedIntents[0] ?? {}, patch);
           if (table === planningScenarios) Object.assign(storedScenarios[0] ?? {}, patch);
+          if (table === applicationIntegrations) Object.assign(storedIntegrations[0] ?? {}, patch);
         },
       }),
     }),
   };
 
-  return { db, storedIntents, storedAudit, storedScenarios };
+  return { db, storedIntents, storedAudit, storedScenarios, storedIntegrations, storedReports };
 }
 
 describe("ARCHANGEL protected mutations", () => {
@@ -138,6 +146,39 @@ describe("ARCHANGEL protected mutations", () => {
     expect(state.storedScenarios[0]?.affectedApplicationIds).toBe(JSON.stringify(["resonate-earth", "sovereign-provenance-console"]));
     expect(state.storedAudit[0]).toMatchObject({ eventType: "planning.scenario.created", outcome: "accepted" });
     expect(JSON.stringify(state.storedAudit[0])).toContain("no infrastructure action");
+  });
+
+  it("binds a real public key before accepting a signed health receipt", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+    const { privateKey, publicKey } = generateKeyPairSync("ed25519");
+    const publicKeyPem = publicKey.export({ type: "spki", format: "pem" }).toString();
+    const registration = await caller.registerIntegration({
+      applicationId: "iwa-sage",
+      nodeId: "iwa-sage",
+      endpointUrl: "https://iwa-sage.manus.space",
+      publicKeyPem,
+      scopes: ["read:health", "write:cache"],
+    });
+    expect(registration).toMatchObject({ accepted: true, applicationId: "iwa-sage", status: "active" });
+
+    const unsigned = {
+      applicationId: "iwa-sage",
+      nodeId: "iwa-sage",
+      status: "ok" as const,
+      version: "2026.09.27.1",
+      issuedAt: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 60_000).toISOString(),
+      nonce: "receipt-nonce-001",
+      capabilities: ["health.check"],
+    };
+    const signature = sign(null, Buffer.from(canonicalHealthReceipt(unsigned)), privateKey).toString("base64url");
+    const receipt = await caller.recordSignedHealthReceipt({ applicationId: "iwa-sage", nodeId: "iwa-sage", receipt: { ...unsigned, signature } });
+    expect(receipt).toMatchObject({ accepted: true, applicationId: "iwa-sage", nodeId: "iwa-sage" });
+    expect(state.storedReports[0]).toMatchObject({ nodeId: "iwa-sage", verificationState: "verified", reachability: "reachable" });
+    expect(state.storedAudit.map(event => event.eventType)).toContain("integration.registered");
+    expect(state.storedAudit.map(event => event.eventType)).toContain("verification.outcome");
   });
 
   it("previews deterministic policy and marks a declared-host scenario review-ready with an audit record only", async () => {

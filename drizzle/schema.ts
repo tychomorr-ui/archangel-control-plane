@@ -39,6 +39,18 @@ export const nodeStatusReports = mysqlTable("node_status_reports", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const applicationIntegrations = mysqlTable("application_integrations", {
+  id: int("id").autoincrement().primaryKey(),
+  applicationId: varchar("applicationId", { length: 64 }).notNull().unique(),
+  nodeId: varchar("nodeId", { length: 64 }).notNull().unique(),
+  endpointUrl: varchar("endpointUrl", { length: 512 }).notNull(),
+  publicKeyPem: text("publicKeyPem").notNull(),
+  scopes: text("scopes").notNull(),
+  status: mysqlEnum("status", ["pending", "active", "revoked"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export const intents = mysqlTable("intents", {
   id: int("id").autoincrement().primaryKey(),
   publicId: varchar("publicId", { length: 64 }).notNull().unique(),
