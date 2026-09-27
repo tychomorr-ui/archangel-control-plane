@@ -6,6 +6,7 @@ import { APPLICATION_ATLAS, APPLICATION_IDS, AUDIT_EVENT_TYPES, FLEET_NODES, NOD
 import { getDb } from "./db";
 import { protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
+import { ACTION_SCOPES, BOUNDED_APPLICATION_ACTIONS, actionPolicy } from "./conductor";
 
 const nodeIdSchema = z.enum(NODE_IDS);
 
@@ -217,9 +218,13 @@ export const archangelRouter = router({
 
   commandPolicy: protectedProcedure.query(() => ({
     version: "ARCHANGEL/1",
-    executionMode: "envelope-design-only" as const,
+    executionMode: "bounded-auditable-conductor" as const,
+    executionState: "paused-until-application-registration" as const,
     allowedOperations: OPERATION_TYPES,
-    prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution"],
+    allowedApplicationActions: BOUNDED_APPLICATION_ACTIONS.map(action => actionPolicy(action)),
+    requiredScopes: ACTION_SCOPES,
+    requires: ["registered application endpoint", "registered Ed25519 public key", "fresh nonce", "idempotency key", "append-only audit record"],
+    prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution", "infrastructure mutation"],
   })),
 
   applications: protectedProcedure.query(() => APPLICATION_ATLAS.map(application => ({
