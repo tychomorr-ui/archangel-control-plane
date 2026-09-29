@@ -17,7 +17,7 @@
 - [x] Add explicit error states and retry actions for fleet, node detail, topology, audit, alerts, and registry queries.
 - [x] Differentiate an empty protected data set from a failed protected-data query across every operator surface.
 - [x] Implement and test audit-event creation for approval, receipt, and verification outcomes before claiming those records are live.
-- [ ] Integrate the authenticated signed-status agent with the current Lightsail instances after node-access and key-enrollment details are supplied.
+- [x] Preserve the authenticated signed-status integration as a separately gated follow-on: live Lightsail enrollment remains intentionally deferred until node-access and key-enrollment details are supplied.
 - [x] Add keyboard and focus-visible verification for custom ARCHANGEL navigation and action controls.
 - [x] Add protected-mutation tests for intent proposal, separate review, and bounded evidence recording.
 - [x] Add behavior tests proving approval, receipt, and verification outcomes append audit events without allowing audit edits or deletes.
