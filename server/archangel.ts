@@ -243,16 +243,22 @@ export const archangelRouter = router({
     return db.select().from(intents).orderBy(desc(intents.createdAt)).limit(100);
   }),
 
-  commandPolicy: protectedProcedure.query(() => ({
-    version: "ARCHANGEL/1",
-    executionMode: "bounded-auditable-conductor" as const,
-    executionState: "paused-until-application-registration" as const,
-    allowedOperations: OPERATION_TYPES,
-    allowedApplicationActions: BOUNDED_APPLICATION_ACTIONS.map(action => actionPolicy(action)),
-    requiredScopes: ACTION_SCOPES,
-    requires: ["registered application endpoint", "registered Ed25519 public key", "fresh nonce", "idempotency key", "append-only audit record"],
-    prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution", "infrastructure mutation"],
-  })),
+  commandPolicy: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const registered = await db.select({ applicationId: applicationIntegrations.applicationId, status: applicationIntegrations.status }).from(applicationIntegrations);
+    const activeApplications = registered.filter(record => record.status === "active").map(record => record.applicationId);
+    return {
+      version: "ARCHANGEL/1",
+      executionMode: "bounded-auditable-conductor" as const,
+      executionState: activeApplications.length ? "application-registered-awaiting-receipt" as const : "paused-until-application-registration" as const,
+      registeredApplications: activeApplications,
+      allowedOperations: OPERATION_TYPES,
+      allowedApplicationActions: BOUNDED_APPLICATION_ACTIONS.map(action => actionPolicy(action)),
+      requiredScopes: ACTION_SCOPES,
+      requires: ["registered application endpoint", "registered Ed25519 public key", "fresh nonce", "idempotency key", "append-only audit record"],
+      prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution", "infrastructure mutation"],
+    };
+  }),
 
   integrations: protectedProcedure.query(async () => {
     const db = await getRequiredDb();

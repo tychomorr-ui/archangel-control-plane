@@ -9,6 +9,7 @@ export const NODE_IDS = [
   "iwa-sage",
   "resonate-earth",
   "exitus-lens",
+  "valkyrie-adjudication-entity",
 ] as const;
 
 export type NodeId = (typeof NODE_IDS)[number];
@@ -114,6 +115,15 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
     declaredState: "Planned deployment",
     fingerprint: "Enrollment not initiated",
   },
+  {
+    id: "valkyrie-adjudication-entity",
+    name: "VALKYRIE Adjudication Entity",
+    region: "Manus-hosted · *.manus.space",
+    role: "Adjudication and evidence decision layer",
+    cluster: "Outer",
+    declaredState: "Declared running",
+    fingerprint: "Pending secure enrollment",
+  },
 ];
 
 /**
@@ -134,6 +144,7 @@ export const TOPOLOGY_LAYOUT_CONTRACT = {
     { id: "iwa-sage", placement: "north-american-community" },
     { id: "resonate-earth", placement: "unplaced-public-front-door" },
     { id: "exitus-lens", placement: "unplaced-evidence-layer" },
+    { id: "valkyrie-adjudication-entity", placement: "manus-adjudication-layer" },
   ],
   spacing: {
     mobileMinCanvasHeightPx: 900,
@@ -172,6 +183,7 @@ export const APPLICATION_IDS = [
   "iwa-sage",
   "resonate-earth",
   "exitus-lens",
+  "valkyrie-adjudication-entity",
 ] as const;
 
 export type ApplicationId = (typeof APPLICATION_IDS)[number];
@@ -202,6 +214,7 @@ export const APPLICATION_ATLAS: ApplicationAtlasRecord[] = [
   { id: "iwa-sage", name: "IWA Sage", shortName: "IWA Sage", role: "Indigenous Wellness Alliance community and wellness application", category: "community", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Montreal host", evidencePosture: "evidence-needed", nodeId: "iwa-sage", dependencies: ["root-identity", "xinus-clarity-suite"], planningNote: "Community-service role is cataloged independently from any user data or service utilization claim." },
   { id: "resonate-earth", name: "Resonate Earth", shortName: "Resonate", role: "Earth resonance public-front-door application", category: "public-front-door", lifecycle: "planned", publicFrontDoor: "resonateearth.live", hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "resonate-earth", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The public front door is declared; any future physical placement remains an explicit scenario, not a map fact." },
   { id: "exitus-lens", name: "Exitus Lens", shortName: "Exitus", role: "Read-only visual-evidence application concept", category: "evidence", lifecycle: "planned", publicFrontDoor: null, hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "exitus-lens", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The evidence lens remains a planned product concept and is intentionally kept off the physical map." },
+  { id: "valkyrie-adjudication-entity", name: "VALKYRIE Adjudication Entity", shortName: "VALKYRIE", role: "Adjudication and evidence decision layer", category: "evidence", lifecycle: "declared", publicFrontDoor: "https://xinusdash-doy5g86k.manus.space", hostPosture: "Declared Manus-hosted application", evidencePosture: "evidence-needed", nodeId: "valkyrie-adjudication-entity", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The public Manus front door and adjudication role are declared; signed runtime evidence remains pending until the application emits a receipt." },
 ];
 
 export const PLANNING_POLICIES = [

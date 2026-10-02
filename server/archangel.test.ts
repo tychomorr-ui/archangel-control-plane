@@ -17,6 +17,7 @@ describe("ARCHANGEL fleet contract", () => {
       "IWA Sage",
       "Resonate Earth",
       "Exitus Lens",
+      "VALKYRIE Adjudication Entity",
     ]);
     expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
       cluster: "Bridge",
@@ -28,7 +29,12 @@ describe("ARCHANGEL fleet contract", () => {
       declaredState: "Declared running",
     });
     expect(FLEET_NODES.find(node => node.id === "iwa-sage")).toMatchObject({ declaredState: "Declared running" });
-    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth", "exitus-lens"]);
+    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth", "exitus-lens", "valkyrie-adjudication-entity"]);
+    expect(FLEET_NODES.find(node => node.id === "valkyrie-adjudication-entity")).toMatchObject({
+      name: "VALKYRIE Adjudication Entity",
+      cluster: "Outer",
+      declaredState: "Declared running",
+    });
   });
 
   it("keeps unplaced applications out of the physical host inventory", () => {
@@ -41,10 +47,16 @@ describe("ARCHANGEL fleet contract", () => {
   });
 
   it("keeps the Application Atlas truthful about declared roles, evidence, and unplaced applications", () => {
-    expect(APPLICATION_ATLAS).toHaveLength(10);
+    expect(APPLICATION_ATLAS).toHaveLength(11);
     expect(APPLICATION_ATLAS.find(application => application.id === "monarch-os")).toMatchObject({ name: "Monarch-OS", nodeId: "kether-gate", hostPosture: "Declared Singapore Debian host" });
     expect(APPLICATION_ATLAS.find(application => application.id === "resonate-earth")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced", publicFrontDoor: "resonateearth.live" });
     expect(APPLICATION_ATLAS.find(application => application.id === "exitus-lens")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "valkyrie-adjudication-entity")).toMatchObject({
+      name: "VALKYRIE Adjudication Entity",
+      nodeId: "valkyrie-adjudication-entity",
+      publicFrontDoor: "https://xinusdash-doy5g86k.manus.space",
+      lifecycle: "declared",
+    });
     expect(APPLICATION_ATLAS.every(application => application.evidencePosture === "declared" || application.evidencePosture === "evidence-needed")).toBe(true);
   });
 
