@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "TESSERACT-TERMINUS",
+  "canonicalName": "TESSERACT-TERMINUS",
+  "canonicalLocus": "https://tesseract.manus.space",
+  "logicalRegion": "Spain",
+  "role": "provenance · anchoring · Mirror",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAMUYFkl/Da5rPMVb/AfUS0lS8IEBHel3Ybu68uEHM3RU=",
+  "identityHash": "sha256:a6de164e5f281c36f5f27156f8fb90f473d12a4c448903e800828410e4e58ca9",
+  "issuedAt": "2026-10-09T01:30:39.390Z",
+  "expiresAt": "2027-10-09T01:30:39.390Z",
+  "signature": "W5weZIrPgA77ef6bTRSfR2DOcLQQ1dpLvgs+yx5v/QIjZnHu9sNDC5cjtsZWifPfOzhr+i4VrzQW62sYJMTTAg==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:a6de164e5f281c36f5f27156f8fb90f473d12a4c448903e800828410e4e58ca9",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

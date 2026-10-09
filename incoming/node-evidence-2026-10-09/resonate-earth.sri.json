@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "RESONATE-EARTH",
+  "canonicalName": "RESONATE-EARTH",
+  "canonicalLocus": "https://resonate-earth.live",
+  "logicalRegion": "placement pending",
+  "role": "public front door · Nebula Mesh · SOS Manifesto",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAwMWHcloN6EGM57/WIOJAaR9GuVToXALMV1Xi27kzwGY=",
+  "identityHash": "sha256:fc12dd3433630f853aa8ec74d66d75fd606ea6983df5370b09466404faef041d",
+  "issuedAt": "2026-10-09T01:30:39.437Z",
+  "expiresAt": "2027-10-09T01:30:39.437Z",
+  "signature": "cl6DDZUq1FJOjYggNSdvWohR6BU9CgWyS7LKHkbnM/2sz6fS2SCDpsW8YZJNU++UgAMtyH6eCTV8BXp0wccIBw==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:fc12dd3433630f853aa8ec74d66d75fd606ea6983df5370b09466404faef041d",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

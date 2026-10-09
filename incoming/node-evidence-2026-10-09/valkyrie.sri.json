@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "VALKYRIE",
+  "canonicalName": "VALKYRIE",
+  "canonicalLocus": "https://xinusdash-doy5g86k.manus.space",
+  "logicalRegion": "Stockholm",
+  "role": "adjudication entity · dark mirror · VERDEX deck",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAubRN4nbkR5GaymNxne33FqZH6J8Zg06a7R6UPDp1BsU=",
+  "identityHash": "sha256:8ddb35aa9a49e86b5263208fc47f2d14a35298c5a3f6b9419057da5004743e92",
+  "issuedAt": "2026-10-09T01:30:39.422Z",
+  "expiresAt": "2027-10-09T01:30:39.422Z",
+  "signature": "K8fQamJ3W3Da5qm7FWv5uH+05wLL6VEMsyaXEaRfPKkzsNUd/44bXKxEsquSiUZALnMyj+oqn3oAKSn7MfXoDg==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:8ddb35aa9a49e86b5263208fc47f2d14a35298c5a3f6b9419057da5004743e92",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

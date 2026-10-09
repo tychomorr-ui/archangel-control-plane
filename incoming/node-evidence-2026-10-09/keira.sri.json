@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "KEIRA",
+  "canonicalName": "KEIRA",
+  "canonicalLocus": "https://sovereignapp-hkcgwye7.manus.space",
+  "logicalRegion": "São Paulo",
+  "role": "intelligence · truth analysis",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAC83+iFFC4ydqbwnkO87JTpQBWiTB7N/btmZRVN8S5+o=",
+  "identityHash": "sha256:ed71ad171f1814d553c8cf627e7049d5c5a9a558f6708a9679a2f921c72272a4",
+  "issuedAt": "2026-10-09T01:30:39.418Z",
+  "expiresAt": "2027-10-09T01:30:39.418Z",
+  "signature": "9rGByVq73e1DkpJZsrYDTREW2FwDGC2OLbNzeaP3mwutHAFQPk09lJrdO8Od+J/qdCcsAz0KojrBCmRSxMCnCA==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:ed71ad171f1814d553c8cf627e7049d5c5a9a558f6708a9679a2f921c72272a4",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

@@ -1,17 +1,87 @@
 {
   "protocol": "ATMOS/1",
   "manifestPath": "/.well-known/atmos-identity.json",
+  "controlPlaneIdentity": {
+    "file": "incoming/node-evidence-2026-10-09/archangel.identity",
+    "canonicalLocus": "https://archangelcp-sbwmjhce.manus.space",
+    "status": "uploaded-self-attested; signature-not-verified"
+  },
   "nodes": [
-    {"nodeId":"root-gate","application":"Root-Gate","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"tesseract-terminus","application":"Sovereign Provenance Console","canonicalLocus":"https://tesseract.manus.space","status":"needs-source-confirmation"},
-    {"nodeId":"xinus-clarity","application":"XinUS-Clarity","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"kether-gate","application":"Monarch-OS","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"tesseract-a","application":"Tesseract-A","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"keira","application":"KEIRA","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"project-reclaim","application":"Project Reclaim","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"iwa-sage","application":"IWA Sage","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"resonate-earth","application":"Resonate Earth","canonicalLocus":"https://resonateearth.live","status":"needs-source-confirmation"},
-    {"nodeId":"exitus-lens","application":"Exitus Lens","canonicalLocus":null,"status":"needs-source-and-url"},
-    {"nodeId":"valkyrie-adjudication-entity","application":"VALKYRIE Adjudication Entity","canonicalLocus":"https://xinusdash-doy5g86k.manus.space","status":"archangel-registered-manifest-pending"}
+    {
+      "nodeId": "root-gate",
+      "application": "Root-Gate",
+      "canonicalLocus": "https://rootgate.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "tesseract-terminus",
+      "application": "Sovereign Provenance Console",
+      "canonicalLocus": "https://tesseract.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "xinus-clarity",
+      "application": "XinUS-Clarity",
+      "canonicalLocus": "https://exonissuite-ceruhtwo.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "kether-gate",
+      "application": "Monarch-OS",
+      "canonicalLocus": "https://schedtool-7vbikw4h.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "tesseract-a",
+      "application": "Tesseract-A",
+      "canonicalLocus": "https://clarityapp-hw9fbadc.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "keira",
+      "application": "KEIRA",
+      "canonicalLocus": "https://sovereignapp-hkcgwye7.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "project-reclaim",
+      "application": "Project Reclaim",
+      "canonicalLocus": "https://reclaimporta-gsio8jvp.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "iwa-sage",
+      "application": "IWA Sage",
+      "canonicalLocus": "https://iwawellness-khqgjzqe.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "resonate-earth",
+      "application": "Resonate Earth",
+      "canonicalLocus": "https://resonate-earth.live",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    },
+    {
+      "nodeId": "exitus-lens",
+      "application": "Exitus Lens",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url"
+    },
+    {
+      "nodeId": "valkyrie-adjudication-entity",
+      "application": "VALKYRIE Adjudication Entity",
+      "canonicalLocus": "https://xinusdash-doy5g86k.manus.space",
+      "status": "uploaded-self-attested",
+      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+    }
   ]
 }

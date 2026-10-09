@@ -56,3 +56,15 @@ The report never stores private keys and never writes to the projects being chec
 ## Important limitation
 
 A central service cannot prove that an arbitrary public site is the application it claims to be unless the site publishes a signed identity or provides an authenticated challenge response. DNS, HTML title, URL ownership, and a manually entered public key are useful metadata but are not equivalent to a node-generated cryptographic proof.
+
+## Verification pass — 2026-10-09 UTC
+
+The central verifier was run against all 11 registry entries. Result: **0 verified, 0 reachable-only, 11 unverified**. Nodes without a canonical URL remained unprobeable; Tesseract returned non-JSON content; Resonate Earth failed DNS resolution; and Valkyrie returned its HTML application shell at the manifest path. No real signed manifest or runtime receipt was present in the current workspace, so no node was promoted to `receipt active` and no `nodeStatusReports` or verified audit records were created.
+
+See `docs/ARCHANGEL_NODE_VERIFICATION_REPORT_2026-10-09.json` for the machine-readable result.
+
+## Uploaded public evidence — 2026-10-09 UTC
+
+A nested archive was staged under `incoming/node-evidence-2026-10-09/`. It contains 11 `.identity` documents, 11 `.sri.json` documents, and 11 public SPKI keys. No private key material was imported. All 11 raw-document hashes and public-key bindings agree internally. However, all 11 Ed25519 signatures failed verification against the supplied public keys, and the documents explicitly state `LOCAL_OPERATOR_PENDING_APPROVAL` / `SELF_VERIFIED_ONLY`. They are therefore retained as **uploaded self-attested evidence**, not promoted to `receipt active`.
+
+See `docs/ARCHANGEL_UPLOADED_NODE_EVIDENCE_REPORT_2026-10-09.json` for the exact per-node result.

@@ -1,0 +1,106 @@
+{
+  "protocol": "ARCHANGEL/identity-directory/1",
+  "manifestPath": "/.well-known/atmos-identity.json",
+  "checkedAt": "2026-10-09T02:30:11.536404+00:00",
+  "nodes": [
+    {
+      "nodeId": "root-gate",
+      "application": "Root-Gate",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "tesseract-terminus",
+      "application": "Sovereign Provenance Console",
+      "canonicalLocus": "https://tesseract.manus.space",
+      "status": "needs-source-confirmation",
+      "checkedUrl": "https://tesseract.manus.space/.well-known/atmos-identity.json",
+      "verification": "unverified",
+      "reason": "JSONDecodeError"
+    },
+    {
+      "nodeId": "xinus-clarity",
+      "application": "XinUS-Clarity",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "kether-gate",
+      "application": "Monarch-OS",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "tesseract-a",
+      "application": "Tesseract-A",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "keira",
+      "application": "KEIRA",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "project-reclaim",
+      "application": "Project Reclaim",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "iwa-sage",
+      "application": "IWA Sage",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "resonate-earth",
+      "application": "Resonate Earth",
+      "canonicalLocus": "https://resonateearth.live",
+      "status": "needs-source-confirmation",
+      "checkedUrl": "https://resonateearth.live/.well-known/atmos-identity.json",
+      "verification": "unverified",
+      "reason": "URLError"
+    },
+    {
+      "nodeId": "exitus-lens",
+      "application": "Exitus Lens",
+      "canonicalLocus": null,
+      "status": "needs-source-and-url",
+      "checkedUrl": null,
+      "verification": "unverified",
+      "reason": "canonical-locus-missing"
+    },
+    {
+      "nodeId": "valkyrie-adjudication-entity",
+      "application": "VALKYRIE Adjudication Entity",
+      "canonicalLocus": "https://xinusdash-doy5g86k.manus.space",
+      "status": "archangel-registered-manifest-pending",
+      "checkedUrl": "https://xinusdash-doy5g86k.manus.space/.well-known/atmos-identity.json",
+      "verification": "unverified",
+      "reason": "JSONDecodeError"
+    }
+  ]
+}

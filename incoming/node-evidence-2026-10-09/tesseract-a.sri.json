@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "TESSERACT-A",
+  "canonicalName": "TESSERACT-A",
+  "canonicalLocus": "https://clarityapp-hw9fbadc.manus.space",
+  "logicalRegion": "Frankfurt",
+  "role": "truth substrate · truth point",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAR6fVSEZaoxf5Ms7ShPQFWdGEIq0jg5g6oXFY9AFBWZY=",
+  "identityHash": "sha256:854e82cabda6c0075897ba30068bdcc346ee94333531bbd947c01475c6e732e7",
+  "issuedAt": "2026-10-09T01:30:39.414Z",
+  "expiresAt": "2027-10-09T01:30:39.414Z",
+  "signature": "YKVfpnxop5iAqzQMX4AU/dBtO62e/raE2J86xHMPNMhhcu8rhaGtHX66XoE0EXedwYtLxSqZsdjxoOjoj7+uDA==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:854e82cabda6c0075897ba30068bdcc346ee94333531bbd947c01475c6e732e7",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "MONARCH-OS",
+  "canonicalName": "MONARCH-OS",
+  "canonicalLocus": "https://schedtool-7vbikw4h.manus.space",
+  "logicalRegion": "Singapore",
+  "role": "sovereign OS layer · Kether-Gate",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAJLRiN0X+GDtypD22fZztCKMjeI1Vku/5kxnBYpcPKhc=",
+  "identityHash": "sha256:c463501edb56abc1d488368d5cf55e92bd8ba5f87819b21e3cc907ade3e8c4c0",
+  "issuedAt": "2026-10-09T01:30:39.406Z",
+  "expiresAt": "2027-10-09T01:30:39.406Z",
+  "signature": "HNQFDe9Qze3lMsoalwHOCjVfC6uazQbaxsKY9L5gIkgHZD5D497l+of9l5RqGt01ArL4qIWVbFUUREDtK7ZADQ==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:c463501edb56abc1d488368d5cf55e92bd8ba5f87819b21e3cc907ade3e8c4c0",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

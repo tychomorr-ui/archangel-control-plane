@@ -1,0 +1,127 @@
+{
+  "protocol": "ARCHANGEL/public-evidence-validation/1",
+  "privateKeysImported": false,
+  "nodes": [
+    {
+      "bundle": "archangel",
+      "nodeId": "ARCHANGEL",
+      "canonicalLocus": "https://archangelcp-sbwmjhce.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "iwa-sage",
+      "nodeId": "IWA-SAGE",
+      "canonicalLocus": "https://iwawellness-khqgjzqe.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "keira",
+      "nodeId": "KEIRA",
+      "canonicalLocus": "https://sovereignapp-hkcgwye7.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "monarch-os",
+      "nodeId": "MONARCH-OS",
+      "canonicalLocus": "https://schedtool-7vbikw4h.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "project-reclaim",
+      "nodeId": "PROJECT-RECLAIM",
+      "canonicalLocus": "https://reclaimporta-gsio8jvp.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "resonate-earth",
+      "nodeId": "RESONATE-EARTH",
+      "canonicalLocus": "https://resonate-earth.live",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "root-gate",
+      "nodeId": "ROOT-GATE",
+      "canonicalLocus": "https://rootgate.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "tesseract-a",
+      "nodeId": "TESSERACT-A",
+      "canonicalLocus": "https://clarityapp-hw9fbadc.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "tesseract-terminus",
+      "nodeId": "TESSERACT-TERMINUS",
+      "canonicalLocus": "https://tesseract.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "valkyrie",
+      "nodeId": "VALKYRIE",
+      "canonicalLocus": "https://xinusdash-doy5g86k.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    },
+    {
+      "bundle": "xinus-clarity",
+      "nodeId": "XINUS-CLARITY",
+      "canonicalLocus": "https://exonissuite-ceruhtwo.manus.space",
+      "authority": "LOCAL_OPERATOR_PENDING_APPROVAL",
+      "verification": null,
+      "identityHashMatchesRawDocument": true,
+      "publicKeyFilesAgree": true,
+      "ed25519SignatureVerifies": false,
+      "ARCHANGELState": "unverified"
+    }
+  ]
+}

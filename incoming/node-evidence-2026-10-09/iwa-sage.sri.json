@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "IWA-SAGE",
+  "canonicalName": "IWA-SAGE",
+  "canonicalLocus": "https://iwawellness-khqgjzqe.manus.space",
+  "logicalRegion": "Montreal",
+  "role": "community wellness · service layer",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAL5oPZO5e+t94Ab3acrp9aPpocrvyLZfdi8mB6KkaDRc=",
+  "identityHash": "sha256:0d4095a7cd12aaf92372b80fd4bae3d6930002abd9e0080fcbb613c2b158a629",
+  "issuedAt": "2026-10-09T01:30:39.432Z",
+  "expiresAt": "2027-10-09T01:30:39.433Z",
+  "signature": "hJw54GZswFVTcZOKM1tEyAD5YETtrCRhl8IuLz3tCj2ra0jLKxk6mMnrBQJ4iKMCZtW2p4h43UkaabkZWF9jBA==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:0d4095a7cd12aaf92372b80fd4bae3d6930002abd9e0080fcbb613c2b158a629",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}

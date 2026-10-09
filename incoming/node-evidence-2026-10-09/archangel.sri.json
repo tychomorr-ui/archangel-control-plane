@@ -1,0 +1,19 @@
+{
+  "schema": "https://sri.manus.space/schemas/atmos-identity-v1.json",
+  "nodeId": "ARCHANGEL",
+  "canonicalName": "ARCHANGEL",
+  "canonicalLocus": "https://archangelcp-sbwmjhce.manus.space",
+  "logicalRegion": "London",
+  "role": "control plane · mesh governance",
+  "manifestVersion": "1.0.0",
+  "publicKey": "MCowBQYDK2VwAyEAK4tYXT9RHNgOv/5YacGaFxjmmcCQaVj10TXDNMdnqcc=",
+  "identityHash": "sha256:7131e0dd8650cc16c31fbe43d7c80d55d746d0e63dd34a072324f783681c595f",
+  "issuedAt": "2026-10-09T01:30:39.426Z",
+  "expiresAt": "2027-10-09T01:30:39.426Z",
+  "signature": "jUDPbjvR8wsU3+8Amml8WJdCP7MLGses+CBTXCR6BG5ZcfrzwQGPmq1kxMS9F2EkroNZwL8DsFIGLy1Dap2FAQ==",
+  "format": "atmos-identity-manifest-v1",
+  "documentSha256": "sha256:7131e0dd8650cc16c31fbe43d7c80d55d746d0e63dd34a072324f783681c595f",
+  "signatureAlgorithm": "Ed25519-canonical-json",
+  "privateKeyIncluded": false,
+  "verification": "SELF_VERIFIED_ONLY"
+}
