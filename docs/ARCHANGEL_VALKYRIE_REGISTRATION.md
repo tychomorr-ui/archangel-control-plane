@@ -1,20 +1,14 @@
-# ARCHANGEL Valkyrie Registration
 
-**Registration status:** Active integration record created and verified on 2026-10-02 UTC.
 
-| Field | Value |
-|---|---|
-| Application | VALKYRIE Adjudication Entity |
-| Application ID | `valkyrie-adjudication-entity` |
-| Node ID | `valkyrie-adjudication-entity` |
-| Endpoint | `https://xinusdash-doy5g86k.manus.space` |
-| Scope | `read:health` |
-| Integration status | `active` |
-| Public-key fingerprint | `b0287c4ff19d51452c337bddd2471fb26be06b21aa0c1333fe941249a5e41491` |
-| Audit event | `aud_valkyrie_registered_20261001` |
+## First receipt submission attempt — 2026-10-03
 
-## Verification
+A real receipt was **not submitted**. The public Valkyrie application was inspected directly:
 
-The protected ARCHANGEL console was refreshed after registration and showed an eleven-node declared ecosystem, with **VALKYRIE Adjudication Entity** listed as an outer-circle peer. The Command Center showed **Endpoint registered · awaiting signed receipt** and reported one registered application endpoint.
+- The Command Center reports `Registered Service Nodes: 0`.
+- Its readiness checks report only that the application contract is available; they do not produce a signed health receipt.
+- The public route and tested candidate API paths did not expose a stable receipt-submission endpoint.
+- The deployed bundle references a local deterministic receipt layer and a tRPC client, but no callable external signed-health-receipt submission contract was identified from the public surface.
 
-The registration record is limited to the endpoint, Ed25519 public key, and `read:health` scope. No request was sent to the Valkyrie endpoint, no health claim was recorded, and no private key was stored in ARCHANGEL. Dispatch remains gated on a fresh signed receipt, idempotency key, and append-only audit record. Node enrollment, mesh activation, firewall changes, shell access, and infrastructure mutation remain disabled.
+ARCHANGEL therefore did not sign or ingest an operator-created payload. This preserves the requirement that the first accepted receipt must originate from the Valkyrie runtime, use its protected Ed25519 private key, and be traceable to a real application execution. No `nodeStatusReports` or `receipt.recorded` audit event was created by this attempt.
+
+**Required unblock:** provision a Valkyrie service-node registration and a server-side receipt emitter/endpoint (or provide the authenticated integration contract) before retrying. Once available, the receipt must contain the canonical `applicationId`, `nodeId`, `status`, `version`, `issuedAt`, `expiresAt` (maximum five-minute window), `nonce`, sorted `capabilities`, and an Ed25519 signature using the registered key.

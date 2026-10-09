@@ -1,0 +1,17 @@
+{
+  "protocol": "ATMOS/1",
+  "manifestPath": "/.well-known/atmos-identity.json",
+  "nodes": [
+    {"nodeId":"root-gate","application":"Root-Gate","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"tesseract-terminus","application":"Sovereign Provenance Console","canonicalLocus":"https://tesseract.manus.space","status":"needs-source-confirmation"},
+    {"nodeId":"xinus-clarity","application":"XinUS-Clarity","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"kether-gate","application":"Monarch-OS","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"tesseract-a","application":"Tesseract-A","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"keira","application":"KEIRA","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"project-reclaim","application":"Project Reclaim","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"iwa-sage","application":"IWA Sage","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"resonate-earth","application":"Resonate Earth","canonicalLocus":"https://resonateearth.live","status":"needs-source-confirmation"},
+    {"nodeId":"exitus-lens","application":"Exitus Lens","canonicalLocus":null,"status":"needs-source-and-url"},
+    {"nodeId":"valkyrie-adjudication-entity","application":"VALKYRIE Adjudication Entity","canonicalLocus":"https://xinusdash-doy5g86k.manus.space","status":"archangel-registered-manifest-pending"}
+  ]
+}
