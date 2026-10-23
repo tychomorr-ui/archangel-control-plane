@@ -43,6 +43,13 @@
       "when": 1790520634120,
       "tag": "0005_sad_ser_duncan",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1792787920664,
+      "tag": "0006_nebulous_spectrum",
+      "breakpoints": true
     }
   ]
 }

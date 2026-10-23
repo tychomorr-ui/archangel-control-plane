@@ -51,6 +51,23 @@ export const applicationIntegrations = mysqlTable("application_integrations", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
+export const atmosAuthorityChallenges = mysqlTable("atmos_authority_challenges", {
+  id: int("id").autoincrement().primaryKey(),
+  challengeId: varchar("challengeId", { length: 64 }).notNull().unique(),
+  nonce: varchar("nonce", { length: 256 }).notNull(),
+  issuedAt: timestamp("issuedAt").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const atmosAuthorityMutations = mysqlTable("atmos_authority_mutations", {
+  id: int("id").autoincrement().primaryKey(),
+  mutationId: varchar("mutationId", { length: 64 }).notNull().unique(),
+  challengeId: varchar("challengeId", { length: 64 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const intents = mysqlTable("intents", {
   id: int("id").autoincrement().primaryKey(),
   publicId: varchar("publicId", { length: 64 }).notNull().unique(),
