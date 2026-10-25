@@ -32,7 +32,8 @@ export async function createDurableGate4Store(): Promise<Gate4Store> {
       // Some hosted MySQL-compatible adapters apply the update but omit ResultSetHeader metadata.
       // Re-read only to distinguish that case from an already-consumed challenge.
       const rows = await db.select({ usedAt: atmosAuthorityChallenges.usedAt }).from(atmosAuthorityChallenges).where(eq(atmosAuthorityChallenges.challengeId, challengeId)).limit(1);
-      const observed = rows[0]?.usedAt?.getTime();
+      const observedValue = rows[0]?.usedAt as unknown;
+      const observed = observedValue instanceof Date ? observedValue.getTime() : observedValue ? Date.parse(String(observedValue)) : undefined;
       return observed !== undefined && Math.abs(observed - consumedAt.getTime()) <= 2_000;
     },
     claimMutation: async record => {
