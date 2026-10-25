@@ -1,15 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { generateKeyPairSync, randomUUID, sign } from "node:crypto";
-import { authorizeNoop, canonicalize, gate4Status, issueChallenge, sha256, type Gate4Config, type Gate4Store, type ChallengeRecord, type MutationRecord } from "./atmosGate4";
+import { authorizeControlPlaneMode, authorizeNoop, canonicalize, gate4Status, issueChallenge, sha256, type Gate4Config, type Gate4Store, type ChallengeRecord, type MutationRecord } from "./atmosGate4";
 
 function store(): Gate4Store {
   const challenges = new Map<string, ChallengeRecord>();
   const mutations = new Set<string>();
+  let mode: "ready" | "maintenance" = "ready";
   return {
     createChallenge: async record => { challenges.set(record.challengeId, record); },
     getChallenge: async id => challenges.get(id) ?? null,
     consumeChallenge: async (id, now) => { const c = challenges.get(id); if (!c || c.usedAt) return false; c.usedAt = now; return true; },
     claimMutation: async (record: MutationRecord) => { if (mutations.has(record.mutationId)) return false; mutations.add(record.mutationId); return true; },
+    getControlPlaneMode: async () => mode,
+    setControlPlaneMode: async next => { mode = next; return mode; },
     audit: async () => undefined,
   };
 }
@@ -75,6 +78,15 @@ describe("ATMOS Gate 4", () => {
     await expect(authorizeNoop(s, c, { ...request, payload: { reason: "tampered" } })).rejects.toMatchObject({ code: "bad_request" });
     const second = await issueChallenge(s, c); const forbidden = await requestFor(second, operatorPrivateKey, { operation: "RESTART" });
     await expect(authorizeNoop(s, c, forbidden)).rejects.toMatchObject({ code: "forbidden" });
+  });
+  it("applies only the bounded control-plane mode operation and supports rollback", async () => {
+    const s = store(); const { config: c, operatorPrivateKey } = config();
+    const challenge = await issueChallenge(s, c); const maintenance = await requestFor(challenge, operatorPrivateKey, { operation: "SET_CONTROL_PLANE_MODE", payload: { reason: "planned-maintenance", mode: "maintenance" } });
+    const applied = await authorizeControlPlaneMode(s, c, maintenance);
+    expect(applied).toMatchObject({ outcome: "APPLIED", boundary: "CONTROL_PLANE_STATE_ONLY", previousMode: "ready", newMode: "maintenance", rollbackOperation: "SET_CONTROL_PLANE_MODE" });
+    const rollbackChallenge = await issueChallenge(s, c); const rollback = await requestFor(rollbackChallenge, operatorPrivateKey, { operation: "SET_CONTROL_PLANE_MODE", payload: { reason: "rollback", mode: "ready" } });
+    const rolledBack = await authorizeControlPlaneMode(s, c, rollback);
+    expect(rolledBack).toMatchObject({ outcome: "APPLIED", previousMode: "maintenance", newMode: "ready" });
   });
   it("fails closed when signing configuration is missing", async () => {
     expect(gate4Status({}, "unconfigured")).toMatchObject({ operatorVerification: "unconfigured", controlPlaneSigning: "unconfigured", externalMutation: "DISABLED" });

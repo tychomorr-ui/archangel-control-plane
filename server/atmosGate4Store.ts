@@ -1,6 +1,6 @@
 import { and, eq, isNull } from "drizzle-orm";
-import { auditEvents, atmosAuthorityChallenges, atmosAuthorityMutations } from "../drizzle/schema";
-import type { Gate4Store, ChallengeRecord } from "./atmosGate4";
+import { auditEvents, atmosAuthorityChallenges, atmosAuthorityMutations, atmosControlPlaneState } from "../drizzle/schema";
+import type { Gate4Store, ChallengeRecord, ControlPlaneMode } from "./atmosGate4";
 import { getDb } from "./db";
 import { nanoid } from "nanoid";
 
@@ -43,6 +43,14 @@ export async function createDurableGate4Store(): Promise<Gate4Store> {
       } catch {
         return false;
       }
+    },
+    getControlPlaneMode: async () => {
+      const rows = await db.select({ mode: atmosControlPlaneState.mode }).from(atmosControlPlaneState).where(eq(atmosControlPlaneState.stateKey, "ARCHANGEL_MODE")).limit(1);
+      return (rows[0]?.mode ?? "ready") as ControlPlaneMode;
+    },
+    setControlPlaneMode: async (mode, now) => {
+      await db.insert(atmosControlPlaneState).values({ stateKey: "ARCHANGEL_MODE", mode, updatedAt: new Date(now) }).onDuplicateKeyUpdate({ set: { mode, updatedAt: new Date(now) } });
+      return mode;
     },
     audit: async event => {
       await db.insert(auditEvents).values({

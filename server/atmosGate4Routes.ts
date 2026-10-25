@@ -1,6 +1,6 @@
 import type { Express, Request, Response } from "express";
 import { z } from "zod";
-import { Gate4Error, authorizeNoop, gate4ConfigFromEnvironment, gate4Status, issueChallenge } from "./atmosGate4";
+import { Gate4Error, authorizeControlPlaneMode, authorizeNoop, gate4ConfigFromEnvironment, gate4Status, issueChallenge } from "./atmosGate4";
 import { createDurableGate4Store } from "./atmosGate4Store";
 
 const mutationRequestSchema = z.object({
@@ -12,7 +12,7 @@ const mutationRequestSchema = z.object({
   expiresAt: z.string().datetime({ offset: true }),
   operation: z.string().max(32),
   targetNodeId: z.string().max(64),
-  payload: z.object({ reason: z.string().min(1).max(128) }).strict(),
+  payload: z.object({ reason: z.string().min(1).max(128), mode: z.enum(["ready", "maintenance"]).optional() }).strict(),
   payloadHash: z.string().regex(/^sha256:[a-f0-9]{64}$/),
   operatorKeyReference: z.string().min(1).max(128),
   operatorSignature: z.string().min(16).max(512),
@@ -33,6 +33,15 @@ export function registerAtmosGate4Routes(app: Express) {
     res.json(gate4Status(config, process.env.DATABASE_URL ? "durable" : "unconfigured"));
   });
 
+  app.get("/authority/state", async (_req: Request, res: Response) => {
+    try {
+      const mode = await (await createDurableGate4Store()).getControlPlaneMode();
+      res.json({ schema: "NEXINUS_ATMOS_CONTROL_PLANE_STATE/v1", nodeId: "ARCHANGEL", mode, externalMutation: "DISABLED" });
+    } catch (error) {
+      sendError(error, res);
+    }
+  });
+
   app.post("/authority/challenge", async (_req: Request, res: Response) => {
     try {
       if (Number(_req.headers["content-length"] ?? 0) > 16_384) return res.status(413).json({ error: "request_too_large" });
@@ -48,7 +57,11 @@ export function registerAtmosGate4Routes(app: Express) {
     try {
       if (Number(req.headers["content-length"] ?? 0) > 16_384) return res.status(413).json({ error: "request_too_large" });
       const request = mutationRequestSchema.parse(req.body);
-      const receipt = await authorizeNoop(await createDurableGate4Store(), gate4ConfigFromEnvironment(), request);
+      const store = await createDurableGate4Store();
+      const config = gate4ConfigFromEnvironment();
+      const receipt = request.operation === "NOOP"
+        ? await authorizeNoop(store, config, request)
+        : await authorizeControlPlaneMode(store, config, request);
       res.status(200).json(receipt);
     } catch (error) {
       sendError(error, res);

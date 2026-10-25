@@ -68,6 +68,13 @@ export const atmosAuthorityMutations = mysqlTable("atmos_authority_mutations", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const atmosControlPlaneState = mysqlTable("atmos_control_plane_state", {
+  id: int("id").autoincrement().primaryKey(),
+  stateKey: varchar("stateKey", { length: 64 }).notNull().unique(),
+  mode: mysqlEnum("mode", ["ready", "maintenance"]).notNull().default("ready"),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export const intents = mysqlTable("intents", {
   id: int("id").autoincrement().primaryKey(),
   publicId: varchar("publicId", { length: 64 }).notNull().unique(),

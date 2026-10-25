@@ -9,7 +9,7 @@ describe("ATMOS Gate 4 configured secret posture", () => {
       operatorVerification: "configured",
       controlPlaneSigning: "configured",
       replayProtection: "durable",
-      mutationPolicy: "NOOP_ONLY",
+      mutationPolicy: "NOOP_OR_CONTROL_PLANE_STATE_V1",
       externalMutation: "DISABLED",
     });
   });
