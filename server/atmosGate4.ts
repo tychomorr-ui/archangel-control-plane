@@ -63,11 +63,33 @@ export function canonicalize(value: unknown): string {
 
 export function sha256(value: unknown): string { return `sha256:${createHash("sha256").update(canonicalize(value)).digest("hex")}`; }
 
+function decodePublicKeyMaterial(value: string): string | { key: Buffer; format: "der"; type: "spki" } {
+  if (value.includes("BEGIN")) return value;
+  return { key: Buffer.from(value, "base64"), format: "der", type: "spki" };
+}
+
+function operatorPublicKey(config: Gate4Config) {
+  const material = decodePublicKeyMaterial(config.operatorPublicKeyPem);
+  return typeof material === "string" ? createPublicKey(material) : createPublicKey(material);
+}
+
+function controlPlanePrivateKey(config: Gate4Config) {
+  if (config.controlPlanePrivateKeyPem.includes("BEGIN")) return createPrivateKey(config.controlPlanePrivateKeyPem);
+  return createPrivateKey({ key: Buffer.from(config.controlPlanePrivateKeyPem, "base64"), format: "der", type: "pkcs8" });
+}
+
+export function gate4KeyFingerprint(config: Gate4Config): { operator: string; controlPlane: string } {
+  return {
+    operator: createHash("sha256").update(operatorPublicKey(config).export({ type: "spki", format: "der" })).digest("hex"),
+    controlPlane: createHash("sha256").update(createPublicKey(controlPlanePrivateKey(config)).export({ type: "spki", format: "der" })).digest("hex"),
+  };
+}
+
 function assertConfigured(config: Gate4Config): void {
   if (!config.operatorKeyReference || !config.operatorPublicKeyPem || !config.controlPlanePrivateKeyPem) {
     throw new Gate4Error("misconfigured", "Gate 4 signing configuration is incomplete; authorization is fail-closed.");
   }
-  try { createPublicKey(config.operatorPublicKeyPem); createPrivateKey(config.controlPlanePrivateKeyPem); } catch {
+  try { operatorPublicKey(config); controlPlanePrivateKey(config); } catch {
     throw new Gate4Error("misconfigured", "Gate 4 signing keys are invalid; authorization is fail-closed.");
   }
 }
@@ -95,7 +117,7 @@ export type MutationRequest = {
 
 function verifyOperatorSignature(request: MutationRequest, config: Gate4Config): boolean {
   const { operatorSignature: _signature, ...unsigned } = request;
-  return verifyEd25519(null, Buffer.from(canonicalize(unsigned)), createPublicKey(config.operatorPublicKeyPem), Buffer.from(request.operatorSignature, "base64url"));
+  return verifyEd25519(null, Buffer.from(canonicalize(unsigned)), operatorPublicKey(config), Buffer.from(request.operatorSignature, "base64url"));
 }
 
 export async function authorizeNoop(store: Gate4Store, config: Gate4Config, request: MutationRequest, now = new Date()) {
@@ -115,7 +137,7 @@ export async function authorizeNoop(store: Gate4Store, config: Gate4Config, requ
   const verifiedAt = new Date(current).toISOString();
   const unsignedReceipt = { schema: GATE4.receiptSchema, mutationId: request.mutationId, challengeId: request.challengeId, operation: "NOOP", targetNodeId: GATE4.nodeId, outcome: "ACCEPTED_NOOP", payloadHash: request.payloadHash, operatorKeyReference: config.operatorKeyReference, verifiedAt, replay: "fresh", boundary: GATE4.boundary } as const;
   const receiptHash = sha256(unsignedReceipt);
-  const controlPlaneSignature = signEd25519(null, Buffer.from(canonicalize({ ...unsignedReceipt, receiptHash })), createPrivateKey(config.controlPlanePrivateKeyPem)).toString("base64url");
+  const controlPlaneSignature = signEd25519(null, Buffer.from(canonicalize({ ...unsignedReceipt, receiptHash })), controlPlanePrivateKey(config)).toString("base64url");
   const receipt = { ...unsignedReceipt, receiptHash, controlPlaneSignature };
   await store.audit({ outcome: "accepted", mutationId: request.mutationId, challengeId: request.challengeId, code: "ACCEPTED_NOOP", occurredAt: verifiedAt, payloadHash: request.payloadHash, receiptHash });
   return receipt;

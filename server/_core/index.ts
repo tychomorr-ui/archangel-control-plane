@@ -9,6 +9,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerAtmosGate4Routes } from "../atmosGate4Routes";
+import { gate4ConfigFromEnvironment, gate4KeyFingerprint } from "../atmosGate4";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -32,6 +33,13 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  try {
+    const fingerprints = gate4KeyFingerprint(gate4ConfigFromEnvironment());
+    console.log(`Gate 4 operator pubkey loaded: sha256=${fingerprints.operator}`);
+    console.log(`Gate 4 control-plane signing key loaded: ED25519 sha256=${fingerprints.controlPlane}`);
+  } catch {
+    console.warn("Gate 4 keys unavailable: signing configuration is not valid; authorization remains fail-closed.");
+  }
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

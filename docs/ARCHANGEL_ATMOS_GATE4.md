@@ -24,8 +24,8 @@ Every accepted or rejected Gate 4 request is written to the existing append-only
 Configure these server-side only through the WebDev secret manager or deployment environment:
 
 - `ATMOS_OPERATOR_KEY_REFERENCE` — stable reference for the operator public key.
-- `ATMOS_OPERATOR_PUBLIC_KEY` — PEM-encoded Ed25519 public key.
-- `ATMOS_CONTROL_PLANE_PRIVATE_KEY` — PEM-encoded Ed25519 private key used only to sign receipts.
+- `ATMOS_OPERATOR_PUBLIC_KEY` — single-line base64-encoded Ed25519 SPKI DER public key. PEM remains accepted by the loader for local development.
+- `ATMOS_CONTROL_PLANE_PRIVATE_KEY` — single-line base64-encoded Ed25519 PKCS#8 DER private key used only to sign receipts. PEM remains accepted by the loader for local development.
 
 Private keys are never accepted through HTTP, browser fields, query parameters, or JSON bodies.
 
@@ -35,13 +35,17 @@ The live preview status endpoint currently reports:
 
 ```json
 {
-  "challengeEndpoint": "unconfigured",
-  "operatorVerification": "unconfigured",
-  "controlPlaneSigning": "unconfigured",
+  "challengeEndpoint": "configured",
+  "operatorVerification": "configured",
+  "controlPlaneSigning": "configured",
   "mutationPolicy": "NOOP_ONLY",
   "replayProtection": "durable",
   "externalMutation": "DISABLED"
 }
 ```
 
-This is correct and fail-closed until the two key materials and the operator key reference are configured. Gate 4 must not be labeled live until a valid signed NOOP request produces a receipt whose control-plane signature is independently verified.
+The server-side signing configuration is now loaded and validated. Gate 4 remains intentionally NOOP-only until a valid externally signed operator request produces a receipt whose control-plane signature is independently verified. The operator private key is never configured on ARCHANGEL.
+
+## Transition path for active mutation
+
+There is no environment-variable switch that activates infrastructure mutation. `GATE4.mutationPolicy` is deliberately `NOOP_ONLY`, and `/mutate` calls `authorizeNoop`. A safe transition requires a separate reviewed implementation: define a narrow allowlist of reversible application operations, add an operation-specific schema and handler, preserve dual authorization and replay/audit checks, require an explicit operator approval envelope, implement precondition and rollback receipts, and add adversarial tests for unauthorized operations, stale approvals, replay, target confusion, and rollback failure. Only after those tests pass should a separately checkpointed change replace the NOOP-only handler; arbitrary shell, firewall, credential, and infrastructure mutation must remain prohibited.

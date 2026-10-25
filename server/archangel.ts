@@ -7,6 +7,7 @@ import { getDb } from "./db";
 import { adminProcedure, protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import { ACTION_SCOPES, BOUNDED_APPLICATION_ACTIONS, actionPolicy, verifySignedHealthReceipt } from "./conductor";
+import { gate4ConfigFromEnvironment, gate4Status } from "./atmosGate4";
 
 const nodeIdSchema = z.enum(NODE_IDS);
 
@@ -259,6 +260,8 @@ export const archangelRouter = router({
       prohibited: ["arbitrary shell", "public command endpoint", "stored node private keys", "silent execution", "infrastructure mutation"],
     };
   }),
+
+  gate4Status: protectedProcedure.query(() => gate4Status(gate4ConfigFromEnvironment(), process.env.DATABASE_URL ? "durable" : "unconfigured")),
 
   integrations: protectedProcedure.query(async () => {
     const db = await getRequiredDb();
