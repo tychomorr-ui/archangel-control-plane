@@ -24,8 +24,16 @@ export async function createDurableGate4Store(): Promise<Gate4Store> {
       return { challengeId: row.challengeId, nonce: row.nonce, issuedAt: row.issuedAt.toISOString(), expiresAt: row.expiresAt.toISOString(), usedAt: row.usedAt?.toISOString() ?? null } satisfies ChallengeRecord;
     },
     consumeChallenge: async (challengeId, now) => {
-      const result = await db.update(atmosAuthorityChallenges).set({ usedAt: new Date(now) }).where(and(eq(atmosAuthorityChallenges.challengeId, challengeId), isNull(atmosAuthorityChallenges.usedAt)));
-      return Number((result as { affectedRows?: number }).affectedRows ?? 0) === 1;
+      const consumedAt = new Date(now);
+      const result = await db.update(atmosAuthorityChallenges).set({ usedAt: consumedAt }).where(and(eq(atmosAuthorityChallenges.challengeId, challengeId), isNull(atmosAuthorityChallenges.usedAt)));
+      const metadata = result as { affectedRows?: number; rowsAffected?: number };
+      const affectedRows = Number(metadata.affectedRows ?? metadata.rowsAffected ?? 0);
+      if (affectedRows === 1) return true;
+      // Some hosted MySQL-compatible adapters apply the update but omit ResultSetHeader metadata.
+      // Re-read only to distinguish that case from an already-consumed challenge.
+      const rows = await db.select({ usedAt: atmosAuthorityChallenges.usedAt }).from(atmosAuthorityChallenges).where(eq(atmosAuthorityChallenges.challengeId, challengeId)).limit(1);
+      const observed = rows[0]?.usedAt?.getTime();
+      return observed !== undefined && Math.abs(observed - consumedAt.getTime()) <= 2_000;
     },
     claimMutation: async record => {
       try {
