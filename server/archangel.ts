@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { applicationIntegrations, auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
+import { applicationIntegrations, atmosControlPlaneState, auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
 import { APPLICATION_ATLAS, APPLICATION_IDS, AUDIT_EVENT_TYPES, FLEET_NODES, NODE_IDS, OPERATION_TYPES, PLANNING_POLICIES } from "../shared/archangel";
 import { getDb } from "./db";
 import { adminProcedure, protectedProcedure, router } from "./_core/trpc";
@@ -190,6 +190,12 @@ function evaluateScenarioPolicy(scenario: { rollbackHypothesis: string; affected
 }
 
 export const archangelRouter = router({
+  gate4State: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const rows = await db.select({ mode: atmosControlPlaneState.mode, updatedAt: atmosControlPlaneState.updatedAt }).from(atmosControlPlaneState).where(eq(atmosControlPlaneState.stateKey, "ARCHANGEL_MODE")).limit(1);
+    return { mode: rows[0]?.mode ?? "ready", updatedAt: rows[0]?.updatedAt ?? null, externalMutation: "DISABLED" as const };
+  }),
+
   fleet: protectedProcedure.query(async () => {
     const [statuses, registry] = await Promise.all([latestStatusByNode(), registryByNode()]);
     return FLEET_NODES.map(node => {
