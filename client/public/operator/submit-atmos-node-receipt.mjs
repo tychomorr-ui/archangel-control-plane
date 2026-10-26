@@ -15,7 +15,7 @@ const challenge = await challengeResponse.json();
 if (!challengeResponse.ok) throw new Error(`Challenge failed (${challengeResponse.status}): ${JSON.stringify(challenge)}`);
 
 const issuedAt = new Date().toISOString();
-const expiresAt = new Date(Date.now() + 5 * 60_000).toISOString();
+const expiresAt = challenge.expiresAt;
 const receipt = {
   applicationId: challenge.applicationId,
   nodeId,
