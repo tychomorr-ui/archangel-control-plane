@@ -9,6 +9,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerAtmosGate4Routes } from "../atmosGate4Routes";
+import { registerNodeReceiptRoutes } from "../nodeReceiptRoutes";
 import { gate4ConfigFromEnvironment, gate4KeyFingerprint } from "../atmosGate4";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -46,6 +47,7 @@ async function startServer() {
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   registerAtmosGate4Routes(app);
+  registerNodeReceiptRoutes(app);
   // tRPC API
   app.use(
     "/api/trpc",

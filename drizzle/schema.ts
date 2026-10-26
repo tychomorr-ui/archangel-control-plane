@@ -61,6 +61,17 @@ export const atmosAuthorityChallenges = mysqlTable("atmos_authority_challenges",
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const atmosNodeReceiptChallenges = mysqlTable("atmos_node_receipt_challenges", {
+  id: int("id").autoincrement().primaryKey(),
+  challengeId: varchar("challengeId", { length: 64 }).notNull().unique(),
+  nodeId: varchar("nodeId", { length: 64 }).notNull(),
+  nonce: varchar("nonce", { length: 256 }).notNull(),
+  issuedAt: timestamp("issuedAt").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const atmosAuthorityMutations = mysqlTable("atmos_authority_mutations", {
   id: int("id").autoincrement().primaryKey(),
   mutationId: varchar("mutationId", { length: 64 }).notNull().unique(),
