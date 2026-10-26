@@ -196,6 +196,48 @@ export const archangelRouter = router({
     return { mode: rows[0]?.mode ?? "ready", updatedAt: rows[0]?.updatedAt ?? null, externalMutation: "DISABLED" as const };
   }),
 
+  atmosEvidence: protectedProcedure.query(async () => {
+    const db = await getRequiredDb();
+    const [reports, registry, audit] = await Promise.all([
+      db.select().from(nodeStatusReports).orderBy(desc(nodeStatusReports.observedAt)).limit(500),
+      db.select({ nodeId: applicationIntegrations.nodeId, applicationId: applicationIntegrations.applicationId, endpointUrl: applicationIntegrations.endpointUrl, status: applicationIntegrations.status }).from(applicationIntegrations),
+      db.select().from(auditEvents).orderBy(desc(auditEvents.occurredAt)).limit(200),
+    ]);
+    const latest = new Map<string, (typeof reports)[number]>();
+    for (const report of reports) if (!latest.has(report.nodeId)) latest.set(report.nodeId, report);
+    const integrations = new Map(registry.map(record => [record.nodeId, record]));
+    const nodes = FLEET_NODES.map(node => {
+      const report = latest.get(node.id);
+      const integration = integrations.get(node.id);
+      return {
+        nodeId: node.id,
+        name: node.name,
+        applicationId: integration?.applicationId ?? null,
+        endpointUrl: integration?.endpointUrl ?? null,
+        enrollmentStatus: integration?.status ?? "pending",
+        evidenceState: report?.verificationState ?? "pending",
+        observedAt: report?.observedAt ?? null,
+        signedReceiptHash: report?.signedReceiptHash ?? null,
+        applicationReadiness: report?.applicationReadiness ?? "unknown",
+        reachability: report?.reachability ?? "unknown",
+        narrative: report?.narrative ?? "No signed status receipt is stored for this node.",
+      };
+    });
+    return {
+      schema: "NEXINUS_ATMOS_EVIDENCE_DIRECTORY/v1",
+      truthBoundary: "stored-receipts-and-audit-only",
+      summary: {
+        declaredNodes: nodes.length,
+        verifiedReceipts: nodes.filter(node => node.evidenceState === "verified").length,
+        failedReceipts: nodes.filter(node => node.evidenceState === "failed").length,
+        pendingReceipts: nodes.filter(node => node.evidenceState === "pending").length,
+        auditRecords: audit.length,
+      },
+      nodes,
+      audit: audit.map(event => ({ publicId: event.publicId, nodeId: event.nodeId, eventType: event.eventType, outcome: event.outcome, summary: event.summary, occurredAt: event.occurredAt })),
+    };
+  }),
+
   fleet: protectedProcedure.query(async () => {
     const [statuses, registry] = await Promise.all([latestStatusByNode(), registryByNode()]);
     return FLEET_NODES.map(node => {

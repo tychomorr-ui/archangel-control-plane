@@ -32,6 +32,7 @@ const navigation = [
   { label: "Scenario Studio", path: "/scenarios", icon: Waypoints },
   { label: "Control Briefing", path: "/briefing", icon: Radar },
   { label: "Sovereign API", path: "/sovereign-api", icon: KeyRound },
+  { label: "ATMOS Evidence", path: "/atmos", icon: DatabaseZap },
   { label: "Command Center", path: "/command-center", icon: Command },
   { label: "Intent workflow", path: "/intents", icon: ClipboardList },
   { label: "Evidence Observatory", path: "/audit", icon: ScanLine },
