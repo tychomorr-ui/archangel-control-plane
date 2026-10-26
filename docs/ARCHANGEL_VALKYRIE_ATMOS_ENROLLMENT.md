@@ -20,7 +20,7 @@ node launch/submit-atmos-node-receipt.mjs \
   <capability-one,capability-two>
 ```
 
-A challenge was successfully issued for the registered Valkyrie integration during implementation. No receipt was submitted because the deployed Valkyrie runtime still has no confirmed endpoint/agent that can truthfully report its live status. Enrollment is therefore not complete until the command runs from that runtime and returns HTTP 201.
+A challenge was successfully issued for the registered Valkyrie integration, and the signer was run from the actual Valkyrie droplet. The first real receipt returned HTTP 201 and was persisted as verified with receipt hash `sha256:a12419371ab5616fe17ac7664942257dc2b3ef015a585715424ba2ebdc4d43c4`. Valkyrie enrollment is complete; the remaining declared nodes are still pending.
 
 ## Thresholds
 

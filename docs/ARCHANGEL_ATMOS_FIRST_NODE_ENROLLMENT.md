@@ -6,7 +6,16 @@ The first candidate is the already registered Valkyrie Adjudication Entity integ
 
 ## Current result
 
-A real signed status receipt was not accepted because the deployed Valkyrie surface does not currently expose a stable external service-node receipt endpoint or runtime emitter. The prior inspection found `Registered Service Nodes: 0` and no callable signed-health receipt contract. ARCHANGEL therefore remains correct to show Valkyrie as pending and has not created a fabricated `nodeStatusReports` row or `receipt.recorded` audit event.
+The first real challenge-bound receipt was accepted on 2026-10-26. ARCHANGEL verified the droplet-held Ed25519 key, challenge nonce, canonical payload, freshness window, and signature, then persisted a verified `nodeStatusReports` row and append-only `receipt.recorded` audit event.
+
+- `nodeId`: `valkyrie-adjudication-entity`
+- `applicationReadiness`: `ready`
+- `reachability`: `reachable`
+- `verificationState`: `verified`
+- `version`: `1.0.0`
+- `receiptHash`: `sha256:a12419371ab5616fe17ac7664942257dc2b3ef015a585715424ba2ebdc4d43c4`
+
+The other declared nodes remain pending until each provides its own real challenge-bound receipt.
 
 ## Required contract to complete enrollment
 
