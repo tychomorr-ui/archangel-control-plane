@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from "node:crypto";
+import { createHash, createPublicKey, randomBytes, randomUUID } from "node:crypto";
 import type { Express } from "express";
 import { and, desc, eq, isNull } from "drizzle-orm";
 import { getDb } from "./db";
@@ -49,7 +49,8 @@ export function registerNodeReceiptRoutes(app: Express) {
       const challengeId = `ch_${randomUUID()}`;
       const nonce = randomBytes(32).toString("base64url");
       await db.insert(atmosNodeReceiptChallenges).values({ challengeId, nodeId, nonce, issuedAt, expiresAt });
-      return res.status(201).json({ schema: "NEXINUS_ATMOS_NODE_CHALLENGE/v1", challengeId, applicationId: application.id, nodeId, nonce, issuedAt: issuedAt.toISOString(), expiresAt: expiresAt.toISOString(), requiredReceipt: "NEXINUS_ATMOS_SIGNED_HEALTH_RECEIPT/v1", canonicalization: "ARCHANGEL canonicalHealthReceipt v1", endpoint: integration.endpointUrl });
+      const registeredPublicKeyFingerprint = createHash("sha256").update(createPublicKey(integration.publicKeyPem).export({ type: "spki", format: "der" })).digest("hex");
+      return res.status(201).json({ schema: "NEXINUS_ATMOS_NODE_CHALLENGE/v1", challengeId, applicationId: application.id, nodeId, nonce, issuedAt: issuedAt.toISOString(), expiresAt: expiresAt.toISOString(), requiredReceipt: "NEXINUS_ATMOS_SIGNED_HEALTH_RECEIPT/v1", canonicalization: "ARCHANGEL canonicalHealthReceipt v1", endpoint: integration.endpointUrl, registeredPublicKeyFingerprint });
     } catch (error) {
       console.error("ATMOS node challenge failed", error);
       return res.status(503).json({ error: "unavailable", message: "The node challenge service is unavailable." });
