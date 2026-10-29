@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { z } from "zod";
 import { applicationIntegrations, atmosControlPlaneState, auditEvents, intents, meshNodes, nodeStatusReports, notifications, planningScenarios } from "../drizzle/schema";
 import { APPLICATION_ATLAS, APPLICATION_IDS, AUDIT_EVENT_TYPES, FLEET_NODES, NODE_IDS, OPERATION_TYPES, PLANNING_POLICIES } from "../shared/archangel";
+import { ATMOS_CANONICAL_NODES, ATMOS_PROTOCOL, ATMOS_VERIFICATION_BOUNDARY } from "../shared/atmos";
 import { getDb } from "./db";
 import { adminProcedure, protectedProcedure, router } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
@@ -206,16 +207,22 @@ export const archangelRouter = router({
     const latest = new Map<string, (typeof reports)[number]>();
     for (const report of reports) if (!latest.has(report.nodeId)) latest.set(report.nodeId, report);
     const integrations = new Map(registry.map(record => [record.nodeId, record]));
-    const nodes = FLEET_NODES.map(node => {
-      const report = latest.get(node.id);
-      const integration = integrations.get(node.id);
+    const nodes = ATMOS_CANONICAL_NODES.map(canonical => {
+      const nodeId = canonical.nodeId.toLowerCase();
+      const report = latest.get(nodeId);
+      const integration = integrations.get(nodeId);
       return {
-        nodeId: node.id,
-        name: node.name,
+        nodeId: canonical.nodeId,
+        name: canonical.displayName,
         applicationId: integration?.applicationId ?? null,
-        endpointUrl: integration?.endpointUrl ?? null,
+        endpointUrl: canonical.canonicalEndpoint,
         enrollmentStatus: integration?.status ?? "pending",
         evidenceState: report?.verificationState ?? "pending",
+        canonicalVerification: canonical.status,
+        publicKeyFingerprintSha256: canonical.publicKeyFingerprintSha256,
+        manifestPayloadSha256: canonical.manifestPayloadSha256,
+        artifactSha256: canonical.artifactSha256,
+        applicationRuntimeMeasured: canonical.applicationRuntimeMeasured,
         observedAt: report?.observedAt ?? null,
         signedReceiptHash: report?.signedReceiptHash ?? null,
         applicationReadiness: report?.applicationReadiness ?? "unknown",
@@ -224,11 +231,14 @@ export const archangelRouter = router({
       };
     });
     return {
-      schema: "NEXINUS_ATMOS_EVIDENCE_DIRECTORY/v1",
-      truthBoundary: "stored-receipts-and-audit-only",
+      schema: "NEXINUS_ATMOS_EVIDENCE_DIRECTORY/v2",
+      atmosProtocol: ATMOS_PROTOCOL,
+      verificationBoundary: ATMOS_VERIFICATION_BOUNDARY,
+      truthBoundary: "canonical-identity-values-from-supplied-cutover-report; runtime-receipts-and-audit-only",
       summary: {
         declaredNodes: nodes.length,
         verifiedReceipts: nodes.filter(node => node.evidenceState === "verified").length,
+        canonicalVerifiedNodes: nodes.filter(node => node.canonicalVerification === "VERIFIED").length,
         failedReceipts: nodes.filter(node => node.evidenceState === "failed").length,
         pendingReceipts: nodes.filter(node => node.evidenceState === "pending").length,
         auditRecords: audit.length,

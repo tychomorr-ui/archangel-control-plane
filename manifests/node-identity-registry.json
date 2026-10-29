@@ -1,87 +1,132 @@
 {
-  "protocol": "ATMOS/1",
+  "protocol": "ATMOS-1.1.1",
+  "manifestKind": "NEXINUS_ATMOS_SIGNED_NODE_MANIFEST/v1",
+  "healthKind": "NEXINUS_ATMOS_SIGNED_HEALTH/v1",
   "manifestPath": "/.well-known/atmos-identity.json",
+  "healthPath": "/health",
+  "verificationBoundary": "served public-key fingerprint + signed manifest payload + signed health artifact hash",
+  "meshStatus": "CRYPTOGRAPHICALLY_VERIFIED",
+  "counts": {
+    "declared": 11,
+    "verified": 11,
+    "mismatched": 0,
+    "unpublished": 0,
+    "probeFailures": 0
+  },
   "controlPlaneIdentity": {
-    "file": "incoming/node-evidence-2026-10-09/archangel.identity",
-    "canonicalLocus": "https://archangelcp-sbwmjhce.manus.space",
-    "status": "uploaded-self-attested; signature-not-verified"
+    "nodeId": "ARCHANGEL",
+    "canonicalLocus": "https://archangel.nexinus.net",
+    "status": "VERIFIED",
+    "publicKeyFingerprintSha256": "5a7d0be5747b2a61bbe4a5d95772ae50a469688e85d40028b501c893dea2013a",
+    "manifestPayloadSha256": "f65be7bf2d03cb719889a2fdac8f9c734d825cfa95a2bb1abdcdf8c95d7b4b2c",
+    "artifactSha256": "05c780ea17cc1f9864d79bca2f50e0aa46bd640fd696f7431262fbed8cd4bdc1"
   },
   "nodes": [
     {
       "nodeId": "root-gate",
       "application": "Root-Gate",
-      "canonicalLocus": "https://rootgate.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://rootgate.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "03105cbe8e76825a79f18d0095d6be51ad8ad7e781b0a53cbcd2b7d335e45deb",
+      "manifestPayloadSha256": "81cd8590cf75b1fa0e33950c8de1952c901408af014080041c642d768a702787",
+      "artifactSha256": "cca1bb96decdd79828d452d3a6ee3c9494042a13df404120d685fe8b3375e34c"
     },
     {
       "nodeId": "tesseract-terminus",
-      "application": "Sovereign Provenance Console",
-      "canonicalLocus": "https://tesseract.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "application": "Tesseract-Terminus",
+      "canonicalLocus": "https://terminus.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "1b608565008bd72768dfa4679e5fa947098bad451becf0d3fe87498da64edfe2",
+      "manifestPayloadSha256": "0ad1f8b120e80e948127e69bcdd5525ea0780a169056cbd1d2caa3c4eb2aecb5",
+      "artifactSha256": "6595a4785638f07a68a4d5d239b384ef2db2ab3eaab024fd8bac3c9c3c50044d"
     },
     {
       "nodeId": "xinus-clarity",
       "application": "XinUS-Clarity",
-      "canonicalLocus": "https://exonissuite-ceruhtwo.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://clarity.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "a1ca21adaec0d2bd143aff32f3377b86e425e3e270e04606624ff3472b0564f1",
+      "manifestPayloadSha256": "f2a83314fd02028deb5f423dad73b63482dd0e7e21fc59219905e60dc05835f1",
+      "artifactSha256": "8b2c0612674263c1dcac38ec3136f7b1ffcaccc99552739b5bc9ee3d9cc3ee65"
     },
     {
       "nodeId": "kether-gate",
       "application": "Monarch-OS",
-      "canonicalLocus": "https://schedtool-7vbikw4h.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://monarch.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "d0d43070befd86ed1bab4b6609e7228ca760a969e9a4ac59a2a8c1866f8c82b6",
+      "manifestPayloadSha256": "1af2d3f493970ca87e9423e3d4b1bfa596ae36fbae98644235b9702c494c4f31",
+      "artifactSha256": "32f2e587be0d5bf3d0a8d63afb20b080f370807da2d87b1aee6d7854124f78e0"
     },
     {
       "nodeId": "tesseract-a",
-      "application": "Tesseract-A",
-      "canonicalLocus": "https://clarityapp-hw9fbadc.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "application": "Tesseract Mirror",
+      "canonicalLocus": "https://tesseract.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "2e0ad6e44a2f3005f997a471a964909f505e660bb55219e126ce4f974579b193",
+      "manifestPayloadSha256": "30b9177dec1a9b487916b89e0d63afd1638931bb1e3237038aaa2384aedb4707",
+      "artifactSha256": "06fa1dc6a02bfbc782c6a13e4b32d9a31e86266be7bb9cb4dafee68dbf6d231c"
     },
     {
       "nodeId": "keira",
       "application": "KEIRA",
-      "canonicalLocus": "https://sovereignapp-hkcgwye7.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://keira.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "1373ae6885b649909b5e0740d06561f7f84ec8075a9f51cd50cfa1f229530ab8",
+      "manifestPayloadSha256": "fdec4bde3f9ee5160d215e8ff97fa3fae32cd303586bdc8fb030e19c6e2b2c1d",
+      "artifactSha256": "f9d2a3a4974f23c64dfb2c2c7641ae865a4f4a8a67b766c0758c570abfdb0c60"
+    },
+    {
+      "nodeId": "valkyrie-adjudication-entity",
+      "application": "VALKYRIE",
+      "canonicalLocus": "https://valkyrie.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "128e6fde1f76204a5bca2075f76c43fd5ab89e6d331e9e6abd5e95ce59c0df03",
+      "manifestPayloadSha256": "0108ceb871960fc1121e3bc307c5f9e425030d0d8642bfba7ce001f5ea217635",
+      "artifactSha256": "182d785866276bb5ea2fcbad2eafc4c992c3a06e1240866e613d6f45c86d897f"
     },
     {
       "nodeId": "project-reclaim",
       "application": "Project Reclaim",
-      "canonicalLocus": "https://reclaimporta-gsio8jvp.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://reclaim-node.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "fb5c32de094dfceb16f4181aa1ba7ced0b7cd87bdae651696e42a21d934158d3",
+      "manifestPayloadSha256": "fa41a2ed92270f63c284067e1856cb490a621885fddc55044edf88f797289b2b",
+      "artifactSha256": "75c9b7490e2718f3ac6551304656a07b07112d78764976657fd9bad8bea0ae44"
     },
     {
       "nodeId": "iwa-sage",
-      "application": "IWA Sage",
-      "canonicalLocus": "https://iwawellness-khqgjzqe.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "application": "IWA-SAGE",
+      "canonicalLocus": "https://iwa.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "82226ef2e86fed469c1ea959684ee67e436f14a0175d60e5202b666e939293d7",
+      "manifestPayloadSha256": "c8fdc4dd049784ea85593ca3b7349ddcc431ea4d9a9c6b29d19bbfc2f257285b",
+      "artifactSha256": "6500a1b5c0ba6405b3c5dcf00f06cd7b29d42299e9e5ccadf18bbfc128269c7e"
     },
     {
       "nodeId": "resonate-earth",
       "application": "Resonate Earth",
-      "canonicalLocus": "https://resonate-earth.live",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "canonicalLocus": "https://resonate.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "b1e7ccf3a85a9e64fa4d0732fcf745f56c0aa4290c1f01298597c66bbaf2a845",
+      "manifestPayloadSha256": "993dadd62fa3d4f2edc2aac0b698a14a469d2f5532f6493bc4f92679113ad234",
+      "artifactSha256": "1c378737116fdaf6932f66806f43cc4e39b8d584400a13917779cc00639ebffe"
     },
+    {
+      "nodeId": "ARCHANGEL",
+      "canonicalLocus": "https://archangel.nexinus.net",
+      "status": "VERIFIED",
+      "publicKeyFingerprintSha256": "5a7d0be5747b2a61bbe4a5d95772ae50a469688e85d40028b501c893dea2013a",
+      "manifestPayloadSha256": "f65be7bf2d03cb719889a2fdac8f9c734d825cfa95a2bb1abdcdf8c95d7b4b2c",
+      "artifactSha256": "05c780ea17cc1f9864d79bca2f50e0aa46bd640fd696f7431262fbed8cd4bdc1",
+      "application": "ARCHANGEL"
+    }
+  ],
+  "plannedApplications": [
     {
       "nodeId": "exitus-lens",
       "application": "Exitus Lens",
-      "canonicalLocus": null,
-      "status": "needs-source-and-url"
-    },
-    {
-      "nodeId": "valkyrie-adjudication-entity",
-      "application": "VALKYRIE Adjudication Entity",
-      "canonicalLocus": "https://xinusdash-doy5g86k.manus.space",
-      "status": "uploaded-self-attested",
-      "evidence": "sri-and-public-key-uploaded; signature-not-verified"
+      "status": "PLANNED_NOT_CANONICAL"
     }
   ]
 }
