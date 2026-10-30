@@ -18,8 +18,8 @@
     "canonicalLocus": "https://archangel.nexinus.net",
     "status": "VERIFIED",
     "publicKeyFingerprintSha256": "5a7d0be5747b2a61bbe4a5d95772ae50a469688e85d40028b501c893dea2013a",
-    "manifestPayloadSha256": "f65be7bf2d03cb719889a2fdac8f9c734d825cfa95a2bb1abdcdf8c95d7b4b2c",
-    "artifactSha256": "05c780ea17cc1f9864d79bca2f50e0aa46bd640fd696f7431262fbed8cd4bdc1"
+    "manifestPayloadSha256": "26b3bf7b6a118ed8d191aae4550b35a157e9c361bc186bd4dd241d590b516780",
+    "artifactSha256": "651d1805a7da2f5907657d2a48f0be28572e8c25d86075f09ee5c11cfa6ee2d4"
   },
   "nodes": [
     {
@@ -117,8 +117,8 @@
       "canonicalLocus": "https://archangel.nexinus.net",
       "status": "VERIFIED",
       "publicKeyFingerprintSha256": "5a7d0be5747b2a61bbe4a5d95772ae50a469688e85d40028b501c893dea2013a",
-      "manifestPayloadSha256": "f65be7bf2d03cb719889a2fdac8f9c734d825cfa95a2bb1abdcdf8c95d7b4b2c",
-      "artifactSha256": "05c780ea17cc1f9864d79bca2f50e0aa46bd640fd696f7431262fbed8cd4bdc1",
+      "manifestPayloadSha256": "26b3bf7b6a118ed8d191aae4550b35a157e9c361bc186bd4dd241d590b516780",
+      "artifactSha256": "651d1805a7da2f5907657d2a48f0be28572e8c25d86075f09ee5c11cfa6ee2d4",
       "application": "ARCHANGEL"
     }
   ],
