@@ -1,5 +1,4 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { startLogin } from "@/const";
 import { Button } from "@/components/ui/button";
 import {
   Activity,
@@ -20,7 +19,7 @@ import {
   ShieldCheck,
   Waypoints,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type FormEvent, type ReactNode, useState } from "react";
 import { useLocation } from "wouter";
 
 const navigation = [
@@ -41,6 +40,21 @@ const navigation = [
 ];
 
 function SignInGate() {
+  const [username, setUsername] = useState("operator");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true); setError(null);
+    try {
+      const response = await fetch("/api/auth/local/login", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ username, password }) });
+      if (!response.ok) throw new Error("Operator credentials were rejected.");
+      window.location.reload();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Operator sign-in failed.");
+    } finally { setSubmitting(false); }
+  };
   return (
     <div className="auth-gate min-h-screen px-6 py-10 text-slate-100">
       <div className="absolute inset-0 star-field opacity-70" aria-hidden="true" />
@@ -63,11 +77,13 @@ function SignInGate() {
           <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">
             Fleet state, signed receipts, protected command drafts, registry detail, and audit records are visible only to authenticated operators.
           </p>
-          <Button onClick={startLogin} className="mt-9 h-12 w-full rounded-xl bg-cyan-200 font-display tracking-[0.1em] text-slate-950 hover:bg-cyan-100">
-            Continue with Manus
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
-          <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">No fleet data is available before authentication</p>
+          <form onSubmit={submit} className="mt-9 space-y-3">
+            <label className="block"><span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">Operator ID</span><input value={username} onChange={event => setUsername(event.target.value)} autoComplete="username" className="h-11 w-full rounded-xl border border-white/10 bg-black/20 px-3 text-sm text-white outline-none focus:border-cyan-200/50" /></label>
+            <label className="block"><span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">Passphrase</span><input value={password} onChange={event => setPassword(event.target.value)} type="password" autoComplete="current-password" className="h-11 w-full rounded-xl border border-white/10 bg-black/20 px-3 text-sm text-white outline-none focus:border-cyan-200/50" /></label>
+            {error ? <p role="alert" className="text-sm text-rose-200">{error}</p> : null}
+            <Button type="submit" disabled={submitting} className="h-12 w-full rounded-xl bg-cyan-200 font-display tracking-[0.1em] text-slate-950 hover:bg-cyan-100">{submitting ? "Verifying operator" : "Enter ARCHANGEL"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
+          </form>
+          <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">First-party operator authentication · Manus OAuth not required</p>
         </section>
       </div>
     </div>
@@ -134,7 +150,7 @@ export default function ArchangelLayout({ children }: { children: ReactNode }) {
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-400/15 text-violet-200"><CircleUserRound className="h-4 w-4" /></div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-slate-200">{user.name || "Authenticated operator"}</p>
-                <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] text-slate-500">Manus OAuth verified</p>
+                <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] text-slate-500">ARCHANGEL local auth verified</p>
               </div>
             </div>
             <button onClick={logout} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-slate-400 transition hover:border-rose-300/25 hover:bg-rose-300/[0.06] hover:text-rose-200">
