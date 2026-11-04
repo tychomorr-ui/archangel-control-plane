@@ -1,7 +1,7 @@
 import express from "express";
 import http from "node:http";
 import { describe, expect, it } from "vitest";
-import { isLocalAuthConfigured, registerLocalAuthRoutes } from "./_core/localAuth";
+import { generatePasswordHash, isLocalAuthConfigured, registerLocalAuthRoutes, verifyPasswordHash } from "./_core/localAuth";
 
 describe("ARCHANGEL first-party operator auth", () => {
   it("exposes an enabled local-auth configuration when the project secret is present", async () => {
@@ -16,7 +16,35 @@ describe("ARCHANGEL first-party operator auth", () => {
       const port = typeof address === "object" && address ? address.port : 0;
       const response = await fetch(`http://127.0.0.1:${port}/api/auth/local/config`);
       expect(response.status).toBe(200);
-      expect(await response.json()).toEqual({ enabled: true, username: "operator" });
+      expect(await response.json()).toMatchObject({ enabled: true, username: "Tyler-Morris", passkeyEnabled: true });
+    } finally {
+      await new Promise<void>(resolve => server.close(() => resolve()));
+    }
+  });
+
+  it("uses a salted scrypt hash and rejects the wrong passphrase", () => {
+    const hash = generatePasswordHash("a deliberately long operator passphrase");
+    expect(hash.startsWith("scrypt$")).toBe(true);
+    expect(verifyPasswordHash("a deliberately long operator passphrase", hash)).toBe(true);
+    expect(verifyPasswordHash("wrong passphrase", hash)).toBe(false);
+  });
+
+  it("returns a useful error for a failed login without disclosing credential details", async () => {
+    const app = express();
+    app.use(express.json());
+    registerLocalAuthRoutes(app);
+    const server = http.createServer(app);
+    await new Promise<void>(resolve => server.listen(0, "127.0.0.1", resolve));
+    try {
+      const address = server.address();
+      const port = typeof address === "object" && address ? address.port : 0;
+      const response = await fetch(`http://127.0.0.1:${port}/api/auth/local/login`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username: "Tyler-Morris", password: "not-the-passphrase" }),
+      });
+      expect(response.status).toBe(401);
+      expect(await response.json()).toEqual({ error: "authentication_failed", message: "Authentication failed. Check your operator ID and passphrase." });
     } finally {
       await new Promise<void>(resolve => server.close(() => resolve()));
     }

@@ -64,6 +64,20 @@
       "when": 1792974324880,
       "tag": "0008_natural_nightshade",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1793825141245,
+      "tag": "0009_slow_korvac",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1793825243588,
+      "tag": "0010_far_cerise",
+      "breakpoints": true
     }
   ]
 }

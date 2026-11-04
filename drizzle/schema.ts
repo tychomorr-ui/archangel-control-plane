@@ -12,6 +12,36 @@ export const users = mysqlTable("users", {
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
 });
 
+export const operatorCredentials = mysqlTable("operator_credentials", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 128 }).notNull().unique(),
+  passwordHash: text("passwordHash").notNull(),
+  sessionVersion: int("sessionVersion").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export const operatorPasskeys = mysqlTable("operator_passkeys", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 128 }).notNull(),
+  credentialId: varchar("credentialId", { length: 512 }).notNull().unique(),
+  publicKey: text("publicKey").notNull(),
+  counter: int("counter").default(0).notNull(),
+  transports: text("transports"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  lastUsedAt: timestamp("lastUsedAt"),
+});
+
+export const operatorWebauthnChallenges = mysqlTable("operator_webauthn_challenges", {
+  id: int("id").autoincrement().primaryKey(),
+  challenge: varchar("challenge", { length: 512 }).notNull().unique(),
+  username: varchar("username", { length: 128 }).notNull(),
+  purpose: mysqlEnum("purpose", ["registration", "authentication"]).notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const meshNodes = mysqlTable("mesh_nodes", {
   id: int("id").autoincrement().primaryKey(),
   nodeId: varchar("nodeId", { length: 64 }).notNull().unique(),

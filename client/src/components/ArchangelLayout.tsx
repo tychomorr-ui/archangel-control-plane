@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
 import { Button } from "@/components/ui/button";
 import {
   Activity,
@@ -19,7 +20,7 @@ import {
   ShieldCheck,
   Waypoints,
 } from "lucide-react";
-import { type FormEvent, type ReactNode, useState } from "react";
+import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 
 const navigation = [
@@ -44,16 +45,53 @@ function SignInGate() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [passkeyBusy, setPasskeyBusy] = useState(false);
+  const [passkeyAvailable, setPasskeyAvailable] = useState(false);
+  const [configLoading, setConfigLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/auth/local/config", { credentials: "include" })
+      .then(response => response.json())
+      .then(config => {
+        if (typeof config.username === "string") setUsername(config.username);
+        setPasskeyAvailable(Boolean(config.passkeyEnabled && config.passkeyCount > 0));
+      })
+      .catch(() => setError("The operator authentication service is unavailable. Refresh and try again."))
+      .finally(() => setConfigLoading(false));
+  }, []);
+
+  const readError = async (response: Response, fallback: string) => {
+    try {
+      const body = await response.json();
+      return typeof body.message === "string" ? body.message : fallback;
+    } catch { return fallback; }
+  };
+
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitting(true); setError(null);
     try {
       const response = await fetch("/api/auth/local/login", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ username, password }) });
-      if (!response.ok) throw new Error("Operator credentials were rejected.");
+      if (!response.ok) throw new Error(await readError(response, "Operator credentials were rejected."));
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Operator sign-in failed.");
     } finally { setSubmitting(false); }
+  };
+
+  const signInWithPasskey = async () => {
+    setPasskeyBusy(true); setError(null);
+    try {
+      const optionsResponse = await fetch("/api/auth/local/login/passkey/options", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ username }), credentials: "include" });
+      if (!optionsResponse.ok) throw new Error(await readError(optionsResponse, "No passkey is available for this operator."));
+      const options = await optionsResponse.json();
+      const assertion = await startAuthentication({ optionsJSON: options });
+      const verifyResponse = await fetch("/api/auth/local/login/passkey/verify", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ username, challenge: options.challenge, response: assertion }) });
+      if (!verifyResponse.ok) throw new Error(await readError(verifyResponse, "The passkey could not verify this operator."));
+      window.location.reload();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Passkey sign-in was cancelled or failed.");
+    } finally { setPasskeyBusy(false); }
   };
   return (
     <div className="auth-gate min-h-screen px-6 py-10 text-slate-100">
@@ -81,8 +119,12 @@ function SignInGate() {
             <label className="block"><span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">Operator ID</span><input value={username} onChange={event => setUsername(event.target.value)} autoComplete="username" className="h-11 w-full rounded-xl border border-white/10 bg-black/20 px-3 text-sm text-white outline-none focus:border-cyan-200/50" /></label>
             <label className="block"><span className="mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">Passphrase</span><input value={password} onChange={event => setPassword(event.target.value)} type="password" autoComplete="current-password" className="h-11 w-full rounded-xl border border-white/10 bg-black/20 px-3 text-sm text-white outline-none focus:border-cyan-200/50" /></label>
             {error ? <p role="alert" className="text-sm text-rose-200">{error}</p> : null}
-            <Button type="submit" disabled={submitting} className="h-12 w-full rounded-xl bg-cyan-200 font-display tracking-[0.1em] text-slate-950 hover:bg-cyan-100">{submitting ? "Verifying operator" : "Enter ARCHANGEL"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
+            <Button type="submit" disabled={submitting || passkeyBusy || configLoading} className="h-12 w-full rounded-xl bg-cyan-200 font-display tracking-[0.1em] text-slate-950 hover:bg-cyan-100">{submitting ? <><span className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-950/30 border-t-slate-950" />Verifying operator</> : "Enter ARCHANGEL"}<ChevronRight className="ml-2 h-4 w-4" /></Button>
           </form>
+          {passkeyAvailable ? <>
+            <div className="my-5 flex items-center gap-3 text-[10px] uppercase tracking-[0.18em] text-slate-600"><span className="h-px flex-1 bg-white/10" />or<span className="h-px flex-1 bg-white/10" /></div>
+            <Button type="button" onClick={signInWithPasskey} disabled={submitting || passkeyBusy} variant="outline" className="h-11 w-full rounded-xl border-cyan-200/20 bg-transparent text-cyan-100 hover:bg-cyan-200/10">{passkeyBusy ? <><span className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-cyan-200/30 border-t-cyan-100" />Waiting for passkey</> : "Use passkey"}</Button>
+          </> : null}
           <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">First-party operator authentication · Manus OAuth not required</p>
         </section>
       </div>
@@ -90,10 +132,62 @@ function SignInGate() {
   );
 }
 
+function SecurityPanel({ onClose }: { onClose: () => void }) {
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const readError = async (response: Response, fallback: string) => {
+    try { const body = await response.json(); return typeof body.message === "string" ? body.message : fallback; } catch { return fallback; }
+  };
+
+  const rotatePassword = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); setBusy(true); setError(null); setMessage(null);
+    if (newPassword !== confirmPassword) { setError("The new passphrases do not match."); setBusy(false); return; }
+    try {
+      const response = await fetch("/api/auth/local/rotate-password", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ currentPassword, newPassword }) });
+      if (!response.ok) throw new Error(await readError(response, "Passphrase rotation failed."));
+      setCurrentPassword(""); setNewPassword(""); setConfirmPassword(""); setMessage("Passphrase updated. Other active operator sessions were invalidated.");
+    } catch (err) { setError(err instanceof Error ? err.message : "Passphrase rotation failed."); }
+    finally { setBusy(false); }
+  };
+
+  const registerPasskey = async () => {
+    setBusy(true); setError(null); setMessage(null);
+    try {
+      const optionsResponse = await fetch("/api/auth/local/passkey/register/options", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ currentPassword }) });
+      if (!optionsResponse.ok) throw new Error(await readError(optionsResponse, "Re-enter your current passphrase to register a passkey."));
+      const options = await optionsResponse.json();
+      const attestation = await startRegistration({ optionsJSON: options });
+      const verifyResponse = await fetch("/api/auth/local/passkey/register/verify", { method: "POST", headers: { "content-type": "application/json" }, credentials: "include", body: JSON.stringify({ challenge: options.challenge, response: attestation }) });
+      if (!verifyResponse.ok) throw new Error(await readError(verifyResponse, "Passkey registration was not accepted."));
+      setMessage("Passkey registered. You can use it on this device at the next sign-in."); setCurrentPassword("");
+    } catch (err) { setError(err instanceof Error ? err.message : "Passkey registration was cancelled or failed."); }
+    finally { setBusy(false); }
+  };
+
+  return <div className="mt-4 rounded-2xl border border-cyan-200/15 bg-cyan-200/[0.04] p-4">
+    <div className="flex items-center justify-between gap-3"><div><p className="font-mono text-[9px] uppercase tracking-[0.18em] text-cyan-200/70">Operator security</p><p className="mt-1 text-xs text-slate-300">Rotate credentials or bind this device.</p></div><button onClick={onClose} className="text-xs text-slate-500 hover:text-slate-200">Close</button></div>
+    <form onSubmit={rotatePassword} className="mt-4 space-y-2">
+      <input value={currentPassword} onChange={event => setCurrentPassword(event.target.value)} type="password" autoComplete="current-password" placeholder="Current passphrase" className="h-9 w-full rounded-lg border border-white/10 bg-black/20 px-2.5 text-xs text-white outline-none focus:border-cyan-200/50" />
+      <input value={newPassword} onChange={event => setNewPassword(event.target.value)} type="password" autoComplete="new-password" placeholder="New passphrase · 14+ characters" className="h-9 w-full rounded-lg border border-white/10 bg-black/20 px-2.5 text-xs text-white outline-none focus:border-cyan-200/50" />
+      <input value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} type="password" autoComplete="new-password" placeholder="Confirm new passphrase" className="h-9 w-full rounded-lg border border-white/10 bg-black/20 px-2.5 text-xs text-white outline-none focus:border-cyan-200/50" />
+      <Button type="submit" disabled={busy} size="sm" className="w-full bg-cyan-200 text-slate-950 hover:bg-cyan-100">{busy ? "Updating security" : "Rotate passphrase"}</Button>
+    </form>
+    <Button type="button" onClick={registerPasskey} disabled={busy || !currentPassword} variant="outline" size="sm" className="mt-2 w-full border-cyan-200/20 bg-transparent text-cyan-100 hover:bg-cyan-200/10">Register this device passkey</Button>
+    {message ? <p role="status" className="mt-3 text-xs leading-5 text-emerald-200">{message}</p> : null}
+    {error ? <p role="alert" className="mt-3 text-xs leading-5 text-rose-200">{error}</p> : null}
+  </div>;
+}
+
 export default function ArchangelLayout({ children }: { children: ReactNode }) {
   const { loading, user, logout } = useAuth();
   const [location, setLocation] = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [securityOpen, setSecurityOpen] = useState(false);
 
   if (loading) {
     return (
@@ -153,9 +247,13 @@ export default function ArchangelLayout({ children }: { children: ReactNode }) {
                 <p className="truncate font-mono text-[9px] uppercase tracking-[0.12em] text-slate-500">ARCHANGEL local auth verified</p>
               </div>
             </div>
-            <button onClick={logout} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-slate-400 transition hover:border-rose-300/25 hover:bg-rose-300/[0.06] hover:text-rose-200">
+            <button onClick={() => setSecurityOpen(value => !value)} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-cyan-200/15 px-3 py-2 text-xs text-cyan-100 transition hover:bg-cyan-300/[0.06]">
+              <KeyRound className="h-3.5 w-3.5" /> {securityOpen ? "Hide security" : "Manage security"}
+            </button>
+            <button onClick={logout} className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg border border-white/[0.08] px-3 py-2 text-xs text-slate-400 transition hover:border-rose-300/25 hover:bg-rose-300/[0.06] hover:text-rose-200">
               <LogOut className="h-3.5 w-3.5" /> Sign out
             </button>
+            {securityOpen ? <SecurityPanel onClose={() => setSecurityOpen(false)} /> : null}
           </div>
         </aside>
 
