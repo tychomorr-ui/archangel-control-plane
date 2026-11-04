@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import express from "express";
 import http from "node:http";
 import { describe, expect, it } from "vitest";
-import { generatePasswordHash, isLocalAuthConfigured, registerLocalAuthRoutes, verifyPasswordHash } from "./_core/localAuth";
+import { generatePasswordHash, isLocalAuthConfigured, registerLocalAuthRoutes, verifyOperatorPassword, verifyPasswordHash } from "./_core/localAuth";
 
 describe("ARCHANGEL first-party operator auth", () => {
   it("exposes an enabled local-auth configuration when the project secret is present", async () => {
@@ -35,6 +35,18 @@ describe("ARCHANGEL first-party operator auth", () => {
     const legacyDigest = createHash("sha256").update(legacyPassword, "utf8").digest("hex");
     expect(verifyPasswordHash(legacyPassword, legacyDigest)).toBe(true);
     expect(verifyPasswordHash("not the legacy passphrase", legacyDigest)).toBe(false);
+  });
+
+  it("supports a raw bootstrap passphrase during a deliberate credential reset", () => {
+    const previous = process.env.ARCHANGEL_OPERATOR_PASSWORD;
+    process.env.ARCHANGEL_OPERATOR_PASSWORD = "test-only reset passphrase";
+    try {
+      expect(verifyOperatorPassword("test-only reset passphrase")).toBe(true);
+      expect(verifyOperatorPassword("wrong reset passphrase")).toBe(false);
+    } finally {
+      if (previous === undefined) delete process.env.ARCHANGEL_OPERATOR_PASSWORD;
+      else process.env.ARCHANGEL_OPERATOR_PASSWORD = previous;
+    }
   });
 
   it("returns a useful error for a failed login without disclosing credential details", async () => {

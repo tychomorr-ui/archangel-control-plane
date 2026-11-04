@@ -21,6 +21,7 @@ function secretKey() { return new TextEncoder().encode(ENV.cookieSecret); }
 function configuredUsername() { return process.env.ARCHANGEL_OPERATOR_USERNAME?.trim() || "operator"; }
 function configuredName() { return process.env.ARCHANGEL_OPERATOR_NAME?.trim() || "ARCHANGEL Operator"; }
 function configuredPasswordHash() { return process.env.ARCHANGEL_OPERATOR_PASSWORD_HASH?.trim() || ""; }
+function configuredBootstrapPassword() { return process.env.ARCHANGEL_OPERATOR_PASSWORD || ""; }
 function configuredRpId(req: Request) { return process.env.ARCHANGEL_WEBAUTHN_RP_ID?.trim() || req.hostname; }
 function configuredOrigin(req: Request) { return process.env.ARCHANGEL_WEBAUTHN_ORIGIN?.trim() || `${req.protocol}://${req.get("host")}`; }
 function clientAddress(req: Request) { return req.ip || req.socket.remoteAddress || "unknown"; }
@@ -62,8 +63,12 @@ export function verifyPasswordHash(password: string, encoded: string): boolean {
   } catch { return false; }
 }
 
-export function verifyOperatorPassword(password: string): boolean { return verifyPasswordHash(password, configuredPasswordHash()); }
-export function isLocalAuthConfigured() { return Boolean(ENV.cookieSecret && configuredUsername() && configuredPasswordHash()); }
+export function verifyOperatorPassword(password: string): boolean {
+  const bootstrapPassword = configuredBootstrapPassword();
+  if (bootstrapPassword) return password.length === bootstrapPassword.length && timingSafeEqual(Buffer.from(password), Buffer.from(bootstrapPassword));
+  return verifyPasswordHash(password, configuredPasswordHash());
+}
+export function isLocalAuthConfigured() { return Boolean(ENV.cookieSecret && configuredUsername() && (configuredPasswordHash() || configuredBootstrapPassword())); }
 export function localOperatorUsername() { return configuredUsername(); }
 
 async function effectiveCredential(username: string) {
@@ -75,7 +80,9 @@ async function effectiveCredential(username: string) {
 }
 async function verifyCurrentPassword(username: string, password: string) {
   const credential = await effectiveCredential(username);
-  return Boolean(credential && verifyPasswordHash(password, credential.passwordHash));
+  if (credential && verifyPasswordHash(password, credential.passwordHash)) return true;
+  const bootstrapPassword = configuredBootstrapPassword();
+  return Boolean(!credential && bootstrapPassword && password.length === bootstrapPassword.length && timingSafeEqual(Buffer.from(password), Buffer.from(bootstrapPassword)));
 }
 
 export async function issueLocalSession(username = configuredUsername(), sessionVersion?: number) {
@@ -167,7 +174,7 @@ export function registerLocalAuthRoutes(app: Express) {
     if (!(await verifyCurrentPassword(session.username, currentPassword))) { badAuth(res, "The current passphrase is incorrect."); return; }
     if (newPassword.length < 14 || newPassword.length > 256) { res.status(400).json({ error: "weak_passphrase", message: "Use a passphrase between 14 and 256 characters." }); return; }
     const existing = await db.getOperatorCredential(session.username);
-    if (!existing) await db.ensureOperatorCredential(session.username, configuredPasswordHash());
+    if (!existing) await db.ensureOperatorCredential(session.username, generatePasswordHash(currentPassword));
     const rotated = await db.rotateOperatorCredential(session.username, generatePasswordHash(newPassword));
     if (!rotated) { res.status(503).json({ error: "database_unavailable", message: "Passphrase rotation is temporarily unavailable." }); return; }
     const token = await issueLocalSession(session.username, rotated.sessionVersion);
