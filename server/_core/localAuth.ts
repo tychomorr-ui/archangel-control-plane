@@ -1,4 +1,4 @@
-import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 import { generateAuthenticationOptions, generateRegistrationOptions, verifyAuthenticationResponse, verifyRegistrationResponse } from "@simplewebauthn/server";
 import type { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simplewebauthn/server";
 import { SignJWT, jwtVerify } from "jose";
@@ -42,6 +42,14 @@ function clearFailedAttempts(key: string) { attempts.delete(key); }
 /** Format: scrypt$N$r$p$saltHex$derivedKeyHex. Never store a plaintext password. */
 export function verifyPasswordHash(password: string, encoded: string): boolean {
   if (!encoded || !password) return false;
+  // Backward-compatible bootstrap only: the prior secret configuration stored
+  // a bare SHA-256 digest. A successful login is immediately upgraded to
+  // salted scrypt in the durable credential row below.
+  if (/^[a-f0-9]{64}$/i.test(encoded)) {
+    const actual = createHash("sha256").update(password, "utf8").digest();
+    const expected = Buffer.from(encoded, "hex");
+    return expected.length === actual.length && timingSafeEqual(actual, expected);
+  }
   const parts = encoded.split("$");
   if (parts.length !== 6 || parts[0] !== "scrypt") return false;
   const N = Number(parts[1]); const r = Number(parts[2]); const p = Number(parts[3]);
@@ -111,7 +119,12 @@ export function registerLocalAuthRoutes(app: Express) {
     const password = typeof req.body?.password === "string" ? req.body.password : "";
     if (!isLocalAuthConfigured() || username !== configuredUsername() || !(await verifyCurrentPassword(username, password))) { badAuth(res); return; }
     clearFailedAttempts(key);
-    await db.ensureOperatorCredential(username, configuredPasswordHash());
+    const storedCredential = await db.getOperatorCredential(username);
+    if (!storedCredential) {
+      await db.ensureOperatorCredential(username, generatePasswordHash(password));
+    } else if (/^[a-f0-9]{64}$/i.test(storedCredential.passwordHash)) {
+      await db.rotateOperatorCredential(username, generatePasswordHash(password));
+    }
     const credential = await db.getOperatorCredential(username);
     const token = await issueLocalSession(username, credential?.sessionVersion ?? 1);
     res.cookie(LOCAL_AUTH_COOKIE, token, localAuthCookieOptions(req));

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import express from "express";
 import http from "node:http";
 import { describe, expect, it } from "vitest";
@@ -27,6 +28,13 @@ describe("ARCHANGEL first-party operator auth", () => {
     expect(hash.startsWith("scrypt$")).toBe(true);
     expect(verifyPasswordHash("a deliberately long operator passphrase", hash)).toBe(true);
     expect(verifyPasswordHash("wrong passphrase", hash)).toBe(false);
+  });
+
+  it("accepts the prior bare SHA-256 bootstrap digest for one-time migration", () => {
+    const legacyPassword = "legacy bootstrap passphrase";
+    const legacyDigest = createHash("sha256").update(legacyPassword, "utf8").digest("hex");
+    expect(verifyPasswordHash(legacyPassword, legacyDigest)).toBe(true);
+    expect(verifyPasswordHash("not the legacy passphrase", legacyDigest)).toBe(false);
   });
 
   it("returns a useful error for a failed login without disclosing credential details", async () => {
