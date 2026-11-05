@@ -74,6 +74,9 @@ export function localOperatorUsername() { return configuredUsername(); }
 async function effectiveCredential(username: string) {
   const stored = await db.getOperatorCredential(username);
   if (stored) return stored;
+  // A deliberate raw bootstrap passphrase supersedes the legacy environment
+  // digest until the first successful login persists a durable scrypt row.
+  if (configuredBootstrapPassword()) return undefined;
   const fallbackHash = configuredPasswordHash();
   if (!fallbackHash || !isLocalAuthConfigured()) return undefined;
   return { username, passwordHash: fallbackHash, sessionVersion: 1 };

@@ -1,7 +1,8 @@
 import { createHash } from "node:crypto";
 import express from "express";
 import http from "node:http";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import * as db from "./db";
 import { generatePasswordHash, isLocalAuthConfigured, registerLocalAuthRoutes, verifyOperatorPassword, verifyPasswordHash } from "./_core/localAuth";
 
 describe("ARCHANGEL first-party operator auth", () => {
@@ -46,6 +47,34 @@ describe("ARCHANGEL first-party operator auth", () => {
     } finally {
       if (previous === undefined) delete process.env.ARCHANGEL_OPERATOR_PASSWORD;
       else process.env.ARCHANGEL_OPERATOR_PASSWORD = previous;
+    }
+  });
+
+  it("accepts the configured bootstrap secret through the login API when no durable row exists", async () => {
+    const suppliedSecret = process.env.ARCHANGEL_OPERATOR_PASSWORD;
+    expect(suppliedSecret).toBeTruthy();
+    const credential = vi.spyOn(db, "getOperatorCredential").mockResolvedValue(undefined);
+    const ensure = vi.spyOn(db, "ensureOperatorCredential").mockResolvedValue(undefined);
+    const app = express();
+    app.use(express.json());
+    registerLocalAuthRoutes(app);
+    const server = http.createServer(app);
+    await new Promise<void>(resolve => server.listen(0, "127.0.0.1", resolve));
+    try {
+      const address = server.address();
+      const port = typeof address === "object" && address ? address.port : 0;
+      const response = await fetch(`http://127.0.0.1:${port}/api/auth/local/login`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ username: "Tyler-Morris", password: suppliedSecret }),
+      });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({ authenticated: true, user: { username: "Tyler-Morris" } });
+      expect(ensure).toHaveBeenCalledOnce();
+    } finally {
+      await new Promise<void>(resolve => server.close(() => resolve()));
+      credential.mockRestore();
+      ensure.mockRestore();
     }
   });
 
