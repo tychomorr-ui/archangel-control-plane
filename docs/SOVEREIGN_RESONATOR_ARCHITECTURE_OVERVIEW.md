@@ -256,7 +256,7 @@ The prototype goal is more concrete: local computation, controlled radio behavio
 
 ## 12. Interactive queue-flow surface
 
-The ARCHANGEL ATMOS interface includes an interactive queue-flow diagram labeled **Pharo-Lapse / Feralabs queue logic**. “Feralabs” is a field-work presentation label; it is not a new protocol. The transport contract remains Pharo-Lapse, while Project Reclaim supplies the field context.
+The ARCHANGEL ATMOS interface includes an interactive queue-flow diagram labeled **Pharo-Lapse queue logic**. Pharo-Lapse is the transport contract, while Project Reclaim supplies the field context.
 
 The diagram exposes the stages `created → signed → queued → offered → received → verified → acknowledged`. Selecting a stage shows its boundary and the expected evidence: local creation, identity binding, durable storage, relay offer, receipt, signature verification, and acknowledgement after consumption is persisted. The diagram is explanatory and read-only; it does not dispatch messages, enable radios, or imply that any node is connected.
 
