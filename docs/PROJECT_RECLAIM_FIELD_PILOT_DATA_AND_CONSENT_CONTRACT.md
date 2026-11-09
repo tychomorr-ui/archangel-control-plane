@@ -88,6 +88,18 @@ The operator must explain:
 9. the expected retention period;
 10. the name and contact method for the field steward.
 
+### 4.1 Architecture facts that must be explained before consent
+
+Consent must describe the actual data path, not only the application features:
+
+- **Local storage:** field and device records are stored locally on the device or approved local field store before any synchronization. Offline operation can continue while a public network is unavailable.
+- **Signed transport:** when an envelope is transported, Pharo-Lapse signs and binds the envelope to the sender identity and payload hash. A signature proves origin and integrity under the configured key contract; it does not prove that the content is true, safe, or desirable.
+- **Operator key custody:** the authorized operator or device custodian controls the relevant private keys. ARCHANGEL must receive public verification material only. Participants must never be asked for private keys, passphrases, or recovery material.
+- **Offline queueing and forwarding:** an envelope may remain durably queued while offline and may be forwarded only when an approved local or external path and policy state are available. Delayed delivery is expected behavior, not proof of loss or outage.
+- **Verification boundary:** ARCHANGEL can verify device identity, signature, freshness, hash, replay state, and receipt metadata. It does not automatically inspect participant content or certify a participant, field outcome, medical claim, ecological claim, or adjudication.
+
+The operator must confirm that the participant understood these facts and the possibility of delayed, rejected, expired, or revoked envelopes before recording consent.
+
 Consent is recorded separately from field content and includes:
 
 ```json
