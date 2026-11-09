@@ -8,13 +8,19 @@
 
 ## 1. Architectural intent
 
-Sovereign resonator devices are field endpoints for local computation, private data handling, environmental observation, and delayed message delivery. Their central property is not a claimed ability to “neutralize” electromagnetic radiation. Their central property is that they can work locally, keep radios quiet unless deliberately enabled, and exchange signed information when a trustworthy path becomes available.
+Sovereign resonator devices are field endpoints for local computation, private data handling, environmental observation, and delayed message delivery. Their central property is not a claimed ability to “neutralize” electromagnetic radiation. Their central property is that they can work locally, keep radios quiet unless deliberately enabled, and exchange signed information when a trustworthy path becomes available. The architecture includes a **Fail-Closed physical hardware kill switch for AI regulatory compliance** as a design objective; it is not yet physical validation or a legal certification.
 
 Project Reclaim is the field-activation layer. It is where the digital system meets local organizations, land, people, devices, and practical service work. The resonator device is therefore an instrument and communications endpoint within Project Reclaim, not the project itself and not a substitute for human judgment.
 
 ARCHANGEL is the conductor and verification boundary. It maintains the declared node registry, accepts device enrollment, verifies signed observations, and returns evidence receipts. It does not own the application data of TruthTalk, IWA Sage, Valkyrie, Resonate Earth, or Project Reclaim. It also does not make local work impossible when ARCHANGEL, Root-Gate, Atmos, or the public internet is unavailable.
 
-## 2. Layered model
+## 2. Hardware oversight and regulatory alignment
+
+The physical interlock is intended to make human oversight observable at the device boundary: when engaged, the radio power rail is physically interrupted, and the hardware design may also interrupt a local AI accelerator or compute rail. Software, network access, and ARCHANGEL cannot override an independently opened power path. This can strengthen a compliance evidence package compared with a cloud-only stop control, but it does not by itself establish compliance with the EU AI Act, United States frameworks, radio rules, product-safety requirements, or any other law. Applicability and conformity must be assessed by qualified legal, safety, and regulatory reviewers against the actual hardware and deployment.
+
+The two-device local overlay remains the primary engineering milestone. The regulatory-alignment narrative is subordinate to physical proof: two real devices must exchange a signed Pharo-Lapse envelope over an internet-disconnected local carrier, survive queue/restart conditions, and verify the envelope at Device B.
+
+## 3. Layered model
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────┐

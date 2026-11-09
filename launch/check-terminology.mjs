@@ -13,6 +13,11 @@ const root = path.resolve(process.argv[2] ?? process.cwd());
 const forbidden = [
   { name: ["Fera", "labs"].join(""), pattern: new RegExp(["Fera", "labs"].join(""), "gi"), reason: "Use Pharo-Lapse for the offline transport/queue protocol." },
 ];
+const protectedTerms = [
+  { term: "Hardware Kill Switch", file: "docs/SOVEREIGN_RESONATOR_RADIO_KILL_SWITCH_HAL.md" },
+  { term: "Regulatory Alignment", file: "docs/SOVEREIGN_RESONATOR_RADIO_KILL_SWITCH_HAL.md" },
+  { term: "Fail-Closed", file: "docs/SOVEREIGN_RESONATOR_RADIO_KILL_SWITCH_HAL.md" },
+];
 const ignoredDirectories = new Set([".git", "node_modules", "dist", "coverage", ".manus-logs"]);
 const ignoredFiles = new Set(["pnpm-lock.yaml"]);
 const extensions = new Set([".ts", ".tsx", ".mjs", ".js", ".md", ".json", ".css", ".html", ".yml", ".yaml"]);
@@ -37,6 +42,12 @@ function walk(directory) {
 }
 
 walk(root);
+for (const rule of protectedTerms) {
+  const target = path.join(root, rule.file);
+  if (!fs.existsSync(target) || !fs.readFileSync(target, "utf8").includes(rule.term)) {
+    findings.push(`${rule.file}: required protected term missing: ${rule.term}`);
+  }
+}
 if (findings.length) {
   console.error("Protected terminology check failed:");
   for (const finding of findings) console.error(`- ${finding}`);

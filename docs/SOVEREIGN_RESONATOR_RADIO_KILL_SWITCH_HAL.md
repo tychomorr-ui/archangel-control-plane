@@ -67,3 +67,15 @@ No software retry may turn a fault into an enabled-radio state. Recovery require
 6. Restore the switch only through the documented local procedure, then verify an operator-visible audit event.
 
 These tests require the actual prototype, schematics, oscilloscope or power measurement, and a reviewed safety procedure. The current repository suite tests only a deterministic fake board and must not be presented as physical validation.
+
+## Regulatory Alignment: Hardware-Level AI Kill Switches
+
+The **Hardware Kill Switch** is a design control intended to support human oversight and rapid disablement of an AI-enabled device. When engaged, it physically removes power from the radio module and can be designed to remove power from a local accelerator or other AI compute rail as well. This is stronger than a software flag: a crashed, compromised, or misbehaving process cannot re-enable a rail that the independent interlock has opened.
+
+This local-first design can provide evidence for a regulator or legal reviewer that the operator has a direct, local means to stop device computation and communications, subject to the actual schematic, component ratings, safety review, and witnessed test results. A cloud service may suspend a workload or revoke credentials, but it cannot by itself guarantee physical removal of power from hardware outside its custody. The device-level interlock narrows that gap by making the stop action local, observable, and fail-closed.
+
+This is **Regulatory Alignment**, not a certification or legal conclusion. The EU AI Act, United States federal and state frameworks, radio rules, product-safety requirements, privacy laws, and sector-specific obligations vary by system risk, intended use, jurisdiction, and deployment context. The presence of a physical switch does not establish compliance, safety, conformity assessment, or permission to deploy. A qualified legal and safety review must map the implemented design to the requirements that actually apply.
+
+The compliance evidence package should include: the approved schematic; component and isolation ratings; threat and misuse analysis; human-oversight procedure; access and custody controls; fault-injection results; power-rail measurements; firmware and hardware versions; maintenance records; and signed test evidence. The **Fail-Closed** invariant is that loss of software, GPIO sensing, power-good feedback, network connectivity, or operator session results in AI/radio power absent or in a separately reviewed safe state.
+
+The two-device local overlay test remains the primary engineering milestone. Regulatory documentation does not substitute for demonstrating, on physical devices, that signed Pharo-Lapse envelopes queue and verify over an internet-disconnected local carrier.
