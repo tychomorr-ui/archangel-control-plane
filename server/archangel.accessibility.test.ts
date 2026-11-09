@@ -102,8 +102,14 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(atmosSource).toContain('aria-pressed={flowMode === "pharo"}');
     expect(atmosSource).toContain('role="tooltip"');
     expect(atmosSource).toContain("queue-flow-node__tooltip");
+    expect(atmosSource).toContain("flow-speed-toggle");
+    expect(atmosSource).toContain("Package state legend");
+    expect(atmosSource).toContain("Node detail · simulated");
+    expect(atmosSource).toContain("aria-pressed={selectedFlowNode === id}");
     expect(atmosSource).toContain("animated packets represent envelope movement");
     expect(styles).toContain("@keyframes queue-packet");
+    expect(styles).toContain("queue-flow-lower-grid");
+    expect(styles).toContain("@media (max-width: 767px)");
     expect(styles).toContain("prefers-reduced-motion: no-preference");
   });
 });
