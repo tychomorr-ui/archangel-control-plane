@@ -253,3 +253,13 @@ The prototype goal is more concrete: local computation, controlled radio behavio
 [2]: https://github.com/tychomorr-ui/tesseract-a-core "Tesseract-A Core verification capability reference"
 
 [3]: https://github.com/tychomorr-ui/pharo-lapse/blob/main/spec/PHARO-LAPSE-v1.1.0.md "Pharo-Lapse v1.1.0 specification"
+
+## 12. Interactive queue-flow surface
+
+The ARCHANGEL ATMOS interface includes an interactive queue-flow diagram labeled **Pharo-Lapse / Feralabs queue logic**. “Feralabs” is a field-work presentation label; it is not a new protocol. The transport contract remains Pharo-Lapse, while Project Reclaim supplies the field context.
+
+The diagram exposes the stages `created → signed → queued → offered → received → verified → acknowledged`. Selecting a stage shows its boundary and the expected evidence: local creation, identity binding, durable storage, relay offer, receipt, signature verification, and acknowledgement after consumption is persisted. The diagram is explanatory and read-only; it does not dispatch messages, enable radios, or imply that any node is connected.
+
+## 13. Hardware-driver test boundary
+
+The local acceptance runner includes a deterministic fake GPIO board and physical radio-disable driver model. It verifies boot-time radio-off behavior, switch-enforced refusal, explicit release before radio enable, emergency override, and fail-closed recovery when the physical switch changes after enable. These tests do not access Linux GPIO, `/sys`, a serial port, a radio, or a hardware prototype. A real device must still pass electrical, firmware, EMC/RF, battery, and safety review before field use.

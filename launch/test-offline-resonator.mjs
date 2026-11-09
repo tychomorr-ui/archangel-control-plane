@@ -91,6 +91,64 @@ class RadioPolicy {
   }
 }
 
+/**
+ * Hardware boundary model. This deterministic fake GPIO board never opens
+ * /sys, libgpiod, a serial port, or a radio. The physical switch remains the
+ * fail-closed authority for RF power in these acceptance tests.
+ */
+class FakeGpioBoard {
+  constructor({ switchClosed = true, radioPower = false } = {}) {
+    this.switchClosed = switchClosed;
+    this.radioPower = radioPower;
+    this.commands = [];
+  }
+
+  readDisableSwitch() {
+    return this.switchClosed;
+  }
+
+  setRadioPower(enabled) {
+    this.radioPower = enabled;
+    this.commands.push({ action: "set-radio-power", enabled });
+  }
+}
+
+class PhysicalRadioDisableDriver {
+  constructor(board) {
+    this.board = board;
+  }
+
+  boot() {
+    this.board.setRadioPower(false);
+    return this.status();
+  }
+
+  status() {
+    const disabledBySwitch = this.board.readDisableSwitch();
+    return {
+      disabledBySwitch,
+      radioPower: this.board.radioPower,
+      safe: disabledBySwitch ? !this.board.radioPower : true,
+    };
+  }
+
+  requestRadioPower(enabled) {
+    if (enabled && this.board.readDisableSwitch()) {
+      this.board.setRadioPower(false);
+      throw new Error("physical radio-disable switch is engaged");
+    }
+    this.board.setRadioPower(enabled);
+    const state = this.status();
+    assert(state.safe, "radio driver entered an unsafe state");
+    return state;
+  }
+
+  emergencyDisable() {
+    this.board.setRadioPower(false);
+    return this.status();
+  }
+}
+
 class DurableQueue {
   constructor(file) {
     this.file = file;
@@ -195,6 +253,58 @@ function run() {
     policy.transition("EMERGENCY_DISABLE");
     expectFailure(() => policy.transition("UPLINK_ENABLED"), "emergency bypass");
     expectFailure(() => policy.transition("LOCAL_ONLY"), "emergency software recovery");
+  });
+
+  test("boots with radio power disabled even when the board starts dirty", () => {
+    const board = new FakeGpioBoard({ switchClosed: true, radioPower: true });
+    const driver = new PhysicalRadioDisableDriver(board);
+    const state = driver.boot();
+    assert.equal(state.disabledBySwitch, true);
+    assert.equal(state.radioPower, false);
+    assert.equal(state.safe, true);
+  });
+
+  test("physical disable switch blocks software radio enable", () => {
+    const board = new FakeGpioBoard({ switchClosed: true });
+    const driver = new PhysicalRadioDisableDriver(board);
+    driver.boot();
+    expectFailure(() => driver.requestRadioPower(true), "engaged physical switch");
+    assert.equal(board.radioPower, false);
+    assert.equal(driver.status().safe, true);
+  });
+
+  test("allows radio power only after the physical switch is released", () => {
+    const board = new FakeGpioBoard({ switchClosed: false });
+    const driver = new PhysicalRadioDisableDriver(board);
+    driver.boot();
+    const state = driver.requestRadioPower(true);
+    assert.equal(state.disabledBySwitch, false);
+    assert.equal(state.radioPower, true);
+    assert.equal(state.safe, true);
+  });
+
+  test("emergency disable overrides an enabled radio", () => {
+    const board = new FakeGpioBoard({ switchClosed: false });
+    const driver = new PhysicalRadioDisableDriver(board);
+    driver.boot();
+    driver.requestRadioPower(true);
+    const state = driver.emergencyDisable();
+    assert.equal(state.radioPower, false);
+    assert.equal(state.safe, true);
+  });
+
+  test("fails closed if the physical switch is engaged after enable", () => {
+    const board = new FakeGpioBoard({ switchClosed: false });
+    const driver = new PhysicalRadioDisableDriver(board);
+    driver.boot();
+    driver.requestRadioPower(true);
+    board.switchClosed = true;
+    const state = driver.status();
+    assert.equal(state.disabledBySwitch, true);
+    assert.equal(state.safe, false);
+    const recovered = driver.emergencyDisable();
+    assert.equal(recovered.radioPower, false);
+    assert.equal(recovered.safe, true);
   });
 
   test("queues a signed-envelope-shaped message without network access", () => {
