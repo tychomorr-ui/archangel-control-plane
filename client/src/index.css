@@ -80,6 +80,22 @@ body {
 .queue-stage { min-height: 70px; width: 94px; border: 1px solid rgba(255,255,255,.09); border-radius: .75rem; background: rgba(255,255,255,.025); padding: .55rem; text-align: left; transition: transform 160ms cubic-bezier(.23,1,.32,1), border-color 160ms cubic-bezier(.23,1,.32,1), background 160ms cubic-bezier(.23,1,.32,1); }
 .queue-stage:hover, .queue-stage[data-active="true"] { border-color: rgba(196,181,253,.55); background: linear-gradient(135deg, rgba(139,92,246,.17), rgba(34,211,238,.07)); transform: translateY(-2px); }
 .queue-stage[data-active="true"] { box-shadow: 0 0 22px rgba(139,92,246,.12), inset 0 0 0 1px rgba(196,181,253,.08); }
+.flow-mode-toggle { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,.1); border-radius: .7rem; background: rgba(255,255,255,.025); padding: .55rem .7rem; color: rgb(148 163 184); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; transition: background 160ms cubic-bezier(.23,1,.32,1), border-color 160ms cubic-bezier(.23,1,.32,1), color 160ms cubic-bezier(.23,1,.32,1); }
+.flow-mode-toggle:hover, .flow-mode-toggle[data-active="true"] { border-color: rgba(103,232,249,.42); background: rgba(34,211,238,.1); color: rgb(207 250 254); }
+.queue-flow-diagram { overflow-x: auto; padding: .4rem .15rem .7rem; }
+.queue-flow-diagram__track { display: flex; min-width: 690px; align-items: center; justify-content: center; }
+.queue-flow-node { position: relative; display: flex; min-width: 132px; align-items: center; }
+.queue-flow-node__button { position: relative; z-index: 2; display: flex; min-height: 68px; width: 132px; flex-direction: column; align-items: flex-start; justify-content: center; gap: .25rem; border: 1px solid rgba(165,243,252,.2); border-radius: .85rem; background: linear-gradient(145deg, rgba(34,211,238,.1), rgba(139,92,246,.08)); padding: .65rem .7rem; text-align: left; transition: transform 160ms cubic-bezier(.23,1,.32,1), border-color 160ms cubic-bezier(.23,1,.32,1), box-shadow 160ms cubic-bezier(.23,1,.32,1); }
+.queue-flow-node__button:hover, .queue-flow-node__button:focus-visible { border-color: rgba(165,243,252,.68); box-shadow: 0 0 24px rgba(34,211,238,.16); transform: translateY(-2px); }
+.queue-flow-node__glyph { display: grid; height: 21px; width: 21px; place-items: center; border: 1px solid rgba(165,243,252,.35); border-radius: 999px; color: rgb(207 250 254); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; }
+.queue-flow-node__label { color: rgb(241 245 249); font-size: 11px; line-height: 1.2; }
+.queue-flow-node__tooltip { position: absolute; z-index: 5; bottom: calc(100% + .6rem); left: 50%; width: 190px; transform: translate(-50%, .35rem); border: 1px solid rgba(165,243,252,.25); border-radius: .7rem; background: rgba(3,9,16,.96); padding: .65rem .7rem; box-shadow: 0 18px 45px rgba(0,0,0,.45); color: rgb(203 213 225); font-size: 10px; line-height: 1.45; opacity: 0; pointer-events: none; transition: opacity 160ms ease, transform 160ms ease; }
+.queue-flow-node:hover .queue-flow-node__tooltip, .queue-flow-node:focus-within .queue-flow-node__tooltip { transform: translate(-50%, 0); opacity: 1; }
+.queue-flow-connector { position: relative; display: block; height: 2px; min-width: 42px; flex: 1; background: linear-gradient(90deg, rgba(103,232,249,.38), rgba(196,181,253,.46)); }
+.queue-flow-connector::after { content: ""; position: absolute; right: -1px; top: -3px; border-left: 6px solid rgba(196,181,253,.7); border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+.queue-flow-packet { position: absolute; top: -3px; left: 0; height: 8px; width: 8px; border-radius: 999px; background: rgb(165 243 252); box-shadow: 0 0 12px rgba(103,232,249,.95); opacity: .15; }
+.queue-flow-diagram[data-flow-mode="standard"] .queue-flow-packet { background: rgb(103 232 249); }
+.queue-flow-diagram[data-flow-mode="pharo"] .queue-flow-packet { background: rgb(196 181 253); box-shadow: 0 0 14px rgba(196,181,253,.95); }
 .star-field { background-image: radial-gradient(rgba(186, 230, 253, 0.44) 0.6px, transparent 0.8px), radial-gradient(rgba(196,181,253,0.22) 0.55px, transparent 0.8px); background-size: 37px 37px, 71px 71px; background-position: 0 0, 18px 26px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
 .auth-gate { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(34,211,238,0.10), transparent 28%), #05070d; }
 .field-label { display: grid; gap: 0.55rem; font-family: "DM Mono", ui-monospace, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgb(148 163 184); }
@@ -102,6 +118,9 @@ button:active { transform: scale(0.98); }
   .ops-beacon[data-state="stale"] .ops-beacon__pulse { stroke: #fbbf24; animation: ops-stale 3.4s linear infinite; }
   .ops-beacon[data-state="offline"] .ops-beacon__pulse { stroke: #fb7185; animation: ops-offline 3.6s steps(2, end) infinite; }
   .ops-beacon[data-state="policy-blocked"] .ops-beacon__pulse { stroke: #c4b5fd; animation: ops-contain 2.4s ease-in-out infinite alternate; }
+  .queue-flow-packet { animation: queue-packet 2.2s linear infinite; }
+  .queue-flow-packet-1 { animation-delay: .72s; }
+  .queue-flow-packet-2 { animation-delay: 1.44s; }
   @keyframes drift { from { background-position: 0 0, 18px 26px; } to { background-position: 50px 35px, -28px 62px; } }
   @keyframes ion-sweep { 0%, 58% { transform: translateX(-110%); } 100% { transform: translateX(140%); } }
   @keyframes aperture-breathe { from { transform: scale(.9); opacity: .52; } to { transform: scale(1.11); opacity: 1; } }
@@ -112,4 +131,5 @@ button:active { transform: scale(0.98); }
   @keyframes ops-stale { 0%, 100% { opacity: .2; } 48% { opacity: .78; } }
   @keyframes ops-offline { 0%, 44% { opacity: .12; } 45%, 100% { opacity: .72; } }
   @keyframes ops-contain { from { transform: scale(.85); opacity: .3; } to { transform: scale(1.7); opacity: .75; } }
+  @keyframes queue-packet { 0% { left: 0; opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { left: calc(100% - 8px); opacity: 0; } }
 }

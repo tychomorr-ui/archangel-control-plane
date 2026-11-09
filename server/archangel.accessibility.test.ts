@@ -10,6 +10,7 @@ const pageSource = readFileSync(join(clientDirectory, "pages", "ArchangelPages.t
 const graphSource = readFileSync(join(clientDirectory, "pages", "EcosystemGraphPage.tsx"), "utf8");
 const operationsFieldSource = readFileSync(join(clientDirectory, "components", "OperationsField.tsx"), "utf8");
 const applicationPagesSource = readFileSync(join(clientDirectory, "pages", "ApplicationControlPages.tsx"), "utf8");
+const atmosSource = readFileSync(join(clientDirectory, "pages", "AtmosPage.tsx"), "utf8");
 const styles = readFileSync(join(clientDirectory, "index.css"), "utf8");
 
 describe("ARCHANGEL keyboard controls", () => {
@@ -93,5 +94,16 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(applicationPagesSource).toContain("No direct control channel exists");
     expect(applicationPagesSource).toContain("Enrollment and execution paused");
     expect(applicationPagesSource).toContain("cannot reserve infrastructure, connect a node, or alter the fleet");
+  });
+
+  it("keeps the Pharo-Lapse comparison interactive, keyboard-readable, and reduced-motion aware", () => {
+    expect(atmosSource).toContain('data-flow-mode={flowMode}');
+    expect(atmosSource).toContain('aria-pressed={flowMode === "standard"}');
+    expect(atmosSource).toContain('aria-pressed={flowMode === "pharo"}');
+    expect(atmosSource).toContain('role="tooltip"');
+    expect(atmosSource).toContain("queue-flow-node__tooltip");
+    expect(atmosSource).toContain("animated packets represent envelope movement");
+    expect(styles).toContain("@keyframes queue-packet");
+    expect(styles).toContain("prefers-reduced-motion: no-preference");
   });
 });
