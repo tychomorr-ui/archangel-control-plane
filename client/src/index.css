@@ -177,3 +177,19 @@ button:active { transform: scale(0.98); }
 .kill-switch-rail__dot { height: .42rem; width: .42rem; border-radius: 999px; background: rgb(251 113 133); box-shadow: 0 0 9px rgba(251,113,133,.7); }
 .kill-switch-rail[data-powered="true"] .kill-switch-rail__dot { background: rgb(110 231 183); box-shadow: 0 0 9px rgba(110,231,183,.7); }
 .kill-switch-demo__boundary { color: rgb(196 181 253); }
+
+.rogue-posture-badge { display: inline-flex; align-items: center; border: 1px solid rgba(251,113,133,.28); border-radius: 999px; background: rgba(244,63,94,.08); padding: .4rem .65rem; color: rgb(254 205 211); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+.rogue-posture-card { display: flex; min-height: 72px; align-items: flex-start; gap: .55rem; border: 1px solid rgba(255,255,255,.08); border-radius: .75rem; background: rgba(0,0,0,.16); padding: .7rem; }
+.rogue-posture-card__dot { flex: 0 0 auto; margin-top: .2rem; height: .48rem; width: .48rem; border-radius: 999px; background: rgb(251 191 36); box-shadow: 0 0 10px rgba(251,191,36,.7); }
+.rogue-posture-card[data-state="evidence"] .rogue-posture-card__dot, .rogue-posture-card[data-state="policy"] .rogue-posture-card__dot, .rogue-posture-card[data-state="declared"] .rogue-posture-card__dot { background: rgb(110 231 183); box-shadow: 0 0 10px rgba(110,231,183,.7); }
+.rogue-posture-card[data-state="engaged"] .rogue-posture-card__dot { background: rgb(251 113 133); box-shadow: 0 0 12px rgba(251,113,133,.85); }
+.rogue-posture-card p, .rogue-posture-card strong { display: block; }
+.rogue-posture-card p { color: rgb(148 163 184); font-size: 10px; }
+.rogue-posture-card strong { margin-top: .18rem; color: rgb(226 232 240); font-size: 11px; font-weight: 500; }
+.rogue-posture-card__state { margin-left: auto; color: rgb(100 116 139); font-family: "DM Mono", ui-monospace, monospace; font-size: 8px; text-transform: uppercase; }
+.rogue-simulator, .rogue-provenance { border: 1px solid rgba(255,255,255,.08); border-radius: .85rem; background: rgba(0,0,0,.16); padding: 1rem; }
+.rogue-provenance__step { display: flex; gap: .65rem; align-items: flex-start; border-top: 1px solid rgba(255,255,255,.07); padding: .6rem 0 0; }
+.rogue-provenance__step-number { color: rgb(103 232 249); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; }
+.rogue-provenance__step strong, .rogue-provenance__step small { display: block; }
+.rogue-provenance__step strong { color: rgb(226 232 240); font-size: 11px; }
+.rogue-provenance__step small { margin-top: .18rem; color: rgb(100 116 139); font-size: 10px; line-height: 1.35; }

@@ -124,4 +124,21 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(styles).toContain(".kill-switch-toggle");
     expect(styles).toContain(".kill-switch-rail[data-powered=\"false\"]");
   });
+
+  it("exposes the anti-rogue posture as bounded, auditable, and visual-only", () => {
+    expect(atmosSource).toContain("anti-rogue posture");
+    expect(atmosSource).toContain("Bounded authority, not blind trust.");
+    expect(atmosSource).toContain("Capability bounded");
+    expect(atmosSource).toContain("Human approval");
+    expect(atmosSource).toContain("Rollback declared");
+    expect(atmosSource).toContain("Adversarial simulator · visual only");
+    expect(atmosSource).toContain('aria-label="Choose adversarial simulation"');
+    expect(atmosSource).toContain("No request is sent and no node is changed.");
+    expect(atmosSource).toContain("Provenance chain · contract view");
+    expect(atmosSource).toContain("Model proposal");
+    expect(atmosSource).toContain("ATMOS decision");
+    expect(atmosSource).toContain("Evidence outcome");
+    expect(styles).toContain(".rogue-posture-card");
+    expect(styles).toContain(".rogue-provenance__step");
+  });
 });
