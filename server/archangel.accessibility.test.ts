@@ -152,4 +152,11 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(styles).toContain(".capability-field");
     expect(styles).toContain(".quarantine-event");
   });
+
+  it("filters the real stored evidence log by disposition", () => {
+    expect(atmosSource).toContain("Quarantine views use stored outcomes only.");
+    expect(atmosSource).toContain('value={evidenceDisposition}');
+    expect(atmosSource).toContain('<option value="quarantined">Quarantined</option>');
+    expect(atmosSource).toContain("No stored evidence matches this disposition.");
+  });
 });
