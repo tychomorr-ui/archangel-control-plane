@@ -159,3 +159,21 @@ button:active { transform: scale(0.98); }
   .queue-flow-packet { top: 0; left: -3px; }
   .queue-flow-lower-grid { grid-template-columns: 1fr; }
 }
+
+.kill-switch-demo { display: grid; gap: .85rem; margin-top: 1rem; border: 1px solid rgba(251,113,133,.22); border-radius: .85rem; background: linear-gradient(135deg, rgba(127,29,29,.14), rgba(15,23,42,.32)); padding: 1rem; }
+.kill-switch-demo__control { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; }
+.kill-switch-demo__status { color: rgb(167 243 208); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.kill-switch-demo__status--engaged { color: rgb(254 205 211); }
+.kill-switch-toggle { display: inline-flex; align-items: center; gap: .55rem; border: 1px solid rgba(251,113,133,.35); border-radius: .7rem; background: rgba(255,255,255,.035); padding: .5rem .65rem; color: rgb(254 205 211); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.kill-switch-toggle:hover, .kill-switch-toggle[data-active="true"] { border-color: rgba(251,113,133,.72); background: rgba(244,63,94,.14); }
+.kill-switch-toggle__track { position: relative; height: 1.1rem; width: 2rem; border-radius: 999px; background: rgba(148,163,184,.28); transition: background 160ms ease; }
+.kill-switch-toggle[data-active="true"] .kill-switch-toggle__track { background: rgba(244,63,94,.62); }
+.kill-switch-toggle__thumb { position: absolute; top: .2rem; left: .2rem; height: .7rem; width: .7rem; border-radius: 999px; background: rgb(226 232 240); transition: transform 160ms cubic-bezier(.23,1,.32,1); }
+.kill-switch-toggle[data-active="true"] .kill-switch-toggle__thumb { transform: translateX(.9rem); background: rgb(254 205 211); }
+.kill-switch-demo__rails { display: flex; flex-wrap: wrap; gap: .5rem; border-top: 1px solid rgba(255,255,255,.07); padding-top: .75rem; }
+.kill-switch-rail, .kill-switch-demo__boundary { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid rgba(255,255,255,.08); border-radius: .6rem; background: rgba(0,0,0,.18); padding: .45rem .55rem; color: rgb(148 163 184); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+.kill-switch-rail[data-powered="true"] { color: rgb(167 243 208); }
+.kill-switch-rail[data-powered="false"] { color: rgb(254 205 211); text-decoration: line-through; text-decoration-color: rgba(254,205,211,.65); }
+.kill-switch-rail__dot { height: .42rem; width: .42rem; border-radius: 999px; background: rgb(251 113 133); box-shadow: 0 0 9px rgba(251,113,133,.7); }
+.kill-switch-rail[data-powered="true"] .kill-switch-rail__dot { background: rgb(110 231 183); box-shadow: 0 0 9px rgba(110,231,183,.7); }
+.kill-switch-demo__boundary { color: rgb(196 181 253); }

@@ -112,4 +112,16 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(styles).toContain("@media (max-width: 767px)");
     expect(styles).toContain("prefers-reduced-motion: no-preference");
   });
+
+  it("exposes the visual fail-closed kill-switch simulation without implying hardware control", () => {
+    expect(atmosSource).toContain("kill-switch-demo");
+    expect(atmosSource).toContain('aria-pressed={killSwitchEngaged}');
+    expect(atmosSource).toContain("Engage simulated physical kill switch");
+    expect(atmosSource).toContain("Visual demonstration only");
+    expect(atmosSource).toContain("does not control GPIO, telemetry, or production hardware");
+    expect(atmosSource).toContain("AI compute rail");
+    expect(atmosSource).toContain("radio power rail");
+    expect(styles).toContain(".kill-switch-toggle");
+    expect(styles).toContain(".kill-switch-rail[data-powered=\"false\"]");
+  });
 });
