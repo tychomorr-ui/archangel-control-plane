@@ -10,6 +10,7 @@
     "check": "tsc --noEmit && node launch/check-terminology.mjs",
     "format": "prettier --write .",
     "test": "vitest run && node launch/check-terminology.mjs",
+    "test:adversarial:artifact": "tsx launch/export-adversarial-artifacts.ts",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {

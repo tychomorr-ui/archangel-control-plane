@@ -11,6 +11,9 @@ const graphSource = readFileSync(join(clientDirectory, "pages", "EcosystemGraphP
 const operationsFieldSource = readFileSync(join(clientDirectory, "components", "OperationsField.tsx"), "utf8");
 const applicationPagesSource = readFileSync(join(clientDirectory, "pages", "ApplicationControlPages.tsx"), "utf8");
 const atmosSource = readFileSync(join(clientDirectory, "pages", "AtmosPage.tsx"), "utf8");
+const capabilityViewerSource = readFileSync(join(clientDirectory, "components", "CapabilityEnvelopeViewer.tsx"), "utf8");
+const lanGuideSource = readFileSync(join(clientDirectory, "components", "PharoLapseLanTestGuide.tsx"), "utf8");
+const adversarialDashboardSource = readFileSync(join(clientDirectory, "components", "AdversarialArtifactsDashboard.tsx"), "utf8");
 const styles = readFileSync(join(clientDirectory, "index.css"), "utf8");
 
 describe("ARCHANGEL keyboard controls", () => {
@@ -158,5 +161,15 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(atmosSource).toContain('value={evidenceDisposition}');
     expect(atmosSource).toContain('<option value="quarantined">Quarantined</option>');
     expect(atmosSource).toContain("No stored evidence matches this disposition.");
+  });
+
+  it("keeps the physical guide and evidence dashboards explicit and keyboard-addressable", () => {
+    expect(lanGuideSource).toContain('role="listbox"');
+    expect(lanGuideSource).toContain("does not execute device commands");
+    expect(lanGuideSource).toContain("physical validation pending");
+    expect(capabilityViewerSource).toContain('role="listbox"');
+    expect(capabilityViewerSource).toContain("cannot issue authority");
+    expect(adversarialDashboardSource).toContain('role="group"');
+    expect(adversarialDashboardSource).toContain("not live production incidents");
   });
 });
