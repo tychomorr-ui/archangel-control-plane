@@ -141,4 +141,15 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(styles).toContain(".rogue-posture-card");
     expect(styles).toContain(".rogue-provenance__step");
   });
+
+  it("exposes capability envelopes and quarantine reasons without creating requests", () => {
+    expect(atmosSource).toContain("Capability envelope inspector");
+    expect(atmosSource).toContain("Authority is explicit, narrow, and expiring.");
+    expect(atmosSource).toContain("sample contract · no request generated");
+    expect(atmosSource).toContain("Quarantine evidence timeline");
+    expect(atmosSource).toContain("Containment preserves the reason.");
+    expect(atmosSource).toContain("simulation ledger · not a production audit record");
+    expect(styles).toContain(".capability-field");
+    expect(styles).toContain(".quarantine-event");
+  });
 });

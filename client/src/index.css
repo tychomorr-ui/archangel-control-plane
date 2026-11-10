@@ -193,3 +193,14 @@ button:active { transform: scale(0.98); }
 .rogue-provenance__step strong, .rogue-provenance__step small { display: block; }
 .rogue-provenance__step strong { color: rgb(226 232 240); font-size: 11px; }
 .rogue-provenance__step small { margin-top: .18rem; color: rgb(100 116 139); font-size: 10px; line-height: 1.35; }
+
+.capability-field { min-height: 62px; border: 1px solid rgba(255,255,255,.08); border-radius: .65rem; background: rgba(0,0,0,.16); padding: .55rem; }
+.capability-field span, .capability-field strong { display: block; }
+.capability-field span { color: rgb(100 116 139); font-family: "DM Mono", ui-monospace, monospace; font-size: 8px; letter-spacing: .1em; text-transform: uppercase; }
+.capability-field strong { margin-top: .25rem; color: rgb(207 250 254); font-size: 10px; font-weight: 500; overflow-wrap: anywhere; }
+.quarantine-event { display: flex; gap: .65rem; border-top: 1px solid rgba(255,255,255,.07); padding-top: .7rem; }
+.quarantine-event__marker { flex: 0 0 auto; margin-top: .25rem; height: .55rem; width: .55rem; border-radius: 999px; background: rgb(251 191 36); box-shadow: 0 0 10px rgba(251,191,36,.65); }
+.quarantine-event__marker[data-outcome="rejected"], .quarantine-event__marker[data-outcome="stopped"] { background: rgb(251 113 133); box-shadow: 0 0 10px rgba(251,113,133,.65); }
+.quarantine-event strong { color: rgb(253 230 138); font-size: 11px; }
+.quarantine-event span { color: rgb(100 116 139); font-family: "DM Mono", ui-monospace, monospace; font-size: 8px; text-transform: uppercase; }
+.quarantine-event p { margin-top: .2rem; color: rgb(148 163 184); font-size: 10px; line-height: 1.4; }

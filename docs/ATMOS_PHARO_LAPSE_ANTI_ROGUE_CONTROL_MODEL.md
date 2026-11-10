@@ -41,3 +41,9 @@ The architecture supports local-first operation, operator-held keys, delayed syn
 ## Next engineering gate
 
 The two-device internet-disconnected Pharo-Lapse overlay remains the primary proof: Device A signs and queues, forwards over an allowlisted local carrier, Device B verifies and durably acknowledges, replay and tampering fail closed, and no public internet path is available during the exchange.
+
+## Capability and quarantine surfaces
+
+The console now includes a capability-envelope inspector showing example scope, target, expiry, human gate, rollback, and the explicit rule that authority is not implied. It also includes a quarantine evidence timeline that preserves the reason for held, rejected, quarantined, and stopped dispositions. Both are contract views and do not generate requests or production audit records.
+
+The local harness `launch/test-pharo-lapse-two-device.mjs` exercises ephemeral Device A and Device B identities with public-internet access disabled by design. It signs, queues, forwards, verifies, acknowledges, replays, and tampers with an envelope in memory. Passing this harness is protocol evidence only; it is not proof of physical radio behavior, hardware interlock operation, or production enrollment.
