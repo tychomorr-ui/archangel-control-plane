@@ -192,6 +192,12 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(adversarialDashboardSource).toContain('role="tooltip"');
     expect(adversarialDashboardSource).toContain('aria-expanded={failureTooltipOpen}');
     expect(adversarialDashboardSource).toContain("Report payload binding compromised");
+    expect(adversarialDashboardSource).toContain("Copy diagnostic report");
+    expect(adversarialDashboardSource).toContain("expectedArtifactHash");
+    expect(adversarialDashboardSource).toContain("actualReportHash");
+    expect(adversarialDashboardSource).toContain("publicKeyFingerprint");
+    expect(adversarialDashboardSource).toContain("navigator.clipboard.writeText");
+    expect(adversarialDashboardSource).toContain("Copied!");
     expect(attestationVerifierSource).toContain('failureStage: "artifact-hash-binding"');
     expect(attestationVerifierSource).toContain('failureStage: "ed25519-signature"');
   });

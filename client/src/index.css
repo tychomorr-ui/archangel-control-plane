@@ -259,3 +259,10 @@ button:active { transform: scale(0.98); }
 .attestation-failure-tooltip strong { display: block; color: rgb(253 164 175); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
 .attestation-failure-tooltip p { margin-top: .4rem; color: rgb(226 232 240); font-size: 10px; line-height: 1.5; }
 @media (max-width: 640px) { .attestation-failure-tooltip-wrap { margin-left: 0; margin-top: .5rem; } .attestation-failure-tooltip { left: 0; right: auto; } }
+
+.attestation-diagnostic-controls { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin-top: .7rem; border: 1px solid rgba(103,232,249,.18); border-radius: .7rem; background: rgba(8,24,38,.55); padding: .7rem .8rem; }
+.attestation-diagnostic-controls strong, .attestation-diagnostic-controls small { display: block; }
+.attestation-diagnostic-controls strong { color: rgb(207 250 254); font-size: 11px; }
+.attestation-diagnostic-controls small { margin-top: .2rem; color: rgb(148 163 184); font-size: 10px; line-height: 1.45; }
+.attestation-diagnostic-controls button:disabled { cursor: not-allowed; opacity: .45; }
+@media (max-width: 640px) { .attestation-diagnostic-controls { align-items: flex-start; flex-direction: column; } }

@@ -30,6 +30,7 @@ export function AdversarialArtifactsDashboard() {
   const [attestationVerification, setAttestationVerification] = useState<AttestationVerification>({ status: "unavailable", detail: "Verifying attestation…" });
   const [tamperingSimulated, setTamperingSimulated] = useState(false);
   const [failureTooltipOpen, setFailureTooltipOpen] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">("idle");
   const visible = useMemo(() => artifacts.filter(item => filter === "all" || item[2] === filter), [filter]);
 
   useEffect(() => {
@@ -61,10 +62,49 @@ export function AdversarialArtifactsDashboard() {
   };
 
   const failure = attestationVerification.status === "failed" ? failureExplanation(attestationVerification) : null;
+  const copyDiagnosticReport = async () => {
+    const diagnostic = {
+      schema: "ARCHANGEL_ADVERSARIAL_DIAGNOSTIC_REPORT/v1",
+      generatedAt: new Date().toISOString(),
+      verification: {
+        status: attestationVerification.status,
+        detail: attestationVerification.detail,
+        failureStage: attestationVerification.failureStage ?? null,
+        failureTitle: failure?.title ?? null,
+        failureExplanation: failure?.body ?? null,
+      },
+      cryptography: {
+        expectedArtifactHash: attestationVerification.expectedArtifactHash ?? null,
+        actualReportHash: attestationVerification.actualReportHash ?? null,
+        publicKeyFingerprint: attestationVerification.publicKeyFingerprint ?? null,
+        signatureAlgorithm: manifest?.toolchain.signatureAlgorithm ?? "Ed25519",
+        hashAlgorithm: manifest?.toolchain.hashAlgorithm ?? "SHA-256",
+      },
+      attestation: verificationInput ? {
+        schema: verificationInput.attestation.schema,
+        artifact: verificationInput.attestation.artifact,
+        signer: verificationInput.attestation.signer,
+        generatedAt: verificationInput.attestation.generatedAt,
+      } : null,
+      simulation: {
+        tamperingSimulated,
+        productionArtifactsModified: false,
+      },
+      build: manifest?.build ?? null,
+    };
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(diagnostic, null, 2));
+      setCopyStatus("copied");
+      window.setTimeout(() => setCopyStatus("idle"), 2400);
+    } catch {
+      setCopyStatus("error");
+    }
+  };
 
   return <section className="adversarial-dashboard" aria-labelledby="adversarial-dashboard-title">
     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-start"><div><p className="font-mono text-[10px] uppercase tracking-[.16em] text-amber-100/70">CI evidence export</p><h2 id="adversarial-dashboard-title" className="mt-1 font-display text-xl text-white">Adversarial test artifacts</h2><p className="mt-2 text-xs leading-5 text-slate-400">Visualizes the exported local contract report. Values are fixture outcomes, not live production incidents.</p></div><span className="rogue-posture-badge">artifact · read-only</span></div>
     <div className="attestation-verification" data-status={attestationVerification.status} aria-live="polite"><span className="attestation-verification__dot" /><div><strong>Client-side attestation: {attestationVerification.status}</strong><small>{attestationVerification.detail}</small></div>{failure && <div className="attestation-failure-tooltip-wrap"><button type="button" className="attestation-failure-help" aria-expanded={failureTooltipOpen} aria-controls="attestation-failure-tooltip" onClick={() => setFailureTooltipOpen(open => !open)}>Why did verification fail?</button>{failureTooltipOpen && <div id="attestation-failure-tooltip" className="attestation-failure-tooltip" role="tooltip"><strong>{failure.title}</strong><p>{failure.body}</p></div>}</div>}</div>
+    <div className="attestation-diagnostic-controls" aria-live="polite"><div><strong>Audit diagnostic</strong><small>Copies the verification stage, expected and actual hashes, public-key fingerprint, and build metadata.</small></div><button type="button" className="flow-mode-toggle" onClick={copyDiagnosticReport} disabled={!verificationInput}>{copyStatus === "copied" ? "Copied!" : copyStatus === "error" ? "Copy failed — retry" : "Copy diagnostic report"}</button></div>
     <div className="attestation-tamper-controls" aria-label="Attestation tamper simulation"><div><strong>Verification demonstration</strong><small>Changes stay in memory and never modify the downloaded or server-side artifacts.</small></div>{tamperingSimulated ? <button type="button" className="flow-mode-toggle" onClick={restoreAuthenticPayload}>Restore authentic payload</button> : <button type="button" className="flow-mode-toggle" onClick={simulateTampering} disabled={!verificationInput}>Simulate Tampering</button>}</div>
     <div className="export-manifest-preview" aria-live="polite"><div><p className="font-mono text-[10px] uppercase tracking-[.14em] text-cyan-100/70">Export manifest preview</p><p className="mt-1 text-xs text-slate-400">Review provenance before any download starts.</p></div>{manifest ? <div className="export-manifest-preview__grid"><span>commit<strong>{manifest.build.commit.slice(0, 12)}</strong></span><span>environment<strong>{manifest.testEnvironment.mode}</strong></span><span>network<strong>{manifest.testEnvironment.networkAccess}</strong></span><span>toolchain<strong>{manifest.toolchain.runner} · {manifest.toolchain.node}</strong></span><span>signing<strong>{manifest.toolchain.signatureAlgorithm}</strong></span><span>physical LAN<strong>{manifest.testEnvironment.physicalLanTest}</strong></span></div> : <p className="mt-3 text-xs text-amber-100">Manifest preview unavailable; verify the artifact path before downloading.</p>}<a className="adversarial-manifest-link" href="/artifacts/adversarial/atmos-adversarial-export-manifest.json" download="atmos-adversarial-export-manifest.json">Download export manifest</a></div>
     <div className="mt-4 flex flex-wrap items-center justify-between gap-2"><div className="flex gap-2" role="group" aria-label="Filter CI artifact outcomes">{["all", "rejected", "quarantined"].map(value => <button type="button" key={value} className="flow-mode-toggle" data-active={filter === value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}</div><span className="font-mono text-[9px] uppercase tracking-[.1em] text-slate-500">{visible.length} artifacts shown · export status: local</span></div>
