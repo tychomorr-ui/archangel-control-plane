@@ -12,6 +12,7 @@ export type Attestation = {
 export type AttestationVerification = {
   status: "verified" | "failed" | "unavailable";
   detail: string;
+  failureStage?: "artifact-hash-binding" | "ed25519-signature" | "verification-runtime";
 };
 
 function decodeBase64Url(value: string) {
@@ -28,7 +29,7 @@ export async function verifyAdversarialAttestation(attestation: Attestation, rep
   if (!window.crypto?.subtle) return { status: "unavailable", detail: "Web Crypto is unavailable in this browser." };
   try {
     const reportHash = `sha256:${encodeHex(await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(reportBytes)))}`;
-    if (reportHash !== attestation.artifactHash) return { status: "failed", detail: "The report hash does not match the attestation." };
+    if (reportHash !== attestation.artifactHash) return { status: "failed", detail: "The report hash does not match the attestation.", failureStage: "artifact-hash-binding" };
     const signedBody = {
       schema: attestation.schema,
       artifact: attestation.artifact,
@@ -42,8 +43,8 @@ export async function verifyAdversarialAttestation(attestation: Attestation, rep
     const valid = await window.crypto.subtle.verify({ name: "Ed25519" }, publicKey, decodeBase64Url(attestation.signature), new TextEncoder().encode(JSON.stringify(signedBody, null, 2) + "\n"));
     return valid
       ? { status: "verified", detail: "Signature and report hash verified locally." }
-      : { status: "failed", detail: "The Ed25519 signature is invalid." };
+      : { status: "failed", detail: "The Ed25519 signature is invalid.", failureStage: "ed25519-signature" };
   } catch {
-    return { status: "unavailable", detail: "This browser could not complete Ed25519 verification." };
+    return { status: "unavailable", detail: "This browser could not complete Ed25519 verification.", failureStage: "verification-runtime" };
   }
 }

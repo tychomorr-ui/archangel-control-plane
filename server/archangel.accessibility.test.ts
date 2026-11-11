@@ -188,5 +188,11 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(adversarialDashboardSource).toContain("Restore authentic payload");
     expect(adversarialDashboardSource).toContain("Changes stay in memory");
     expect(adversarialDashboardSource).toContain("tamperingSimulated");
+    expect(adversarialDashboardSource).toContain("Why did verification fail?");
+    expect(adversarialDashboardSource).toContain('role="tooltip"');
+    expect(adversarialDashboardSource).toContain('aria-expanded={failureTooltipOpen}');
+    expect(adversarialDashboardSource).toContain("Report payload binding compromised");
+    expect(attestationVerifierSource).toContain('failureStage: "artifact-hash-binding"');
+    expect(attestationVerifierSource).toContain('failureStage: "ed25519-signature"');
   });
 });
