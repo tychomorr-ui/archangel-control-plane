@@ -198,6 +198,11 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(adversarialDashboardSource).toContain("publicKeyFingerprint");
     expect(adversarialDashboardSource).toContain("navigator.clipboard.writeText");
     expect(adversarialDashboardSource).toContain("Copied!");
+    expect(adversarialDashboardSource).toContain("Report diff · in memory");
+    expect(adversarialDashboardSource).toContain("Exact fields changed by the simulation");
+    expect(adversarialDashboardSource).toContain("attestation-report-diff__before");
+    expect(adversarialDashboardSource).toContain("attestation-report-diff__after");
+    expect(adversarialDashboardSource).toContain("formatDiffValue");
     expect(attestationVerifierSource).toContain('failureStage: "artifact-hash-binding"');
     expect(attestationVerifierSource).toContain('failureStage: "ed25519-signature"');
   });
