@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { generateKeyPairSync } from "node:crypto";
+import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { issueCapabilityEnvelope, verifyCapabilityEnvelope } from "../server/capabilityEnvelope";
 
 const now = Date.now();
@@ -36,6 +36,28 @@ const report = {
   cases: cases.map(([name, result]) => ({ name, accepted: result.accepted, reason: result.reason })),
 };
 const output = process.env.ADVERSARIAL_ARTIFACT_OUT ?? "artifacts/adversarial/atmos-adversarial-report.json";
-await mkdir(output.substring(0, output.lastIndexOf("/")), { recursive: true });
-await writeFile(output, JSON.stringify(report, null, 2) + "\n", "utf8");
-console.log(JSON.stringify({ output, ...report.summary, productionChanges: report.productionChanges }, null, 2));
+const outputDirectory = output.substring(0, output.lastIndexOf("/"));
+const reportBytes = JSON.stringify(report, null, 2) + "\n";
+const reportHash = `sha256:${createHash("sha256").update(reportBytes).digest("hex")}`;
+const publicKeyDer = keyPair.publicKey.export({ format: "der", type: "spki" }).toString("base64");
+const attestationBody = {
+  schema: "ARCHANGEL_ADVERSARIAL_TEST_ATTESTATION/v1",
+  artifact: "atmos-adversarial-report.json",
+  artifactHash: reportHash,
+  generatedAt: report.generatedAt,
+  signer: "ci:ephemeral-disposable-key",
+  publicKeyDerBase64: publicKeyDer,
+  statement: "These results attest only to the disposable local CI fixture; they are not production authority or node health evidence.",
+};
+const attestationBytes = JSON.stringify(attestationBody, null, 2) + "\n";
+const attestation = {
+  ...attestationBody,
+  signature: sign(null, Buffer.from(attestationBytes), keyPair.privateKey).toString("base64url"),
+};
+const attestationOutput = `${outputDirectory}/atmos-adversarial-attestation.json`;
+const bundleOutput = `${outputDirectory}/atmos-adversarial-evidence-bundle.json`;
+await mkdir(outputDirectory, { recursive: true });
+await writeFile(output, reportBytes, "utf8");
+await writeFile(attestationOutput, JSON.stringify(attestation, null, 2) + "\n", "utf8");
+await writeFile(bundleOutput, JSON.stringify({ schema: "ARCHANGEL_ADVERSARIAL_EVIDENCE_BUNDLE/v1", report, attestation }, null, 2) + "\n", "utf8");
+console.log(JSON.stringify({ output, attestationOutput, bundleOutput, reportHash, ...report.summary, productionChanges: report.productionChanges }, null, 2));

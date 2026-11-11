@@ -1,0 +1,52 @@
+{
+  "schema": "ARCHANGEL_ADVERSARIAL_EVIDENCE_BUNDLE/v1",
+  "report": {
+    "schema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1",
+    "generatedAt": "2026-11-11T22:15:46.600Z",
+    "environment": "local-disposable-keys",
+    "productionChanges": false,
+    "networkAccess": "none",
+    "summary": {
+      "total": 5,
+      "accepted": 1,
+      "rejected": 4
+    },
+    "cases": [
+      {
+        "name": "valid",
+        "accepted": true,
+        "reason": "accepted"
+      },
+      {
+        "name": "scope-escalation",
+        "accepted": false,
+        "reason": "scope_not_allowed"
+      },
+      {
+        "name": "missing-approval",
+        "accepted": false,
+        "reason": "approval_required"
+      },
+      {
+        "name": "expiry",
+        "accepted": false,
+        "reason": "expired_or_not_yet_valid"
+      },
+      {
+        "name": "tamper",
+        "accepted": false,
+        "reason": "signature_invalid"
+      }
+    ]
+  },
+  "attestation": {
+    "schema": "ARCHANGEL_ADVERSARIAL_TEST_ATTESTATION/v1",
+    "artifact": "atmos-adversarial-report.json",
+    "artifactHash": "sha256:41b67d486278e97523d461e8e7659bbd7c272309e89fa5bf44a5cb11c034ecb6",
+    "generatedAt": "2026-11-11T22:15:46.600Z",
+    "signer": "ci:ephemeral-disposable-key",
+    "publicKeyDerBase64": "MCowBQYDK2VwAyEAJAqp7bSvXdETY76eVOhSjDvD5tE2fkuqvPu+X5pFy5U=",
+    "statement": "These results attest only to the disposable local CI fixture; they are not production authority or node health evidence.",
+    "signature": "hRW2sFLqYRan6dCS30QtBGxYdLlO5ljspPTHBgDZQPqxZ2fBrALLPZizCuWGcoWMKoEsofmlR1HUitQdjxz3Aw"
+  }
+}

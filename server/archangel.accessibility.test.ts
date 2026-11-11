@@ -171,5 +171,8 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(capabilityViewerSource).toContain("cannot issue authority");
     expect(adversarialDashboardSource).toContain('role="group"');
     expect(adversarialDashboardSource).toContain("not live production incidents");
+    expect(adversarialDashboardSource).toContain('download="atmos-adversarial-report.json"');
+    expect(adversarialDashboardSource).toContain('download="atmos-adversarial-attestation.json"');
+    expect(adversarialDashboardSource).toContain('download="atmos-adversarial-evidence-bundle.json"');
   });
 });

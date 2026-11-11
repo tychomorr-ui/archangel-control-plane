@@ -1,0 +1,39 @@
+{
+  "schema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1",
+  "generatedAt": "2026-11-11T22:15:46.600Z",
+  "environment": "local-disposable-keys",
+  "productionChanges": false,
+  "networkAccess": "none",
+  "summary": {
+    "total": 5,
+    "accepted": 1,
+    "rejected": 4
+  },
+  "cases": [
+    {
+      "name": "valid",
+      "accepted": true,
+      "reason": "accepted"
+    },
+    {
+      "name": "scope-escalation",
+      "accepted": false,
+      "reason": "scope_not_allowed"
+    },
+    {
+      "name": "missing-approval",
+      "accepted": false,
+      "reason": "approval_required"
+    },
+    {
+      "name": "expiry",
+      "accepted": false,
+      "reason": "expired_or_not_yet_valid"
+    },
+    {
+      "name": "tamper",
+      "accepted": false,
+      "reason": "signature_invalid"
+    }
+  ]
+}
