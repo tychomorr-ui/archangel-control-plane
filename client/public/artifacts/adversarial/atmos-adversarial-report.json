@@ -1,6 +1,6 @@
 {
   "schema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1",
-  "generatedAt": "2026-11-11T22:15:46.600Z",
+  "generatedAt": "2026-11-11T22:43:10.239Z",
   "environment": "local-disposable-keys",
   "productionChanges": false,
   "networkAccess": "none",

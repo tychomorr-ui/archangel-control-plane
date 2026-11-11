@@ -174,5 +174,8 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(adversarialDashboardSource).toContain('download="atmos-adversarial-report.json"');
     expect(adversarialDashboardSource).toContain('download="atmos-adversarial-attestation.json"');
     expect(adversarialDashboardSource).toContain('download="atmos-adversarial-evidence-bundle.json"');
+    expect(adversarialDashboardSource).toContain("Export manifest preview");
+    expect(adversarialDashboardSource).toContain('download="atmos-adversarial-export-manifest.json"');
+    expect(adversarialDashboardSource).toContain("Review provenance before any download starts.");
   });
 });

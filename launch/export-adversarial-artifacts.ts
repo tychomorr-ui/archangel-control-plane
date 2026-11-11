@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { createHash, generateKeyPairSync, sign } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { issueCapabilityEnvelope, verifyCapabilityEnvelope } from "../server/capabilityEnvelope";
 
 const now = Date.now();
@@ -54,10 +55,43 @@ const attestation = {
   ...attestationBody,
   signature: sign(null, Buffer.from(attestationBytes), keyPair.privateKey).toString("base64url"),
 };
+const buildCommit = process.env.GIT_COMMIT ?? (() => {
+  try { return execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim(); } catch { return "unknown"; }
+})();
+const manifest = {
+  schema: "ARCHANGEL_ADVERSARIAL_EXPORT_MANIFEST/v1",
+  generatedAt: report.generatedAt,
+  build: {
+    commit: buildCommit,
+    project: "archangel-control-plane",
+    artifactSchema: report.schema,
+  },
+  testEnvironment: {
+    mode: "local-disposable-keys",
+    networkAccess: "none",
+    productionChanges: false,
+    physicalLanTest: "not-executed-in-sandbox",
+  },
+  toolchain: {
+    node: process.version,
+    packageManager: process.env.npm_config_user_agent ?? "pnpm",
+    runner: "tsx + Vitest",
+    signatureAlgorithm: "Ed25519",
+    hashAlgorithm: "SHA-256",
+  },
+  artifacts: {
+    report: "atmos-adversarial-report.json",
+    attestation: "atmos-adversarial-attestation.json",
+    bundle: "atmos-adversarial-evidence-bundle.json",
+    manifest: "atmos-adversarial-export-manifest.json",
+  },
+};
 const attestationOutput = `${outputDirectory}/atmos-adversarial-attestation.json`;
 const bundleOutput = `${outputDirectory}/atmos-adversarial-evidence-bundle.json`;
+const manifestOutput = `${outputDirectory}/atmos-adversarial-export-manifest.json`;
 await mkdir(outputDirectory, { recursive: true });
 await writeFile(output, reportBytes, "utf8");
 await writeFile(attestationOutput, JSON.stringify(attestation, null, 2) + "\n", "utf8");
-await writeFile(bundleOutput, JSON.stringify({ schema: "ARCHANGEL_ADVERSARIAL_EVIDENCE_BUNDLE/v1", report, attestation }, null, 2) + "\n", "utf8");
-console.log(JSON.stringify({ output, attestationOutput, bundleOutput, reportHash, ...report.summary, productionChanges: report.productionChanges }, null, 2));
+await writeFile(manifestOutput, JSON.stringify(manifest, null, 2) + "\n", "utf8");
+await writeFile(bundleOutput, JSON.stringify({ schema: "ARCHANGEL_ADVERSARIAL_EVIDENCE_BUNDLE/v1", report, attestation, manifest }, null, 2) + "\n", "utf8");
+console.log(JSON.stringify({ output, attestationOutput, manifestOutput, bundleOutput, reportHash, ...report.summary, productionChanges: report.productionChanges }, null, 2));

@@ -1,10 +1,10 @@
 {
   "schema": "ARCHANGEL_ADVERSARIAL_TEST_ATTESTATION/v1",
   "artifact": "atmos-adversarial-report.json",
-  "artifactHash": "sha256:41b67d486278e97523d461e8e7659bbd7c272309e89fa5bf44a5cb11c034ecb6",
-  "generatedAt": "2026-11-11T22:15:46.600Z",
+  "artifactHash": "sha256:4e5aa6d00ddaffb4d9f478c8ecf0536968e2dacbdcc346dec53db4d86ade6924",
+  "generatedAt": "2026-11-11T22:43:10.239Z",
   "signer": "ci:ephemeral-disposable-key",
-  "publicKeyDerBase64": "MCowBQYDK2VwAyEAJAqp7bSvXdETY76eVOhSjDvD5tE2fkuqvPu+X5pFy5U=",
+  "publicKeyDerBase64": "MCowBQYDK2VwAyEAY1LJxj9GqBHM5VplWjhamElSeRSmWaRnKGGSImkxSaw=",
   "statement": "These results attest only to the disposable local CI fixture; they are not production authority or node health evidence.",
-  "signature": "hRW2sFLqYRan6dCS30QtBGxYdLlO5ljspPTHBgDZQPqxZ2fBrALLPZizCuWGcoWMKoEsofmlR1HUitQdjxz3Aw"
+  "signature": "2Xlkf7dpP56PCPMuh05G9mBcUqpVLQqwU2S9CtAjp2_xCLhYY-8rvwAta1KuBIuO6klUYdbglcJakcFuGS28Bg"
 }

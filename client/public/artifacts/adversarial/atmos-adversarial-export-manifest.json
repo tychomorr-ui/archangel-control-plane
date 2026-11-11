@@ -1,0 +1,28 @@
+{
+  "schema": "ARCHANGEL_ADVERSARIAL_EXPORT_MANIFEST/v1",
+  "generatedAt": "2026-11-11T22:43:10.239Z",
+  "build": {
+    "commit": "88fc91fc88f026101d71dcf3c07fc1b6776f77c1",
+    "project": "archangel-control-plane",
+    "artifactSchema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1"
+  },
+  "testEnvironment": {
+    "mode": "local-disposable-keys",
+    "networkAccess": "none",
+    "productionChanges": false,
+    "physicalLanTest": "not-executed-in-sandbox"
+  },
+  "toolchain": {
+    "node": "v22.23.4",
+    "packageManager": "pnpm/10.4.1 npm/? node/v22.23.4 linux arm64",
+    "runner": "tsx + Vitest",
+    "signatureAlgorithm": "Ed25519",
+    "hashAlgorithm": "SHA-256"
+  },
+  "artifacts": {
+    "report": "atmos-adversarial-report.json",
+    "attestation": "atmos-adversarial-attestation.json",
+    "bundle": "atmos-adversarial-evidence-bundle.json",
+    "manifest": "atmos-adversarial-export-manifest.json"
+  }
+}

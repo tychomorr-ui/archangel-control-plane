@@ -2,7 +2,7 @@
   "schema": "ARCHANGEL_ADVERSARIAL_EVIDENCE_BUNDLE/v1",
   "report": {
     "schema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1",
-    "generatedAt": "2026-11-11T22:15:46.600Z",
+    "generatedAt": "2026-11-11T22:43:10.239Z",
     "environment": "local-disposable-keys",
     "productionChanges": false,
     "networkAccess": "none",
@@ -42,11 +42,39 @@
   "attestation": {
     "schema": "ARCHANGEL_ADVERSARIAL_TEST_ATTESTATION/v1",
     "artifact": "atmos-adversarial-report.json",
-    "artifactHash": "sha256:41b67d486278e97523d461e8e7659bbd7c272309e89fa5bf44a5cb11c034ecb6",
-    "generatedAt": "2026-11-11T22:15:46.600Z",
+    "artifactHash": "sha256:4e5aa6d00ddaffb4d9f478c8ecf0536968e2dacbdcc346dec53db4d86ade6924",
+    "generatedAt": "2026-11-11T22:43:10.239Z",
     "signer": "ci:ephemeral-disposable-key",
-    "publicKeyDerBase64": "MCowBQYDK2VwAyEAJAqp7bSvXdETY76eVOhSjDvD5tE2fkuqvPu+X5pFy5U=",
+    "publicKeyDerBase64": "MCowBQYDK2VwAyEAY1LJxj9GqBHM5VplWjhamElSeRSmWaRnKGGSImkxSaw=",
     "statement": "These results attest only to the disposable local CI fixture; they are not production authority or node health evidence.",
-    "signature": "hRW2sFLqYRan6dCS30QtBGxYdLlO5ljspPTHBgDZQPqxZ2fBrALLPZizCuWGcoWMKoEsofmlR1HUitQdjxz3Aw"
+    "signature": "2Xlkf7dpP56PCPMuh05G9mBcUqpVLQqwU2S9CtAjp2_xCLhYY-8rvwAta1KuBIuO6klUYdbglcJakcFuGS28Bg"
+  },
+  "manifest": {
+    "schema": "ARCHANGEL_ADVERSARIAL_EXPORT_MANIFEST/v1",
+    "generatedAt": "2026-11-11T22:43:10.239Z",
+    "build": {
+      "commit": "88fc91fc88f026101d71dcf3c07fc1b6776f77c1",
+      "project": "archangel-control-plane",
+      "artifactSchema": "ARCHANGEL_ADVERSARIAL_CI_ARTIFACT/v1"
+    },
+    "testEnvironment": {
+      "mode": "local-disposable-keys",
+      "networkAccess": "none",
+      "productionChanges": false,
+      "physicalLanTest": "not-executed-in-sandbox"
+    },
+    "toolchain": {
+      "node": "v22.23.4",
+      "packageManager": "pnpm/10.4.1 npm/? node/v22.23.4 linux arm64",
+      "runner": "tsx + Vitest",
+      "signatureAlgorithm": "Ed25519",
+      "hashAlgorithm": "SHA-256"
+    },
+    "artifacts": {
+      "report": "atmos-adversarial-report.json",
+      "attestation": "atmos-adversarial-attestation.json",
+      "bundle": "atmos-adversarial-evidence-bundle.json",
+      "manifest": "atmos-adversarial-export-manifest.json"
+    }
   }
 }
