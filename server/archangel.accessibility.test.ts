@@ -14,6 +14,7 @@ const atmosSource = readFileSync(join(clientDirectory, "pages", "AtmosPage.tsx")
 const capabilityViewerSource = readFileSync(join(clientDirectory, "components", "CapabilityEnvelopeViewer.tsx"), "utf8");
 const lanGuideSource = readFileSync(join(clientDirectory, "components", "PharoLapseLanTestGuide.tsx"), "utf8");
 const adversarialDashboardSource = readFileSync(join(clientDirectory, "components", "AdversarialArtifactsDashboard.tsx"), "utf8");
+const attestationVerifierSource = readFileSync(join(clientDirectory, "lib", "verifyAdversarialAttestation.ts"), "utf8");
 const styles = readFileSync(join(clientDirectory, "index.css"), "utf8");
 
 describe("ARCHANGEL keyboard controls", () => {
@@ -177,5 +178,11 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(adversarialDashboardSource).toContain("Export manifest preview");
     expect(adversarialDashboardSource).toContain('download="atmos-adversarial-export-manifest.json"');
     expect(adversarialDashboardSource).toContain("Review provenance before any download starts.");
+    expect(adversarialDashboardSource).toContain("Client-side attestation:");
+    expect(adversarialDashboardSource).toContain("verifyAdversarialAttestation");
+    expect(adversarialDashboardSource).toContain('aria-live="polite"');
+    expect(attestationVerifierSource).toContain('subtle.importKey("spki"');
+    expect(attestationVerifierSource).toContain('subtle.verify({ name: "Ed25519" }');
+    expect(attestationVerifierSource).toContain("report hash does not match");
   });
 });
