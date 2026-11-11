@@ -184,5 +184,9 @@ describe("ARCHANGEL keyboard controls", () => {
     expect(attestationVerifierSource).toContain('subtle.importKey("spki"');
     expect(attestationVerifierSource).toContain('subtle.verify({ name: "Ed25519" }');
     expect(attestationVerifierSource).toContain("report hash does not match");
+    expect(adversarialDashboardSource).toContain("Simulate Tampering");
+    expect(adversarialDashboardSource).toContain("Restore authentic payload");
+    expect(adversarialDashboardSource).toContain("Changes stay in memory");
+    expect(adversarialDashboardSource).toContain("tamperingSimulated");
   });
 });

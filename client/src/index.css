@@ -244,3 +244,10 @@ button:active { transform: scale(0.98); }
 .attestation-verification[data-status="failed"] { border-color: rgba(251,113,133,.35); background: rgba(244,63,94,.06); }
 .attestation-verification[data-status="failed"] .attestation-verification__dot { background: rgb(251 113 133); box-shadow: 0 0 12px rgba(251,113,133,.75); }
 .attestation-verification[data-status="unavailable"] .attestation-verification__dot { background: rgb(251 191 36); }
+
+.attestation-tamper-controls { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .75rem; border: 1px dashed rgba(251,191,36,.28); border-radius: .75rem; background: rgba(251,191,36,.035); padding: .7rem .8rem; }
+.attestation-tamper-controls strong, .attestation-tamper-controls small { display: block; }
+.attestation-tamper-controls strong { color: rgb(253 230 138); font-family: "DM Mono", ui-monospace, monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.attestation-tamper-controls small { margin-top: .25rem; color: rgb(148 163 184); font-size: 10px; }
+.attestation-tamper-controls button:disabled { cursor: not-allowed; opacity: .45; }
+@media (max-width: 640px) { .attestation-tamper-controls { align-items: stretch; flex-direction: column; } .attestation-tamper-controls button { width: 100%; } }
