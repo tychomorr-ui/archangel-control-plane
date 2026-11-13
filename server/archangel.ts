@@ -239,6 +239,7 @@ export const archangelRouter = router({
         declaredNodes: nodes.length,
         verifiedReceipts: nodes.filter(node => node.evidenceState === "verified").length,
         canonicalVerifiedNodes: nodes.filter(node => node.canonicalVerification === "VERIFIED").length,
+        signedHealthReceipts: nodes.filter(node => node.signedReceiptHash !== null).length,
         failedReceipts: nodes.filter(node => node.evidenceState === "failed").length,
         pendingReceipts: nodes.filter(node => node.evidenceState === "pending").length,
         auditRecords: audit.length,

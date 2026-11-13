@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
 import { useLocation } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 const navigation = [
   { label: "Fleet overview", path: "/", icon: Orbit },
@@ -185,9 +186,11 @@ function SecurityPanel({ onClose }: { onClose: () => void }) {
 
 export default function ArchangelLayout({ children }: { children: ReactNode }) {
   const { loading, user, logout } = useAuth();
+  const evidence = trpc.archangel.atmosEvidence.useQuery(undefined, { enabled: Boolean(user), refetchInterval: 15_000 });
   const [location, setLocation] = useLocation();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [securityOpen, setSecurityOpen] = useState(false);
+  const receiptChip = evidence.isLoading ? "—" : evidence.error ? "evidence unavailable" : evidence.data ? `${evidence.data.summary.verifiedReceipts}/${evidence.data.summary.declaredNodes} verified` : "—";
 
   if (loading) {
     return (
@@ -269,7 +272,7 @@ export default function ArchangelLayout({ children }: { children: ReactNode }) {
               </div>
               <div className="hidden items-center gap-4 sm:flex">
                 <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">UTC synchronized interface</span>
-                <span className="flex items-center gap-2 rounded-full border border-amber-300/15 bg-amber-300/[0.06] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-100"><Activity className="h-3.5 w-3.5" /> Receipt pending</span>
+                <span className="flex items-center gap-2 rounded-full border border-amber-300/15 bg-amber-300/[0.06] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-amber-100"><Activity className="h-3.5 w-3.5" /> {receiptChip}</span>
               </div>
             </div>
             {mobileNavOpen ? (
