@@ -66,15 +66,37 @@ export const signedHealthReceiptSchema = z.object({
   }),
 });
 
+const canonicalEndpointByNode: Partial<Record<(typeof NODE_IDS)[number], string>> = {
+  "root-gate": "rootgate.nexinus.net",
+  "tesseract-terminus": "terminus.nexinus.net",
+  "xinus-clarity": "clarity.nexinus.net",
+  "kether-gate": "monarch.nexinus.net",
+  "tesseract-a": "tesseract.nexinus.net",
+  keira: "keira.nexinus.net",
+  "project-reclaim": "reclaim-node.nexinus.net",
+  "iwa-sage": "iwa.nexinus.net",
+  "resonate-earth": "resonate.nexinus.net",
+  "exitus-lens": "exitus.nexinus.net",
+  "valkyrie-adjudication-entity": "valkyrie.nexinus.net",
+};
+
 export const applicationIntegrationSchema = z.object({
   applicationId: z.enum(APPLICATION_IDS),
   nodeId: nodeIdSchema,
-  endpointUrl: z.string().url().refine(value => {
-    const url = new URL(value);
-    return url.protocol === "https:" && url.hostname.endsWith(".manus.space");
-  }, "The integration endpoint must be an HTTPS *.manus.space hostname."),
+  endpointUrl: z.string().url(),
   publicKeyPem: z.string().trim().min(80).max(1000),
   scopes: z.array(z.enum(["read:health", "read:deployment", "write:cache"])).min(1).max(3),
+}).superRefine((input, ctx) => {
+  const url = new URL(input.endpointUrl);
+  const expectedHostname = canonicalEndpointByNode[input.nodeId];
+  const isApprovedManusEndpoint = url.hostname.endsWith(".manus.space");
+  const isApprovedCanonicalEndpoint = expectedHostname === url.hostname;
+  if (url.protocol !== "https:" || (!isApprovedManusEndpoint && !isApprovedCanonicalEndpoint)) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endpointUrl"], message: "The integration endpoint must be HTTPS on the node's approved canonical hostname or an HTTPS *.manus.space hostname." });
+  }
+  if (isApprovedCanonicalEndpoint && url.pathname !== "/") {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endpointUrl"], message: "Canonical node endpoints must not include a path." });
+  }
 });
 
 const plainCommandPattern = /^(deploy|restart|configuration promote|backup verify)\s+([a-z-]+)\s+scope="([^"\n]{8,300})"\s+risk=(low|moderate|high|critical)\s+rollback="([^"\n]{8,300})"\s+ttl=(15|30|60|120|240)m$/;

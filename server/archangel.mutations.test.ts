@@ -181,6 +181,30 @@ describe("ARCHANGEL protected mutations", () => {
     expect(state.storedAudit.map(event => event.eventType)).toContain("verification.outcome");
   });
 
+  it("accepts Valkyrie's exact canonical Nexinus endpoint but rejects an unapproved host", async () => {
+    const state = createDbDouble();
+    vi.mocked(getDb).mockResolvedValue(state.db as never);
+    const caller = archangelRouter.createCaller(operatorContext);
+    const { publicKey } = generateKeyPairSync("ed25519");
+    const publicKeyPem = publicKey.export({ type: "spki", format: "pem" }).toString();
+
+    await expect(caller.registerIntegration({
+      applicationId: "valkyrie-adjudication-entity",
+      nodeId: "valkyrie-adjudication-entity",
+      endpointUrl: "https://valkyrie.nexinus.net",
+      publicKeyPem,
+      scopes: ["read:health"],
+    })).resolves.toMatchObject({ accepted: true, status: "active" });
+
+    await expect(caller.registerIntegration({
+      applicationId: "valkyrie-adjudication-entity",
+      nodeId: "valkyrie-adjudication-entity",
+      endpointUrl: "https://unapproved.example.com",
+      publicKeyPem,
+      scopes: ["read:health"],
+    })).rejects.toThrow(/approved canonical hostname/);
+  });
+
   it("previews deterministic policy and marks a declared-host scenario review-ready with an audit record only", async () => {
     const state = createDbDouble();
     vi.mocked(getDb).mockResolvedValue(state.db as never);

@@ -13,7 +13,7 @@ describe("ATMOS canonical registry", () => {
       "MONARCH-OS",
       "TESSERACT-A",
       "KEIRA",
-      "VALKYRIE",
+      "VALKYRIE-ADJUDICATION-ENTITY",
       "ARCHANGEL",
       "PROJECT-RECLAIM",
       "IWA-SAGE",
