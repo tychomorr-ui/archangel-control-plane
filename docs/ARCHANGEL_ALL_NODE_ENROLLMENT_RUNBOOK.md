@@ -34,7 +34,7 @@ The node IDs above are exact and case-sensitive. `kether-gate` is the node ID fo
 Run these on an operator workstation or node shell. Use the currently deployed ARCHANGEL base URL:
 
 ```bash
-export ARCHANGEL_BASE='https://archangelcp-sbwmjhce.manus.space'
+export ARCHANGEL_BASE='https://archangel.nexinus.net'
 ```
 
 For production operations, replace it with the approved stable ARCHANGEL domain after that domain is confirmed to serve the same API contract.

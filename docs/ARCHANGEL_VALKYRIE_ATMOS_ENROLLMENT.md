@@ -13,7 +13,7 @@ The local helper is `launch/submit-atmos-node-receipt.mjs`. It reads the private
 ```bash
 ATMOS_NODE_PRIVATE_KEY_FILE=/secure/valkyrie/private.pem \
 node launch/submit-atmos-node-receipt.mjs \
-  https://archangelcp-sbwmjhce.manus.space \
+  https://archangel.nexinus.net \
   valkyrie-adjudication-entity \
   <runtime-version> \
   <ok|degraded|not_ready> \

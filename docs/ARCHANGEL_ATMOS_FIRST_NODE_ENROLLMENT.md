@@ -2,7 +2,7 @@
 
 ## Candidate
 
-The first candidate is the already registered Valkyrie Adjudication Entity integration (`xinusdash-doy5g86k.manus.space`). Its endpoint and public-key binding are recorded in ARCHANGEL's application integration registry, but application registration is not the same as node enrollment.
+The first candidate is the already registered Valkyrie Adjudication Entity integration (`https://valkyrie.nexinus.net`). Its endpoint and public-key binding are recorded in ARCHANGEL's application integration registry, but application registration is not the same as node enrollment.
 
 ## Current result
 

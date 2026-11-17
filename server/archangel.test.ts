@@ -54,7 +54,7 @@ describe("ARCHANGEL fleet contract", () => {
     expect(APPLICATION_ATLAS.find(application => application.id === "valkyrie-adjudication-entity")).toMatchObject({
       name: "VALKYRIE Adjudication Entity",
       nodeId: "valkyrie-adjudication-entity",
-      publicFrontDoor: "https://xinusdash-doy5g86k.manus.space",
+      publicFrontDoor: "https://valkyrie.nexinus.net",
       lifecycle: "declared",
     });
     expect(APPLICATION_ATLAS.every(application => application.evidencePosture === "declared" || application.evidencePosture === "evidence-needed")).toBe(true);
