@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerAtmosGate4Routes } from "../atmosGate4Routes";
 import { registerNodeReceiptRoutes } from "../nodeReceiptRoutes";
+import { registerAtmosPublicEvidenceRoutes } from "../atmosPublicEvidenceRoutes";
 import { gate4ConfigFromEnvironment, gate4KeyFingerprint } from "../atmosGate4";
 import { registerLocalAuthRoutes } from "./localAuth";
 
@@ -46,6 +47,7 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
   registerLocalAuthRoutes(app);
+  registerAtmosPublicEvidenceRoutes(app);
   registerAtmosGate4Routes(app);
   registerNodeReceiptRoutes(app);
   // tRPC API
