@@ -126,7 +126,7 @@ function SignInGate() {
             <div className="my-5 flex items-center gap-3 text-[10px] uppercase tracking-[0.18em] text-slate-600"><span className="h-px flex-1 bg-white/10" />or<span className="h-px flex-1 bg-white/10" /></div>
             <Button type="button" onClick={signInWithPasskey} disabled={submitting || passkeyBusy} variant="outline" className="h-11 w-full rounded-xl border-cyan-200/20 bg-transparent text-cyan-100 hover:bg-cyan-200/10">{passkeyBusy ? <><span className="mr-2 h-3.5 w-3.5 animate-spin rounded-full border-2 border-cyan-200/30 border-t-cyan-100" />Waiting for passkey</> : "Use passkey"}</Button>
           </> : null}
-          <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">First-party operator authentication · Manus OAuth not required</p>
+          <p className="mt-5 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-slate-500">First-party operator authentication · local session and WebAuthn ready</p>
         </section>
       </div>
     </div>

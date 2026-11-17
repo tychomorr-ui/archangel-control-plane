@@ -118,7 +118,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "valkyrie-adjudication-entity",
     name: "VALKYRIE Adjudication Entity",
-    region: "Manus-hosted · *.manus.space",
+    region: "Sovereign host · valkyrie.nexinus.net",
     role: "Adjudication and evidence decision layer",
     cluster: "Outer",
     declaredState: "Declared running",
@@ -144,7 +144,7 @@ export const TOPOLOGY_LAYOUT_CONTRACT = {
     { id: "iwa-sage", placement: "north-american-community" },
     { id: "resonate-earth", placement: "unplaced-public-front-door" },
     { id: "exitus-lens", placement: "unplaced-evidence-layer" },
-    { id: "valkyrie-adjudication-entity", placement: "manus-adjudication-layer" },
+    { id: "valkyrie-adjudication-entity", placement: "sovereign-adjudication-layer" },
   ],
   spacing: {
     mobileMinCanvasHeightPx: 900,

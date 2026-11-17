@@ -89,10 +89,9 @@ export const applicationIntegrationSchema = z.object({
 }).superRefine((input, ctx) => {
   const url = new URL(input.endpointUrl);
   const expectedHostname = canonicalEndpointByNode[input.nodeId];
-  const isApprovedManusEndpoint = url.hostname.endsWith(".manus.space");
   const isApprovedCanonicalEndpoint = expectedHostname === url.hostname;
-  if (url.protocol !== "https:" || (!isApprovedManusEndpoint && !isApprovedCanonicalEndpoint)) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endpointUrl"], message: "The integration endpoint must be HTTPS on the node's approved canonical hostname or an HTTPS *.manus.space hostname." });
+  if (url.protocol !== "https:" || !isApprovedCanonicalEndpoint) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endpointUrl"], message: "The integration endpoint must use HTTPS on the node's exact approved sovereign hostname." });
   }
   if (isApprovedCanonicalEndpoint && url.pathname !== "/") {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["endpointUrl"], message: "Canonical node endpoints must not include a path." });
@@ -555,7 +554,7 @@ export const archangelRouter = router({
     const db = await getRequiredDb();
     const [integration] = await db.select().from(applicationIntegrations).where(eq(applicationIntegrations.applicationId, input.applicationId)).limit(1);
     if (!integration || integration.nodeId !== input.nodeId || integration.status !== "active") {
-      throw new TRPCError({ code: "PRECONDITION_FAILED", message: "This application has no active registered public key. Register the real Manus endpoint and Ed25519 public key before accepting receipts." });
+      throw new TRPCError({ code: "PRECONDITION_FAILED", message: "This application has no active registered public key. Register the exact sovereign endpoint and Ed25519 public key before accepting receipts." });
     }
     const verification = verifySignedHealthReceipt(input.receipt, integration.publicKeyPem);
     if (!verification.valid) {

@@ -30,7 +30,7 @@ function deterministicKeyPair() {
 function createDbDouble(publicKeyPem: string) {
   const now = new Date();
   const storedChallenges = [{ id: 1, challengeId: TEST_CHALLENGE_ID, nodeId: TEST_NODE_ID, nonce: TEST_NONCE, issuedAt: now, expiresAt: new Date(now.getTime() + 5 * 60_000), usedAt: null }];
-  const storedIntegrations = [{ id: 1, applicationId: TEST_APPLICATION_ID, nodeId: TEST_NODE_ID, endpointUrl: "https://tesseract-a.manus.space", publicKeyPem, scopes: JSON.stringify(["read:health"]), status: "active" }];
+  const storedIntegrations = [{ id: 1, applicationId: TEST_APPLICATION_ID, nodeId: TEST_NODE_ID, endpointUrl: "https://tesseract.nexinus.net", publicKeyPem, scopes: JSON.stringify(["read:health"]), status: "active" }];
   const storedReports: Record<string, unknown>[] = [];
   const storedAudit: Record<string, unknown>[] = [];
 

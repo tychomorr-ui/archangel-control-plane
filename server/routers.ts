@@ -1,6 +1,5 @@
-import { COOKIE_NAME } from "@shared/const";
 import { archangelRouter } from "./archangel";
-import { getSessionCookieOptions } from "./_core/cookies";
+import { LOCAL_AUTH_COOKIE, localAuthCookieOptions } from "./_core/localAuth";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 
@@ -11,8 +10,7 @@ export const appRouter = router({
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
-      const cookieOptions = getSessionCookieOptions(ctx.req);
-      ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
+      ctx.res.clearCookie(LOCAL_AUTH_COOKIE, { ...localAuthCookieOptions(ctx.req), maxAge: -1 });
       return {
         success: true,
       } as const;

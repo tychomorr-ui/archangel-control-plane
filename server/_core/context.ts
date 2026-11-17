@@ -30,10 +30,6 @@ export async function createContext(
         updatedAt: now,
         lastSignedIn: now,
       } as User;
-    } else if (!isLocalAuthConfigured()) {
-      // Fail closed when first-party auth is not configured. Manus OAuth is
-      // intentionally not a fallback for the ARCHANGEL operator console.
-      user = null;
     }
   } catch (error) {
     // Authentication is optional for public procedures.

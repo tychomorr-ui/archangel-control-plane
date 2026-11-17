@@ -157,7 +157,7 @@ describe("ARCHANGEL protected mutations", () => {
     const registration = await caller.registerIntegration({
       applicationId: "iwa-sage",
       nodeId: "iwa-sage",
-      endpointUrl: "https://iwa-sage.manus.space",
+      endpointUrl: "https://iwa.nexinus.net",
       publicKeyPem,
       scopes: ["read:health", "write:cache"],
     });
@@ -202,7 +202,7 @@ describe("ARCHANGEL protected mutations", () => {
       endpointUrl: "https://unapproved.example.com",
       publicKeyPem,
       scopes: ["read:health"],
-    })).rejects.toThrow(/approved canonical hostname/);
+    })).rejects.toThrow(/exact approved sovereign hostname/);
   });
 
   it("previews deterministic policy and marks a declared-host scenario review-ready with an audit record only", async () => {

@@ -23,7 +23,7 @@ const placement: Record<string, { x: number; y: number }> = {
 const lensCopy: Record<Lens, { title: string; detail: string; line: string }> = {
   roles: { title: "Role constellation", detail: "Logical relationships reveal trust boundaries and declared responsibilities, not geographic distance or live traffic.", line: "logical relationship" },
   evidence: { title: "Evidence field", detail: "Every node is awaiting a signed receipt. The graph shows no health path until a receipt is verified.", line: "proof path pending" },
-  placement: { title: "Placement ledger", detail: "Current hosts are located by supplied region. Manus-hosted Valkyrie is shown as a logical application endpoint; Resonate Earth and Exitus Lens remain deliberately unplaced.", line: "physical inventory plus declared endpoints" },
+  placement: { title: "Placement ledger", detail: "Current hosts are located by supplied region. Sovereign-hosted Valkyrie is shown as a declared application endpoint; Resonate Earth and Exitus Lens remain deliberately unplaced.", line: "physical inventory plus declared endpoints" },
 };
 
 export function EcosystemGraphPage() {
