@@ -102,6 +102,28 @@ export const atmosNodeReceiptChallenges = mysqlTable("atmos_node_receipt_challen
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const tesseractAWitnessChallenges = mysqlTable("tesseract_a_witness_challenges", {
+  id: int("id").autoincrement().primaryKey(),
+  challengeId: varchar("challengeId", { length: 64 }).notNull().unique(),
+  nonce: varchar("nonce", { length: 256 }).notNull(),
+  issuedAt: timestamp("issuedAt").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export const tesseractAWitnessReceipts = mysqlTable("tesseract_a_witness_receipts", {
+  id: int("id").autoincrement().primaryKey(),
+  receiptHash: varchar("receiptHash", { length: 256 }).notNull().unique(),
+  challengeId: varchar("challengeId", { length: 64 }).notNull(),
+  witnessNodeId: varchar("witnessNodeId", { length: 64 }).notNull(),
+  observationSetHash: varchar("observationSetHash", { length: 256 }).notNull(),
+  observationCount: int("observationCount").notNull(),
+  receiptJson: text("receiptJson").notNull(),
+  verifiedAt: timestamp("verifiedAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const atmosAuthorityMutations = mysqlTable("atmos_authority_mutations", {
   id: int("id").autoincrement().primaryKey(),
   mutationId: varchar("mutationId", { length: 64 }).notNull().unique(),

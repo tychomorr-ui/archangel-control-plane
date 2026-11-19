@@ -72,6 +72,7 @@ const canonicalEndpointByNode: Partial<Record<(typeof NODE_IDS)[number], string>
   "xinus-clarity": "clarity.nexinus.net",
   "kether-gate": "monarch.nexinus.net",
   "tesseract-a": "tesseract.nexinus.net",
+  quantus: "quantus.nexinus.net",
   keira: "keira.nexinus.net",
   "project-reclaim": "reclaim-node.nexinus.net",
   "iwa-sage": "iwa.nexinus.net",
@@ -85,7 +86,7 @@ export const applicationIntegrationSchema = z.object({
   nodeId: nodeIdSchema,
   endpointUrl: z.string().url(),
   publicKeyPem: z.string().trim().min(80).max(1000),
-  scopes: z.array(z.enum(["read:health", "read:deployment", "write:cache"])).min(1).max(3),
+  scopes: z.array(z.enum(["read:health", "read:deployment", "write:cache", "witness:health"])).min(1).max(4),
 }).superRefine((input, ctx) => {
   const url = new URL(input.endpointUrl);
   const expectedHostname = canonicalEndpointByNode[input.nodeId];

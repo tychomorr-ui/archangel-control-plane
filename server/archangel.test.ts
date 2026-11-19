@@ -12,6 +12,7 @@ describe("ARCHANGEL fleet contract", () => {
       "XinUS-Clarity",
       "Monarch-OS",
       "Tesseract-A",
+      "Quantus",
       "KEIRA",
       "Project Reclaim",
       "IWA Sage",
@@ -29,7 +30,8 @@ describe("ARCHANGEL fleet contract", () => {
       declaredState: "Declared running",
     });
     expect(FLEET_NODES.find(node => node.id === "iwa-sage")).toMatchObject({ declaredState: "Declared running" });
-    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["iwa-sage", "resonate-earth", "exitus-lens", "valkyrie-adjudication-entity"]);
+    expect(FLEET_NODES.filter(node => node.cluster === "Outer").map(node => node.id)).toEqual(["quantus", "iwa-sage", "resonate-earth", "exitus-lens", "valkyrie-adjudication-entity"]);
+    expect(FLEET_NODES.find(node => node.id === "quantus")).toMatchObject({ declaredState: "Planned deployment", fingerprint: "Pending secure enrollment" });
     expect(FLEET_NODES.find(node => node.id === "valkyrie-adjudication-entity")).toMatchObject({
       name: "VALKYRIE Adjudication Entity",
       cluster: "Outer",
@@ -47,7 +49,8 @@ describe("ARCHANGEL fleet contract", () => {
   });
 
   it("keeps the Application Atlas truthful about declared roles, evidence, and unplaced applications", () => {
-    expect(APPLICATION_ATLAS).toHaveLength(11);
+    expect(APPLICATION_ATLAS).toHaveLength(12);
+    expect(APPLICATION_ATLAS.find(application => application.id === "quantus")).toMatchObject({ lifecycle: "planned", evidencePosture: "declared", nodeId: "quantus" });
     expect(APPLICATION_ATLAS.find(application => application.id === "monarch-os")).toMatchObject({ name: "Monarch-OS", nodeId: "kether-gate", hostPosture: "Declared Singapore Debian host" });
     expect(APPLICATION_ATLAS.find(application => application.id === "resonate-earth")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced", publicFrontDoor: "resonateearth.live" });
     expect(APPLICATION_ATLAS.find(application => application.id === "exitus-lens")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced" });

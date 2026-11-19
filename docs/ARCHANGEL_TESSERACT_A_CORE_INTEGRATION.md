@@ -18,9 +18,9 @@ Its current implementation does the following:
 - binds its HTTP shell to `127.0.0.1` by default;
 - keeps truth fidelity unavailable until a real signed receipt is verified.
 
-The current Tesseract-A Core source does **not** contain an outgoing receipt-signing private key, an Ed25519 signing call for its generated `HealthReceipt`, an ARCHANGEL client, or a Quantus witness protocol. Its generated `HealthReceipt` contains `serviceSignatureVerified: true`, but no Tesseract-A signature over the receipt itself.
+The Tesseract-A Core implementation now includes a fail-closed local Ed25519 witness signer. Its generated `HealthReceipt` remains the embedded node observation, while the new `TESSERACT_A_SIGNED_WITNESS_RECEIPT/v1` wrapper carries Tesseract-A’s separate signature. The private key is read only from `TESSERACT_A_WITNESS_PRIVATE_KEY_FILE`; it is never uploaded to ARCHANGEL.
 
-That means the current repository is an evidence verifier and receipt generator, not yet an independently attestable witness signer. This distinction must remain visible in the ARCHANGEL UI and audit trail.
+The signer is an independently attestable witness layer, not a replacement for direct node receipt verification. This distinction must remain visible in the ARCHANGEL UI and audit trail.
 
 ## 2. The correct role separation
 
@@ -128,7 +128,7 @@ The proposed contract is intentionally separate from the node health receipt:
 }
 ```
 
-The exact canonicalization must be implemented once and tested in both projects. The signature must cover all fields except `signature`, with sorted observation ordering and deterministic JSON. ARCHANGEL must verify:
+The exact canonicalization is implemented in both projects and covered by a deterministic test vector. The signature covers all fields except `signature`, with sorted observation ordering and deterministic JSON. ARCHANGEL verifies:
 
 - schema and witness identity;
 - challenge ID and nonce;
@@ -154,14 +154,14 @@ This provides direct node evidence:
 node runtime -> signed ATMOS health receipt -> ARCHANGEL node receipt intake
 ```
 
-### Phase 2 — Add Tesseract-A Core witness signing locally
+### Phase 2 — Tesseract-A Core witness signing locally
 
 On the Tesseract-A host:
 
 1. create or identify the Tesseract-A witness key owned by that host;
 2. derive and publish only the public PEM and SHA-256 fingerprint;
 3. keep the private PEM root-readable only on the Tesseract-A host;
-4. extend Tesseract-A Core to sign the canonical witness receipt after all configured probes pass;
+4. call `POST /api/witness/receipt` on the loopback Tesseract-A Core runtime after all configured probes pass;
 5. preserve rejected probe results as rejected evidence, never as healthy fallback values;
 6. keep the runtime bound to loopback unless an authenticated private-overlay endpoint is explicitly added.
 
@@ -176,15 +176,15 @@ applicationId: tesseract-a
 nodeId:        tesseract-a
 endpointUrl:   exact operator-controlled Tesseract-A endpoint
 publicKeyPem:  Tesseract-A witness public PEM
-scopes:        read:health
+scopes:        witness:health
 status:        active only after fingerprint review
 ```
 
 The current application atlas maps `tesseract-a` to the Tesseract-A node. The existing integration registration writes the public key, endpoint, scopes, active state, and an `integration.registered` audit event. It does not accept or store a private key.
 
-### Phase 4 — Add a dedicated ARCHANGEL witness intake
+### Phase 4 — Dedicated ARCHANGEL witness intake
 
-Add a separate endpoint or tRPC procedure for `TESSERACT_A_SIGNED_WITNESS_RECEIPT/v1`. Do not route it through the node receipt handler by changing the receipt shape.
+The implementation provides `POST /v1/atmos/witnesses/tesseract-a/challenge` and `POST /v1/atmos/witnesses/tesseract-a/receipts`. Do not route this contract through the node receipt handler by changing the receipt shape.
 
 The dedicated intake must:
 
@@ -209,7 +209,7 @@ A witness observation can corroborate direct evidence, but it must not silently 
 
 ### Phase 5 — Add Quantus independently
 
-Quantus requires a separate registry change and separate contract. After that change, Quantus can produce a distinct witness receipt over a defined observation set. ARCHANGEL may show:
+Quantus now has a planned registry/application entry and reserved canonical hostname, but it remains un-enrolled. It has no active integration, public-key fingerprint, private-key material, or live endpoint claim. After the operator supplies and reviews a real Quantus public key and endpoint, Quantus can produce a distinct witness receipt over a defined observation set. ARCHANGEL may then show:
 
 ```text
 Direct node evidence: 1
