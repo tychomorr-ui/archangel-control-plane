@@ -209,7 +209,7 @@ A witness observation can corroborate direct evidence, but it must not silently 
 
 ### Phase 5 — Add Quantus independently
 
-Quantus now has a planned registry/application entry and reserved canonical hostname, but it remains un-enrolled. It has no active integration, public-key fingerprint, private-key material, or live endpoint claim. After the operator supplies and reviews a real Quantus public key and endpoint, Quantus can produce a distinct witness receipt over a defined observation set. ARCHANGEL may then show:
+Quantus now has a planned witness entry, reserved hostname, and an independently operator-confirmed public-key fingerprint (`c3e9568197203345e7094734515fd02e1a2ddfe3606e282541027d2bda70e9b7`). It remains un-enrolled: there is no active integration, ATMOS manifest/artifact binding, or live ARCHANGEL receipt intake. After the operator supplies and reviews the Quantus contract and endpoint evidence, Quantus can produce a distinct witness receipt over a defined observation set. ARCHANGEL may then show:
 
 ```text
 Direct node evidence: 1

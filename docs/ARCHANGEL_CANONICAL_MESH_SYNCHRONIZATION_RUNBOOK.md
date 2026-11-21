@@ -61,15 +61,15 @@ The current source uses lowercase fleet route IDs for the HTTP receipt route and
 
 ### 2.2 Quantus status
 
-**Quantus is not present in the current `ATMOS_CANONICAL_NODES`, `FLEET_NODES`, or `APPLICATION_ATLAS` source registries.** There is no canonical Quantus node ID, application ID, endpoint, public-key fingerprint, or receipt registration contract in this repository. Do not enroll it under an invented alias such as `quantus`, `quantus-node`, or `quantus.nexinus.net`.
+**Quantus is not present in the current `ATMOS_CANONICAL_NODES`, `FLEET_NODES`, or `APPLICATION_ATLAS` source registries.** The operator has independently confirmed the public witness-key fingerprint `c3e9568197203345e7094734515fd02e1a2ddfe3606e282541027d2bda70e9b7` for the planned `QUANTUS` service at `https://quantus.nexinus.net`, but this does not create a direct ATMOS node or active ARCHANGEL integration. Do not enroll it under an invented alias or promote it to verified node status.
 
-Quantus may be added only through a reviewed registry change that defines:
+Quantus may be added as a planned witness only through a reviewed registry change that defines:
 
 - exact node ID and application ID;
 - role and lifecycle (`declared` or `planned`);
 - canonical endpoint;
 - region and overlay address;
-- public-key fingerprint and manifest hash;
+- independently confirmed public-key fingerprint and, later, a manifest/artifact binding;
 - application dependencies and narrow scopes;
 - tests, migration/release record, and operator approval.
 
