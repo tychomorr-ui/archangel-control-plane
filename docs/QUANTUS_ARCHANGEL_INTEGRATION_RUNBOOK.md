@@ -67,7 +67,7 @@ From the operator workstation:
 ```bash
 set -euo pipefail
 export ARCHANGEL_HOST='94.237.74.250'
-export RELEASE='95dcc6b'
+export RELEASE='f302892'
 ssh root@"$ARCHANGEL_HOST" "install -d -m 0755 /opt/archangel/releases/archangel-$RELEASE"
 ssh root@"$ARCHANGEL_HOST" "git clone --no-checkout https://github.com/tychomorr-ui/archangel-control-plane.git /opt/archangel/releases/archangel-$RELEASE/repo"
 ssh root@"$ARCHANGEL_HOST" "cd /opt/archangel/releases/archangel-$RELEASE/repo && git checkout $RELEASE && pnpm install --frozen-lockfile && pnpm check && pnpm test && pnpm build"
@@ -76,7 +76,7 @@ ssh root@"$ARCHANGEL_HOST" "cd /opt/archangel/releases/archangel-$RELEASE/repo &
 If the release directory already exists, do not overwrite it blindly. Verify its commit first:
 
 ```bash
-ssh root@94.237.74.250 'git -C /opt/archangel/releases/archangel-95dcc6b/repo rev-parse HEAD'
+ssh root@94.237.74.250 'git -C /opt/archangel/releases/archangel-f302892/repo rev-parse HEAD'
 ```
 
 Build a candidate image while preserving the existing environment file. Never copy `/root/archangel-production.env` into Git or into the source tree:
