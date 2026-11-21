@@ -4,7 +4,7 @@
   "manifestKind": "NEXINUS_ATMOS_SIGNED_NODE_MANIFEST/v1",
   "healthKind": "NEXINUS_ATMOS_SIGNED_HEALTH/v1",
   "targets": [
-    { "name": "Quantus", "nodeId": "quantus", "status": "PLANNED_NOT_CANONICAL", "pinStatus": "OPERATOR_CONFIRMED", "publicKeyFingerprintSha256": "c3e9568197203345e7094734515fd02e1a2ddfe3606e282541027d2bda70e9b7", "canonicalEndpoint": "https://quantus.nexinus.net", "evidenceContract": "QUANTUS_WITNESS_STATUS/v1", "requiresReviewedRegistryEntry": true, "directArchangelReceiptIntake": false },
+    { "name": "Quantus", "nodeId": "quantus", "status": "PLANNED_NOT_CANONICAL", "pinStatus": "OPERATOR_CONFIRMED", "publicKeyFingerprintSha256": "c3e9568197203345e7094734515fd02e1a2ddfe3606e282541027d2bda70e9b7", "canonicalEndpoint": "https://quantus.nexinus.net", "evidenceContract": "QUANTUS_WITNESS_STATUS/v1", "manifestPayloadSha256": null, "artifactSha256": null, "requiresReviewedRegistryEntry": true, "directArchangelReceiptIntake": false },
     { "name": "KEIRA", "nodeId": "keira", "status": "VERIFIED", "canonicalEndpoint": "https://keira.nexinus.net" },
     { "name": "VALKYRIE", "nodeId": "valkyrie-adjudication-entity", "status": "VERIFIED", "canonicalEndpoint": "https://valkyrie.nexinus.net" },
     { "name": "Tesseract Mirror", "nodeId": "tesseract-a", "status": "VERIFIED", "canonicalEndpoint": "https://tesseract.nexinus.net" },
