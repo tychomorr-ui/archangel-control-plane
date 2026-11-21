@@ -1,0 +1,13 @@
+{
+  "schema": "ARCHANGEL_ALIGNMENT_TARGETS/v1",
+  "protocol": "ATMOS-1.1.1",
+  "manifestKind": "NEXINUS_ATMOS_SIGNED_NODE_MANIFEST/v1",
+  "healthKind": "NEXINUS_ATMOS_SIGNED_HEALTH/v1",
+  "targets": [
+    { "name": "Quantus", "nodeId": "quantus", "status": "PLANNED_NOT_CANONICAL", "requiresReviewedRegistryEntry": true },
+    { "name": "KEIRA", "nodeId": "keira", "status": "VERIFIED", "canonicalEndpoint": "https://keira.nexinus.net" },
+    { "name": "VALKYRIE", "nodeId": "valkyrie-adjudication-entity", "status": "VERIFIED", "canonicalEndpoint": "https://valkyrie.nexinus.net" },
+    { "name": "Tesseract Mirror", "nodeId": "tesseract-a", "status": "VERIFIED", "canonicalEndpoint": "https://tesseract.nexinus.net" },
+    { "name": "Tesseract-A Core verifier", "nodeId": "tesseract-a", "status": "VERIFIED", "canonicalEndpoint": "https://tesseract.nexinus.net", "verifierContract": "TESSERACT_A_SIGNED_WITNESS_RECEIPT/v1" }
+  ]
+}
