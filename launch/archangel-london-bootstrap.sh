@@ -73,7 +73,7 @@ write_configuration_template() {
   if [[ ! -f "${CONFIG_ROOT}/archangel.env" ]]; then
     cat > "${CONFIG_ROOT}/archangel.env" <<'EOF'
 # ARCHANGEL control-plane baseline configuration.
-# Do not place private keys, AWS credentials, or node credentials in this file.
+# Do not place private keys, provider credentials, or node credentials in this file.
 ARCHANGEL_ROLE=control-plane
 ARCHANGEL_EXECUTION_MODE=observe-only
 ARCHANGEL_NODE_ENROLLMENT=disabled
@@ -201,10 +201,10 @@ ARCHANGEL baseline is active.
 
 Security boundary:
   - The service listens only on 127.0.0.1:8080.
-  - Do not expose port 8080 in the Lightsail firewall.
-  - Do not add private keys, AWS credentials, or node credentials to archangel.env.
+  - Do not expose port 8080 in the host firewall.
+  - Do not add private keys, provider credentials, or node credentials to archangel.env.
   - No node enrollment or remote execution is enabled by this bootstrap.
-  - Configure the Lightsail network firewall separately: restrict SSH to trusted
+  - Configure the host network firewall separately: restrict SSH to trusted
     administrative source addresses; add HTTPS only after an approved reverse proxy,
     TLS certificate, and authentication boundary are ready.
 

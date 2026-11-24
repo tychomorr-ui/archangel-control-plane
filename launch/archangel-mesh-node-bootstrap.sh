@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ARCHANGEL private-mesh node preparation.
-# Run once on an authorized Ubuntu 24 or Debian 12+ Lightsail node. It creates node-owned keys
+# Run once on an authorized Ubuntu 24 or Debian 12+ node. It creates node-owned keys
 # and a disabled private-only signed-status service. It does not create a public
 # listener, join a mesh, grant remote shell access, or execute remote commands.
 
@@ -64,7 +64,7 @@ require_supported_os() {
 }
 
 validate_inputs() {
-  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|keira|project-reclaim|iwa-sage|resonate-earth|exitus-lens)$ ]] || {
+  [[ "${node_id}" =~ ^(root-gate|tesseract-terminus|xinus-clarity|kether-gate|tesseract-a|quantus|keira|project-reclaim|iwa-sage|resonate-earth|exitus-lens|valkyrie-adjudication-entity)$ ]] || {
     echo "Node ID is not in the declared ARCHANGEL registry." >&2
     exit 2
   }
@@ -297,7 +297,7 @@ print_next_steps() {
 ARCHANGEL node preparation is complete for ${node_id}.
 
 This command did NOT:
-  - open any Lightsail or host firewall port;
+  - open any host firewall port;
   - activate WireGuard;
   - start the status agent;
   - enroll this node; or

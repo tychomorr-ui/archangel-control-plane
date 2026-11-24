@@ -79,7 +79,7 @@ ARCHANGEL private-mesh hub identity is prepared.
 
 This command did NOT:
   - activate a WireGuard interface;
-  - add a Lightsail firewall rule;
+  - add a host firewall rule;
   - enroll a node or accept a status receipt;
   - alter archangel-control.service; or
   - enable remote execution.

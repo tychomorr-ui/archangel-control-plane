@@ -29,7 +29,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "root-gate",
     name: "Root-Gate",
-    region: "N. Virginia · us-east-1 · ROOT_SOVEREIGN-IDENTITY",
+    region: "UpCloud target · rootgate.nexinus.net · ROOT_SOVEREIGN-IDENTITY",
     role: "Sovereign identity · authority anchor",
     cluster: "Alpha",
     declaredState: "Declared running",
@@ -38,7 +38,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "tesseract-terminus",
     name: "Tesseract-Terminus",
-    region: "Spain · eu-south-2 · Sovereign Provenance Console",
+    region: "UpCloud target · terminus.nexinus.net · Sovereign Provenance Console",
     role: "Sovereign Provenance Console · provenance, anchoring · sovereign attestation",
     cluster: "Alpha",
     declaredState: "Declared running",
@@ -47,7 +47,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "xinus-clarity",
     name: "XinUS-Clarity",
-    region: "Ireland · eu-west-1",
+    region: "UpCloud target · clarity.nexinus.net",
     role: "Flagship application layer · Clarity Suite",
     cluster: "Alpha",
     declaredState: "Declared running",
@@ -56,7 +56,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "kether-gate",
     name: "Monarch-OS",
-    region: "Singapore · ap-southeast-1 · Debian",
+    region: "UpCloud target · monarch.nexinus.net · Debian",
     role: "Kether-Gate logical role · sovereign operating-system layer",
     cluster: "Beta",
     declaredState: "Declared running",
@@ -65,7 +65,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "tesseract-a",
     name: "Tesseract-A",
-    region: "Frankfurt · eu-central-1",
+    region: "UpCloud target · tesseract.nexinus.net",
     role: "Tesseract mirror · recovery portal",
     cluster: "Beta",
     declaredState: "Declared running",
@@ -74,7 +74,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "quantus",
     name: "Quantus",
-    region: "Witness role · host not declared",
+    region: "UpCloud witness target · quantus.nexinus.net",
     role: "Independent witness · Cryptochromer evidence and Pharo-Lapse observation layer",
     cluster: "Outer",
     declaredState: "Planned deployment",
@@ -83,7 +83,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "keira",
     name: "KEIRA",
-    region: "São Paulo · sa-east-1",
+    region: "UpCloud target · keira.nexinus.net",
     role: "Intelligence application · truth analysis layer",
     cluster: "Beta",
     declaredState: "Declared running",
@@ -92,7 +92,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "project-reclaim",
     name: "Project Reclaim",
-    region: "Oregon · us-west-2 · Lake & Mendocino field node",
+    region: "UpCloud target · reclaim-node.nexinus.net · Lake & Mendocino field node",
     role: "Field activation · recovery and real-world impact layer",
     cluster: "Bridge",
     declaredState: "Declared running",
@@ -101,7 +101,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "iwa-sage",
     name: "IWA Sage",
-    region: "Canada Central · ca-central-1 · Montreal · IWA-SAGE-APP",
+    region: "UpCloud target · iwa.nexinus.net · IWA-SAGE-APP",
     role: "Indigenous Wellness Alliance · community wellness and service layer",
     cluster: "Outer",
     declaredState: "Declared running",
@@ -110,7 +110,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "resonate-earth",
     name: "Resonate Earth",
-    region: "Physical host not declared · public front-door application",
+    region: "UpCloud target · endpoint not declared · public front-door application",
     role: "Earth resonance public front door · placement pending verified host inventory",
     cluster: "Outer",
     declaredState: "Planned deployment",
@@ -119,7 +119,7 @@ export const FLEET_NODES: FleetNodeDefinition[] = [
   {
     id: "exitus-lens",
     name: "Exitus Lens",
-    region: "Physical host not declared · planned application concept",
+    region: "UpCloud target · endpoint not declared · planned application concept",
     role: "Read-only visual evidence layer · placement pending host creation",
     cluster: "Outer",
     declaredState: "Planned deployment",
@@ -215,17 +215,17 @@ export type ApplicationAtlasRecord = {
 };
 
 export const APPLICATION_ATLAS: ApplicationAtlasRecord[] = [
-  { id: "root-identity", name: "Root-Gate", shortName: "Identity", role: "Sovereign identity and authority anchor", category: "identity", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared N. Virginia host", evidencePosture: "evidence-needed", nodeId: "root-gate", dependencies: [], planningNote: "Root authority remains a planning and authorization concept until signed enrollment is deliberately enabled later." },
-  { id: "sovereign-provenance-console", name: "Sovereign Provenance Console", shortName: "Provenance", role: "Provenance, anchoring, hashing, and sovereign attestation", category: "provenance", lifecycle: "declared", publicFrontDoor: "universaltruth.live", hostPosture: "Declared Spain host", evidencePosture: "evidence-needed", nodeId: "tesseract-terminus", dependencies: ["root-identity"], planningNote: "Public front door and provenance role are declared; runtime health remains unobserved." },
-  { id: "xinus-clarity-suite", name: "XinUS-Clarity", shortName: "Clarity", role: "Flagship reflective-intelligence application suite", category: "application", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Ireland host", evidencePosture: "evidence-needed", nodeId: "xinus-clarity", dependencies: ["root-identity"], planningNote: "Application portfolio remains cataloged as a declared role, not a live service graph." },
-  { id: "monarch-os", name: "Monarch-OS", shortName: "Monarch", role: "Debian-inspired sovereign operating-system program", category: "operating-system", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Singapore Debian host", evidencePosture: "evidence-needed", nodeId: "kether-gate", dependencies: ["root-identity"], planningNote: "Kether-Gate is the logical role; Monarch-OS is the public application and host-facing name." },
-  { id: "tesseract-a", name: "Tesseract-A", shortName: "Tesseract A", role: "Recovery portal and Tesseract mirror", category: "recovery", lifecycle: "declared", publicFrontDoor: "nexonis.net", hostPosture: "Declared Frankfurt host", evidencePosture: "evidence-needed", nodeId: "tesseract-a", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Recovery posture is declared; no backup or service verification has been received." },
+  { id: "root-identity", name: "Root-Gate", shortName: "Identity", role: "Sovereign identity and authority anchor", category: "identity", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · rootgate.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "root-gate", dependencies: [], planningNote: "Root authority remains a planning and authorization concept until signed enrollment is deliberately enabled later." },
+  { id: "sovereign-provenance-console", name: "Sovereign Provenance Console", shortName: "Provenance", role: "Provenance, anchoring, hashing, and sovereign attestation", category: "provenance", lifecycle: "declared", publicFrontDoor: "universaltruth.live", hostPosture: "UpCloud target · terminus.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "tesseract-terminus", dependencies: ["root-identity"], planningNote: "Public front door and provenance role are declared; runtime health remains unobserved." },
+  { id: "xinus-clarity-suite", name: "XinUS-Clarity", shortName: "Clarity", role: "Flagship reflective-intelligence application suite", category: "application", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · clarity.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "xinus-clarity", dependencies: ["root-identity"], planningNote: "Application portfolio remains cataloged as a declared role, not a live service graph." },
+  { id: "monarch-os", name: "Monarch-OS", shortName: "Monarch", role: "Debian-inspired sovereign operating-system program", category: "operating-system", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · monarch.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "kether-gate", dependencies: ["root-identity"], planningNote: "Kether-Gate is the logical role; Monarch-OS is the public application and host-facing name." },
+  { id: "tesseract-a", name: "Tesseract-A", shortName: "Tesseract A", role: "Recovery portal and Tesseract mirror", category: "recovery", lifecycle: "declared", publicFrontDoor: "nexonis.net", hostPosture: "UpCloud target · tesseract.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "tesseract-a", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Recovery posture is declared; no backup or service verification has been received." },
   { id: "quantus", name: "Quantus", shortName: "Quantus", role: "Independent witness for Cryptochromer evidence over Pharo-Lapse", category: "evidence", lifecycle: "planned", publicFrontDoor: "quantus.nexinus.net", hostPosture: "Witness host not declared", evidencePosture: "declared", nodeId: "quantus", dependencies: ["root-identity", "tesseract-a"], planningNote: "Witness identity, endpoint, and public key remain pending operator enrollment; no active integration is implied." },
-  { id: "keira-intelligence", name: "KEIRA", shortName: "KEIRA", role: "Intelligence application and truth-analysis layer", category: "intelligence", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared São Paulo host", evidencePosture: "evidence-needed", nodeId: "keira", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Intelligence role is modeled without an external model, service, or telemetry claim." },
-  { id: "project-reclaim", name: "Project Reclaim", shortName: "Reclaim", role: "Lake and Mendocino field-program bridge", category: "field", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Oregon host", evidencePosture: "evidence-needed", nodeId: "project-reclaim", dependencies: ["root-identity", "keira-intelligence"], planningNote: "Field-program role is distinct from any asserted real-world outcome or device telemetry." },
-  { id: "iwa-sage", name: "IWA Sage", shortName: "IWA Sage", role: "Indigenous Wellness Alliance community and wellness application", category: "community", lifecycle: "declared", publicFrontDoor: null, hostPosture: "Declared Montreal host", evidencePosture: "evidence-needed", nodeId: "iwa-sage", dependencies: ["root-identity", "xinus-clarity-suite"], planningNote: "Community-service role is cataloged independently from any user data or service utilization claim." },
-  { id: "resonate-earth", name: "Resonate Earth", shortName: "Resonate", role: "Earth resonance public-front-door application", category: "public-front-door", lifecycle: "planned", publicFrontDoor: "resonateearth.live", hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "resonate-earth", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The public front door is declared; any future physical placement remains an explicit scenario, not a map fact." },
-  { id: "exitus-lens", name: "Exitus Lens", shortName: "Exitus", role: "Read-only visual-evidence application concept", category: "evidence", lifecycle: "planned", publicFrontDoor: null, hostPosture: "Physical host unplaced", evidencePosture: "declared", nodeId: "exitus-lens", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The evidence lens remains a planned product concept and is intentionally kept off the physical map." },
+  { id: "keira-intelligence", name: "KEIRA", shortName: "KEIRA", role: "Intelligence application and truth-analysis layer", category: "intelligence", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · keira.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "keira", dependencies: ["root-identity", "sovereign-provenance-console"], planningNote: "Intelligence role is modeled without an external model, service, or telemetry claim." },
+  { id: "project-reclaim", name: "Project Reclaim", shortName: "Reclaim", role: "Lake and Mendocino field-program bridge", category: "field", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · reclaim-node.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "project-reclaim", dependencies: ["root-identity", "keira-intelligence"], planningNote: "Field-program role is distinct from any asserted real-world outcome or device telemetry." },
+  { id: "iwa-sage", name: "IWA Sage", shortName: "IWA Sage", role: "Indigenous Wellness Alliance community and wellness application", category: "community", lifecycle: "declared", publicFrontDoor: null, hostPosture: "UpCloud target · iwa.nexinus.net · live evidence pending", evidencePosture: "evidence-needed", nodeId: "iwa-sage", dependencies: ["root-identity", "xinus-clarity-suite"], planningNote: "Community-service role is cataloged independently from any user data or service utilization claim." },
+  { id: "resonate-earth", name: "Resonate Earth", shortName: "Resonate", role: "Earth resonance public-front-door application", category: "public-front-door", lifecycle: "planned", publicFrontDoor: "resonateearth.live", hostPosture: "UpCloud target · endpoint not declared", evidencePosture: "declared", nodeId: "resonate-earth", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The public front door is declared; any future physical placement remains an explicit scenario, not a map fact." },
+  { id: "exitus-lens", name: "Exitus Lens", shortName: "Exitus", role: "Read-only visual-evidence application concept", category: "evidence", lifecycle: "planned", publicFrontDoor: null, hostPosture: "UpCloud target · endpoint not declared", evidencePosture: "declared", nodeId: "exitus-lens", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The evidence lens remains a planned product concept and is intentionally kept off the physical map." },
   { id: "valkyrie-adjudication-entity", name: "VALKYRIE Adjudication Entity", shortName: "VALKYRIE", role: "Adjudication and evidence decision layer", category: "evidence", lifecycle: "declared", publicFrontDoor: "https://valkyrie.nexinus.net", hostPosture: "Declared canonical-domain application", evidencePosture: "evidence-needed", nodeId: "valkyrie-adjudication-entity", dependencies: ["sovereign-provenance-console", "keira-intelligence"], planningNote: "The canonical Valkyrie domain and adjudication role are declared; signed runtime evidence remains pending until the application publishes the expected identity and health artifacts." },
 ];
 

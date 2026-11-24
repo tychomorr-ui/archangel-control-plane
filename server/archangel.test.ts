@@ -23,10 +23,10 @@ describe("ARCHANGEL fleet contract", () => {
     expect(FLEET_NODES.find(node => node.id === "project-reclaim")).toMatchObject({
       cluster: "Bridge",
       declaredState: "Declared running",
-      region: "Oregon · us-west-2 · Lake & Mendocino field node",
+      region: "UpCloud target · reclaim-node.nexinus.net · Lake & Mendocino field node",
     });
     expect(FLEET_NODES.find(node => node.id === "root-gate")).toMatchObject({
-      region: "N. Virginia · us-east-1 · ROOT_SOVEREIGN-IDENTITY",
+      region: "UpCloud target · rootgate.nexinus.net · ROOT_SOVEREIGN-IDENTITY",
       declaredState: "Declared running",
     });
     expect(FLEET_NODES.find(node => node.id === "iwa-sage")).toMatchObject({ declaredState: "Declared running" });
@@ -42,8 +42,8 @@ describe("ARCHANGEL fleet contract", () => {
   it("keeps unplaced applications out of the physical host inventory", () => {
     const resonate = FLEET_NODES.find(node => node.id === "resonate-earth");
     const exitus = FLEET_NODES.find(node => node.id === "exitus-lens");
-    expect(resonate).toMatchObject({ declaredState: "Planned deployment", region: "Physical host not declared · public front-door application" });
-    expect(exitus).toMatchObject({ declaredState: "Planned deployment", region: "Physical host not declared · planned application concept" });
+    expect(resonate).toMatchObject({ declaredState: "Planned deployment", region: "UpCloud target · endpoint not declared · public front-door application" });
+    expect(exitus).toMatchObject({ declaredState: "Planned deployment", region: "UpCloud target · endpoint not declared · planned application concept" });
     expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "resonate-earth", placement: "unplaced-public-front-door" });
     expect(TOPOLOGY_LAYOUT_CONTRACT.outerCircle).toContainEqual({ id: "exitus-lens", placement: "unplaced-evidence-layer" });
   });
@@ -51,9 +51,9 @@ describe("ARCHANGEL fleet contract", () => {
   it("keeps the Application Atlas truthful about declared roles, evidence, and unplaced applications", () => {
     expect(APPLICATION_ATLAS).toHaveLength(12);
     expect(APPLICATION_ATLAS.find(application => application.id === "quantus")).toMatchObject({ lifecycle: "planned", evidencePosture: "declared", nodeId: "quantus" });
-    expect(APPLICATION_ATLAS.find(application => application.id === "monarch-os")).toMatchObject({ name: "Monarch-OS", nodeId: "kether-gate", hostPosture: "Declared Singapore Debian host" });
-    expect(APPLICATION_ATLAS.find(application => application.id === "resonate-earth")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced", publicFrontDoor: "resonateearth.live" });
-    expect(APPLICATION_ATLAS.find(application => application.id === "exitus-lens")).toMatchObject({ lifecycle: "planned", hostPosture: "Physical host unplaced" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "monarch-os")).toMatchObject({ name: "Monarch-OS", nodeId: "kether-gate", hostPosture: "UpCloud target · monarch.nexinus.net · live evidence pending" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "resonate-earth")).toMatchObject({ lifecycle: "planned", hostPosture: "UpCloud target · endpoint not declared", publicFrontDoor: "resonateearth.live" });
+    expect(APPLICATION_ATLAS.find(application => application.id === "exitus-lens")).toMatchObject({ lifecycle: "planned", hostPosture: "UpCloud target · endpoint not declared" });
     expect(APPLICATION_ATLAS.find(application => application.id === "valkyrie-adjudication-entity")).toMatchObject({
       name: "VALKYRIE Adjudication Entity",
       nodeId: "valkyrie-adjudication-entity",

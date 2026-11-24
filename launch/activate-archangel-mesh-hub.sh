@@ -32,7 +32,7 @@ main() {
     cat <<'EOF'
 Refusing to activate without --activate.
 
-Before activation, confirm the Lightsail firewall permits UDP 51820 only from the
+Before activation, confirm the host firewall permits UDP 51820 only from the
 current public addresses of the authorized node hosts. This starts only the
 private WireGuard transport and does not enable a public status, enrollment, or
 command API.

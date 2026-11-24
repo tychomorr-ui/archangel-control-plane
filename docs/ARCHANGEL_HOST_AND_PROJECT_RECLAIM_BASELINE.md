@@ -1,3 +1,5 @@
+> **Historical planning record — superseded for active deployment.** This document contains earlier provider or placement assumptions. The current canonical deployment is UpCloud; use `docs/ARCHANGEL_UPCLOUD_CANONICALIZATION.md` and the active source declarations for present operations. Historical text is retained unchanged for auditability.
+
 # ARCHANGEL Host and Project Reclaim Baseline
 
 ## Current Working Decisions

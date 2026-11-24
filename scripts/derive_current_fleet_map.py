@@ -1,6 +1,6 @@
-"""Project declared AWS region city proxies into the ARCHANGEL physical map.
+"""Project declared regional city proxies into the ARCHANGEL physical map.
 
-Coordinates are regional-city proxies for visualization, not AWS data-center locations.
+Coordinates are regional-city proxies for visualization, not provider facility locations.
 The map intentionally represents only supplied current hosts.
 """
 

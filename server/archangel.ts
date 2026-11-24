@@ -136,7 +136,7 @@ const pendingStatus = (nodeId: string) => ({
   applicationReadiness: "unknown" as const,
   reachability: "unknown" as const,
   verificationState: "pending" as const,
-  narrative: "Lightsail declared this node running in the current fleet inventory. ARCHANGEL has not yet received a signed status receipt, so it makes no live health claim.",
+  narrative: "UpCloud deployment is declared in the current fleet inventory. ARCHANGEL has not yet received a signed status receipt, so it makes no live health claim.",
   signedReceiptHash: null,
 });
 
@@ -201,7 +201,7 @@ async function createIntentProposal(ctx: { user: { id: number } }, input: z.infe
 function evaluateScenarioPolicy(scenario: { rollbackHypothesis: string; affectedApplicationIds: string }) {
   const affectedIds = JSON.parse(scenario.affectedApplicationIds) as string[];
   const affectedApplications = APPLICATION_ATLAS.filter(application => affectedIds.includes(application.id));
-  const unplaced = affectedApplications.filter(application => application.hostPosture === "Physical host unplaced");
+  const unplaced = affectedApplications.filter(application => application.hostPosture.includes("endpoint not declared"));
   const evidenceNeeded = affectedApplications.filter(application => application.evidencePosture === "evidence-needed");
   return {
     affectedApplications,
@@ -420,7 +420,7 @@ export const archangelRouter = router({
       db.select().from(planningScenarios).orderBy(desc(planningScenarios.updatedAt)).limit(100),
       db.select().from(intents).orderBy(desc(intents.createdAt)).limit(100),
     ]);
-    const unplaced = APPLICATION_ATLAS.filter(application => application.hostPosture === "Physical host unplaced");
+    const unplaced = APPLICATION_ATLAS.filter(application => application.hostPosture.includes("endpoint not declared"));
     const reviewReady = scenarioRows.filter(scenario => scenario.posture === "review-ready");
     const proposed = intentRows.filter(intent => intent.state === "proposed");
     return {
